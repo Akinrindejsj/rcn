@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Page Not Found — Revolutionary Communists of Nigeria</title>
+</head>
+<body>
+<main layout:fragment="content">
+<div class="text-center px-4">
+    <div class="text-8xl mb-8">✊</div>
+    <h1 class="font-display text-6xl md:text-7xl uppercase">Page Not Found</h1>
+    <p class="font-serif italic text-rev-gold text-xl mt-6">But the struggle continues.</p>
+    <p class="text-rev-muted mt-4 max-w-md mx-auto">The page you're looking for doesn't exist — much like justice under capitalism.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12">
+        <a th:href="@{/}" href="/" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-sm uppercase tracking-widest px-8 py-4">Return to Homepage</a>
+        <a th:href="@{/news}" href="/news" class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4">Read Analysis</a>
+        <a th:href="@{/join}" href="/join" class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4">Join the RCN</a>
+    </div>
+</div>
+</main>
+</body>
+</html>

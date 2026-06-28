@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Write for the RCN — Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="Submit your analysis, frontline report, or letter to the revolutionary press."/>
+</head>
+<body>
+<main layout:fragment="content">
+<section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Contribute</span></div>
+            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase leading-tight">Write for<br/>the Revolution</h1>
+            <p class="text-rev-muted text-lg mt-6 max-w-2xl">The Nigerian Communist is built by comrades and workers across the country. Submit your analysis, frontline report, or letter.</p>
+        </div>
+    </section>
+
+    <section class="py-20 bg-rev-page">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-rev-border bg-white">
+                <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
+                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Analysis</span></div>
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Analysis</h3>
+                    <p class="text-rev-muted text-sm">Marxist analysis of Nigerian politics, economy, and events. 800–2,000 words. Well-researched, theoretically grounded.</p>
+                </div>
+                <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
+                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Report</span></div>
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Frontline Reports</h3>
+                    <p class="text-rev-muted text-sm">On-the-ground accounts from your workplace, campus, or community. 300–800 words. What's happening where you are?</p>
+                </div>
+                <div class="p-8">
+                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Letter</span></div>
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Letters & Debate</h3>
+                    <p class="text-rev-muted text-sm">Responses to published articles, theoretical debates, or reflections on organising experience. Any length.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div class="lg:col-span-2">
+                <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
+                <form class="space-y-6">
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Title</label><input type="text" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Category</label><select class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"><option>Analysis</option><option>Frontline Report</option><option>Letter & Debate</option><option>Other</option></select></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Body</label><textarea rows="10" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-none"></textarea></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your Name (as you want it published)</label><input type="text" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address (for editorial contact, not published)</label><input type="email" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Attachments (images, max 5MB each)</label><div class="border-2 border-dashed border-rev-border p-6 text-center bg-rev-subtle"><span class="font-mono text-rev-muted text-xs">Drag files here or click to upload (JPG, PNG)</span></div></div>
+                    <button type="submit" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review →</button>
+                </form>
+            </div>
+            <aside class="space-y-8">
+                <div class="bg-rev-page p-6 border border-rev-border">
+                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Why Write?</h4>
+                    <p class="text-rev-muted text-sm">The revolutionary press is a collective organiser. Your words can inspire action, expose exploitation, and sharpen our theory.</p>
+                </div>
+                <div class="bg-rev-page p-6 border border-rev-border">
+                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Current Calls</h4>
+                    <ul class="text-rev-muted text-sm space-y-2">
+                        <li>→ Naira devaluation & inflation</li>
+                        <li>→ ASUU & education crisis</li>
+                        <li>→ Niger Delta environmental crimes</li>
+                        <li>→ Women in the informal economy</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
+</main>
+</body>
+</html>

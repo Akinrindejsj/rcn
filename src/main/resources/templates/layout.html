@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title layout:title-pattern="$CONTENT_TITLE">Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="The Revolutionary Communists of Nigeria, Nigerian section of the Revolutionary Communist International." />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rev-red': '#C0182A',
+                        'rev-red-dark': '#8B0E1C',
+                        'rev-red-light': '#F9E8EA',
+                        'rev-black': '#111111',
+                        'rev-ink': '#1E1E1E',
+                        'rev-gold': '#A07800',
+                        'rev-gold-bg': '#FDF6E3',
+                        'rev-page': '#F7F4F0',
+                        'rev-surface': '#FFFFFF',
+                        'rev-border': '#E0DAD3',
+                        'rev-muted': '#7A726A',
+                        'rev-subtle': '#F0EBE4',
+                    },
+                    fontFamily: {
+                        display: ['Bebas Neue', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *,
+        *::before,
+        *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #F7F4F0; color: #1E1E1E; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes sweepIn { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes pulse-red { 0%,100% { box-shadow: 0 0 0 0 rgba(192,24,42,0.35); } 50% { box-shadow: 0 0 0 10px rgba(192,24,42,0); } }
+
+        .fade-up-1 { animation: fadeUp 0.75s ease forwards 0.2s; opacity: 0; }
+        .fade-up-2 { animation: fadeUp 0.75s ease forwards 0.45s; opacity: 0; }
+        .fade-up-3 { animation: fadeUp 0.75s ease forwards 0.7s; opacity: 0; }
+        .fade-up-4 { animation: fadeUp 0.75s ease forwards 0.95s; opacity: 0; }
+        .fade-in-late { animation: fadeIn 0.9s ease forwards 1.3s; opacity: 0; }
+        .sweep-in { animation: sweepIn 0.8s cubic-bezier(0.77,0,0.18,1) forwards; }
+
+        .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+        .cta-pulse { animation: pulse-red 2.5s infinite; }
+
+        .img-placeholder {
+            background: #E8E2DA; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+        }
+        .img-placeholder::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(192,24,42,0.06) 40%, rgba(192,24,42,0.06) 60%, transparent 60%);
+            background-size: 20px 20px;
+        }
+        .img-placeholder .ph-icon { width: 40px; height: 40px; opacity: 0.3; position: relative; z-index: 1; }
+        .img-placeholder .ph-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em;
+            color: #7A726A; position: relative; z-index: 1; text-align: center; padding: 0 12px;
+        }
+
+        .vid-placeholder {
+            background: #1a1a1a; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+        }
+        .vid-placeholder::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
+        }
+        .vid-play-btn {
+            width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: border-color 0.2s;
+        }
+        .vid-placeholder:hover .vid-play-btn { border-color: #C0182A; }
+        .vid-play-btn::after {
+            content: ''; border-left: 20px solid rgba(255,255,255,0.5); border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent; margin-left: 5px;
+        }
+        .vid-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.3); position: relative; z-index: 1; text-align: center;
+        }
+
+        .article-card { border-left: 3px solid transparent; transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease; }
+        .article-card:hover { border-left-color: #C0182A; transform: translateX(4px); background: #F0EBE4; }
+
+        .red-link { position: relative; text-decoration: none; color: #C0182A; }
+        .red-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #C0182A; transition: width 0.3s ease; }
+        .red-link:hover::after { width: 100%; }
+
+        .section-rule { border: none; height: 1px; background: linear-gradient(to right, #C0182A 0%, #E0DAD3 60%, transparent 100%); margin: 0; }
+
+        .dot-bg { background-image: radial-gradient(circle, #C0182A18 1px, transparent 1px); background-size: 24px 24px; }
+
+        .theory-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .theory-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+        nav { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        #mobile-menu { display: none; }
+        #mobile-menu.open { display: block; }
+
+        .marx-quote { border-left: 4px solid #C0182A; padding-left: 1.5rem; }
+
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+</head>
+<body class="bg-rev-page text-rev-ink">
+
+<!-- Top Banner -->
+<div class="bg-rev-red text-white py-2 px-4 text-center">
+    <p class="font-mono text-xs uppercase tracking-widest">
+        Nigerian Section of the <a href="https://marxist.com" target="_blank" class="underline hover:no-underline">Revolutionary Communist International</a>
+        &nbsp;·&nbsp; Workers of All Countries, Unite!
+    </p>
+</div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-50 bg-white/90 border-b border-rev-border">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
+        <a th:href="@{/}" href="/" class="flex items-center">
+            <img th:src="@{/images/logo-red.png}" src="/images/logo-red.png" alt="RCN Logo" class="h-10 w-auto">
+        </a>
+        <div class="hidden lg:flex items-center gap-8 font-mono text-[11px] uppercase tracking-widest text-rev-muted">
+            <a th:href="@{/news}" href="/news" class="hover:text-rev-red transition-colors">News</a>
+            <a th:href="@{/activity}" href="/activity" class="hover:text-rev-red transition-colors">Activity</a>
+            <a th:href="@{/podcast}" href="/podcast" class="hover:text-rev-red transition-colors">Podcast</a>
+            <a th:href="@{/write}" href="/write" class="hover:text-rev-red transition-colors">Write</a>
+            <a th:href="@{/theory}" href="/theory" class="hover:text-rev-red transition-colors">Theory</a>
+            <a th:href="@{/about}" href="/about" class="hover:text-rev-red transition-colors">About</a>
+            <a href="https://www.marxistbooks.com/" target="_blank" class="hover:text-rev-red transition-colors">Shop ↗</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a th:href="@{/join}" href="/join" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 transition-colors cta-pulse hidden sm:block">Join Us →</a>
+            <button id="hamburger" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Menu">
+                <span class="w-6 h-0.5 bg-rev-ink block"></span>
+                <span class="w-6 h-0.5 bg-rev-ink block"></span>
+                <span class="w-6 h-0.5 bg-rev-ink block"></span>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="lg:hidden border-t border-rev-border bg-white px-4 py-6 space-y-4">
+        <a th:href="@{/news}" href="/news" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">News</a>
+        <a th:href="@{/activity}" href="/activity" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Activity</a>
+        <a th:href="@{/podcast}" href="/podcast" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Podcast</a>
+        <a th:href="@{/write}" href="/write" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Write</a>
+        <a th:href="@{/theory}" href="/theory" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Theory</a>
+        <a th:href="@{/about}" href="/about" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">About</a>
+        <a href="https://shop.example.com" target="_blank" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Shop ↗</a>
+        <a th:href="@{/join}" href="/join" class="block bg-rev-red text-white font-mono text-sm uppercase tracking-widest px-5 py-3 text-center mt-2">Join Us →</a>
+    </div>
+</nav>
+
+<main layout:fragment="content"></main>
+<!-- FOOTER -->
+<footer class="bg-rev-ink text-white border-t-4 border-rev-red">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-14">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
+            <div class="max-w-xs">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="RCN Logo" class="h-14 w-auto mb-5">
+                <p class="text-white/40 text-xs leading-relaxed mb-6">Nigerian section of the Revolutionary Communist International. Fighting for a socialist Nigeria, for workers' power, for human liberation.</p>
+                <div class="img-placeholder h-24 w-full rounded" style="background:#2a2a2a;"><span class="ph-label text-white/30">RCN newspaper front page</span></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-14 gap-y-8 text-xs">
+                <div class="space-y-3">
+                    <p class="font-mono text-rev-red uppercase tracking-widest mb-4">The Party</p>
+                    <a th:href="@{/about}" href="/about" class="block text-white/50 hover:text-white transition-colors font-body">About the RCN</a>
+                    <a th:href="@{/join}" href="/join" class="block text-white/50 hover:text-white transition-colors font-body">Join Us</a>
+                    <a th:href="@{/donate}" href="/donate" class="block text-white/50 hover:text-white transition-colors font-body">Donate</a>
+                </div>
+                <div class="space-y-3">
+                    <p class="font-mono text-rev-red uppercase tracking-widest mb-4">Content</p>
+                    <a th:href="@{/news}" href="/news" class="block text-white/50 hover:text-white transition-colors font-body">News</a>
+                    <a th:href="@{/theory}" href="/theory" class="block text-white/50 hover:text-white transition-colors font-body">Theory</a>
+                    <a th:href="@{/podcast}" href="/podcast" class="block text-white/50 hover:text-white transition-colors font-body">Podcast</a>
+                    <a th:href="@{/activity}" href="/activity" class="block text-white/50 hover:text-white transition-colors font-body">Activity</a>
+                </div>
+                <div class="space-y-3">
+                    <p class="font-mono text-rev-red uppercase tracking-widest mb-4">International</p>
+                    <a href="https://marxist.com" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">marxist.com</a>
+                    <a href="#" class="block text-white/50 hover:text-white transition-colors font-body">All RCI Sections</a>
+                    <a href="https://shop.example.com" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">Shop ↗</a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-mono text-white/30 text-[11px]">© 2026 Revolutionary Communists of Nigeria · Nigerian Section of the RCI</p>
+            <div class="flex items-center gap-6">
+                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">X / Twitter</a>
+                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Instagram</a>
+                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">YouTube</a>
+                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Telegram</a>
+            </div>
+            <p class="font-mono text-white/30 text-[11px] italic">Workers of All Countries, Unite!</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (hamburger && mobileMenu) { hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open')); }
+    if (mobileMenu) { mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open'))); }
+</script>
+</body>
+</html>

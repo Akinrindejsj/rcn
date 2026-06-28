@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>News & Analysis — Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="Marxist analysis of Nigeria and the world. All articles from the Revolutionary Communists of Nigeria."/>
+</head>
+<body>
+<main layout:fragment="content">
+<!-- Hero -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">The Revolutionary Press</span></div>
+            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase">News & Analysis</h1>
+            <p class="text-rev-muted text-lg mt-4 max-w-xl">Marxist analysis of Nigeria and the world. All articles from the Revolutionary Communists of Nigeria.</p>
+            <div class="mt-10 relative max-w-2xl">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-rev-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" placeholder="Search articles by title, topic, or author..." class="w-full pl-12 pr-4 py-4 bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm outline-none transition-colors">
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured article (same pattern as homepage) -->
+    <section class="bg-white border-t border-rev-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-0 border border-rev-border mt-0">
+                <div class="lg:col-span-3 flex flex-col border-b lg:border-b-0 lg:border-r border-rev-border">
+                    <div class="img-placeholder h-64 w-full border-b border-rev-border"><span class="ph-label">Featured article hero image</span></div>
+                    <div class="p-8 md:p-10 flex flex-col flex-1 justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-6"><span class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1">Featured</span><span class="font-mono text-rev-muted text-[11px]">Economy · June 2026</span></div>
+                            <h2 class="font-display text-4xl md:text-5xl text-rev-ink uppercase leading-tight mb-5">The Tinubu Subsidy Removal: Who Really Paid?</h2>
+                            <p class="text-rev-muted text-sm leading-relaxed mb-6">When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe — transport costs tripled overnight, food prices surged, and millions already living on the edge were pushed off it. But who was the subsidy really for? Marxist economics gives us the answer.</p>
+                        </div>
+                        <a th:href="@{/article}" href="/article" class="red-link font-mono text-[12px] uppercase tracking-widest inline-flex items-center gap-2">Read Full Analysis →</a>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 flex flex-col divide-y divide-rev-border">
+                    <div class="p-8 bg-rev-subtle">
+                        <blockquote class="marx-quote"><p class="font-serif italic text-rev-gold text-lg leading-snug">"The executive of the modern state is but a committee for managing the common affairs of the whole bourgeoisie."</p><footer class="font-mono text-[10px] text-rev-muted mt-3 uppercase tracking-widest">— Marx &amp; Engels, The Communist Manifesto</footer></blockquote>
+                    </div>
+                    <a th:href="@{/article}" href="/article" class="article-card block p-6 group"><div class="img-placeholder h-28 w-full mb-4 rounded"><span class="ph-label">Article thumbnail</span></div><span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Labour · May 2026</span><h4 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-1 leading-snug text-sm">NLC's Betrayal: Why the Trade Union Bureaucracy Cannot Lead the Working Class</h4></a>
+                    <a th:href="@{/article}" href="/article" class="article-card block p-6 group"><div class="img-placeholder h-28 w-full mb-4 rounded"><span class="ph-label">Article thumbnail</span></div><span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">History · March 2026</span><h4 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-1 leading-snug text-sm">From #EndSARS to Revolution: What the 2020 Uprising Taught Us</h4></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter bar -->
+    <div class="bg-white border-b border-rev-border py-6">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap gap-2">
+                <button class="bg-rev-red text-white font-mono text-xs uppercase tracking-widest px-4 py-2">All</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Economy</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Labour</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Oil & Gas</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Youth</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Gender</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">History</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red hover:text-rev-red">Imperialism</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-mono text-rev-muted text-[10px]">Showing 47 articles</span>
+                <select class="bg-rev-subtle border border-rev-border text-rev-ink text-xs px-3 py-2 outline-none"><option>Newest First</option><option>Oldest First</option></select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article grid -->
+    <section class="py-16 bg-rev-page">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 9 article cards -->
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Oil & Gas article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Oil &amp; Gas</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Nigeria's Oil Belongs to Nigerians</h3><p class="text-rev-muted text-xs leading-relaxed">Shell, TotalEnergies, Chevron extract billions while the Delta burns.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Youth article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Youth</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Japa or Revolt? Nigerian Youth and the Choice Before Our Generation</h3><p class="text-rev-muted text-xs leading-relaxed">Millions are fleeing Nigeria; who will stay and fight?</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Gender article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Gender</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Women's Oppression and Class Struggle</h3><p class="text-rev-muted text-xs leading-relaxed">Why feminism must be socialist to truly liberate Nigerian women.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Economy article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Economy</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">The Naira Devaluation: Who Profits from a Falling Currency?</h3><p class="text-rev-muted text-xs leading-relaxed">Importers of luxury goods benefit while workers pay more for food.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Labour article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Labour</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">NLC After the General Strike: What Next for Nigerian Workers?</h3><p class="text-rev-muted text-xs leading-relaxed">The union bureaucracy once again betrayed the rank and file.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Imperialism article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Imperialism</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Francafrique in West Africa: How French Imperialism Still Dominates</h3><p class="text-rev-muted text-xs leading-relaxed">The CFA franc and military bases are instruments of control.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">History article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">History</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">The 1945 General Strike: Nigeria's Forgotten Workers' Uprising</h3><p class="text-rev-muted text-xs leading-relaxed">Lessons from the biggest strike in Nigerian history.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">State article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">State &amp; Politics</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Police Brutality in Nigeria Is Not a Glitch — It's the Function</h3><p class="text-rev-muted text-xs leading-relaxed">The Nigerian police exist to protect property, not people.</p></div>
+                </a>
+                <a th:href="@{/article}" href="/article" class="article-card block group bg-white border border-rev-border">
+                    <div class="img-placeholder h-44 w-full"><span class="ph-label">Theory article</span></div>
+                    <div class="p-6"><span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Theory</span><h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">What Is a Workers' Government? A Marxist Answer</h3><p class="text-rev-muted text-xs leading-relaxed">The state must be smashed, not merely occupied.</p></div>
+                </a>
+            </div>
+            <!-- Pagination -->
+            <div class="flex justify-center items-center gap-4 mt-14">
+                <span class="font-mono text-rev-muted text-xs">← Previous</span>
+                <span class="font-mono text-rev-red text-xs font-bold">1</span>
+                <span class="font-mono text-rev-muted text-xs">2</span>
+                <span class="font-mono text-rev-muted text-xs">3</span>
+                <span class="font-mono text-rev-muted text-xs">4</span>
+                <span class="font-mono text-rev-ink text-xs">Next →</span>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

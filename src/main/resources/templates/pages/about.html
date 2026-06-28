@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>About the RCN — Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="Who we are, our programme, our history. The Nigerian section of the Revolutionary Communist International."/>
+</head>
+<body>
+<main layout:fragment="content">
+<section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="img-placeholder h-64 w-full rounded mb-10"><span class="ph-label">RCN crowd/rally photo</span></div>
+            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase">Who We Are</h1>
+            <p class="text-rev-muted text-lg mt-4 max-w-2xl">The Revolutionary Communists of Nigeria — Nigerian section of the Revolutionary Communist International. We fight for a socialist Nigeria, for workers' power, for human liberation.</p>
+        </div>
+    </section>
+
+    <section class="py-20 bg-rev-page border-t border-rev-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <h2 class="font-display text-4xl text-rev-ink uppercase mb-10">Our Programme</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">01</span><h3 class="font-bold mt-2">For a Workers' Government</h3><p class="text-xs text-rev-muted mt-2">The state must serve the majority who produce all wealth.</p></div>
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">02</span><h3 class="font-bold mt-2">Nationalise Oil</h3><p class="text-xs text-rev-muted mt-2">Nigeria's oil belongs to Nigerians, not Shell or Chevron.</p></div>
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">03</span><h3 class="font-bold mt-2">Land to the Peasants</h3><p class="text-xs text-rev-muted mt-2">End land grabbing; give land to those who work it.</p></div>
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">04</span><h3 class="font-bold mt-2">End Police Brutality</h3><p class="text-xs text-rev-muted mt-2">Disband SARS; build community-controlled safety.</p></div>
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">05</span><h3 class="font-bold mt-2">Free Education & Healthcare</h3><p class="text-xs text-rev-muted mt-2">Human needs before private profit.</p></div>
+                <div class="border p-6 bg-white"><span class="font-display text-3xl text-rev-red">06</span><h3 class="font-bold mt-2">Socialist Federation of Africa</h3><p class="text-xs text-rev-muted mt-2">Unity against imperialism and capitalism.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white border-t border-rev-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <h2 class="font-display text-4xl text-rev-ink uppercase mb-10">FAQ</h2>
+            <div class="space-y-2 max-w-3xl">
+                <details class="border p-4 bg-rev-page"><summary class="font-bold cursor-pointer">Is the RCN a political party?</summary><p class="text-sm text-rev-muted mt-2">We are building a revolutionary party. We do not participate in bourgeois elections that serve the ruling class.</p></details>
+                <details class="border p-4 bg-white"><summary class="font-bold cursor-pointer">Can I join if I'm religious?</summary><p class="text-sm text-rev-muted mt-2">Yes. We are a political organisation, not a religious one. Many comrades are people of faith.</p></details>
+                <details class="border p-4 bg-rev-page"><summary class="font-bold cursor-pointer">Is it dangerous?</summary><p class="text-sm text-rev-muted mt-2">The Nigerian state represses dissent. We take security seriously. But the greatest danger is doing nothing while the country burns.</p></details>
+                <details class="border p-4 bg-white"><summary class="font-bold cursor-pointer">How is the RCN funded?</summary><p class="text-sm text-rev-muted mt-2">Entirely by workers' contributions. We take no corporate, NGO, or government money.</p></details>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-rev-red py-12 text-center"><p class="text-white font-mono text-sm uppercase tracking-widest">Ready? <a th:href="@{/join}" href="/join" class="underline hover:no-underline">Join the RCN →</a></p></div>
+</main>
+</body>
+</html>
