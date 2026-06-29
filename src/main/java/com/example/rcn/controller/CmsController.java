@@ -25,11 +25,16 @@ import com.example.rcn.service.PodcastService;
 import com.example.rcn.service.SiteSettingsService;
 import com.example.rcn.service.TeamMemberService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -511,6 +516,7 @@ public class CmsController {
     @PostMapping("/about")
     public String saveAbout(@ModelAttribute AboutPageContentDto dto,
                             @RequestParam(value = "introImage", required = false) MultipartFile introImage,
+                            @RequestParam(value = "imageRemoved", required = false, defaultValue = "false") boolean imageRemoved,
                             RedirectAttributes redirectAttributes) {
         try {
             AboutPageContent entity = aboutPageContentService.getSingleton();
@@ -528,6 +534,8 @@ public class CmsController {
             }
             if (introImage != null && !introImage.isEmpty()) {
                 entity.setIntroImageUrl(cloudinaryService.uploadImage(introImage, "rcn/about"));
+            } else if (imageRemoved) {
+                entity.setIntroImageUrl("");
             }
             aboutPageContentService.save(entity);
             redirectAttributes.addFlashAttribute("successMessage", "About page saved.");
@@ -555,9 +563,10 @@ public class CmsController {
     }
 
     @PostMapping("/about/programme-points/new")
-    public String createProgrammePoint(@ModelAttribute("point") TeamMemberDto dto,
+    public Object createProgrammePoint(@ModelAttribute("point") TeamMemberDto dto,
                                        @RequestParam(value = "image", required = false) MultipartFile image,
-                                       RedirectAttributes redirectAttributes) {
+                                       RedirectAttributes redirectAttributes,
+                                       HttpServletRequest request) {
         try {
             validateTeamMember(dto);
             TeamMember point = new TeamMember();
@@ -566,15 +575,28 @@ public class CmsController {
                 point.setImageUrl(cloudinaryService.uploadImage(image, "rcn/about"));
             }
             teamMemberService.create(point);
+            if (isXhr(request)) {
+                return jsonOk(point);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Programme point added.");
             return "redirect:/admin/cms/about";
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/admin/cms/about/programme-points/new";
         } catch (CloudinaryUploadException e) {
+            if (isXhr(request)) {
+                return jsonError("Image upload failed: " + e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", "Image upload failed: " + e.getMessage());
             return "redirect:/admin/cms/about/programme-points/new";
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. "
+                        + "If the problem continues, contact your site administrator.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -591,10 +613,11 @@ public class CmsController {
     }
 
     @PostMapping("/about/programme-points/{id}/edit")
-    public String updateProgrammePoint(@PathVariable("id") Long id,
+    public Object updateProgrammePoint(@PathVariable("id") Long id,
                                        @ModelAttribute("point") TeamMemberDto dto,
                                        @RequestParam(value = "image", required = false) MultipartFile image,
-                                       RedirectAttributes redirectAttributes) {
+                                       RedirectAttributes redirectAttributes,
+                                       HttpServletRequest request) {
         try {
             validateTeamMember(dto);
             TeamMember point = teamMemberService.findById(id)
@@ -604,15 +627,28 @@ public class CmsController {
                 point.setImageUrl(cloudinaryService.uploadImage(image, "rcn/about"));
             }
             teamMemberService.update(point);
+            if (isXhr(request)) {
+                return jsonOk(point);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Programme point updated.");
             return "redirect:/admin/cms/about";
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/admin/cms/about/programme-points/" + id + "/edit";
         } catch (CloudinaryUploadException e) {
+            if (isXhr(request)) {
+                return jsonError("Image upload failed: " + e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", "Image upload failed: " + e.getMessage());
             return "redirect:/admin/cms/about/programme-points/" + id + "/edit";
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. "
+                        + "If the problem continues, contact your site administrator.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -621,13 +657,26 @@ public class CmsController {
     }
 
     @PostMapping("/about/programme-points/{id}/delete")
-    public String deleteProgrammePoint(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public Object deleteProgrammePoint(@PathVariable("id") Long id,
+                                       RedirectAttributes redirectAttributes,
+                                       HttpServletRequest request) {
         try {
             teamMemberService.delete(id);
+            if (isXhr(request)) {
+                Map<String, Object> body = new LinkedHashMap<>();
+                body.put("success", true);
+                return ResponseEntity.ok(body);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Programme point deleted.");
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -644,7 +693,9 @@ public class CmsController {
     }
 
     @PostMapping("/about/faqs/new")
-    public String createFaq(@ModelAttribute("faq") FaqDto dto, RedirectAttributes redirectAttributes) {
+    public Object createFaq(@ModelAttribute("faq") FaqDto dto,
+                            RedirectAttributes redirectAttributes,
+                            HttpServletRequest request) {
         try {
             validateFaq(dto);
             Faq faq = new Faq();
@@ -652,12 +703,22 @@ public class CmsController {
             faq.setAnswer(dto.getAnswer().trim());
             faq.setSortOrder(parseIntOrNull(dto.getSortOrder()));
             faqService.create(faq);
+            if (isXhr(request)) {
+                return jsonOk(faq);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Question added.");
             return "redirect:/admin/cms/about";
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/admin/cms/about/faqs/new";
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. "
+                        + "If the problem continues, contact your site administrator.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -674,9 +735,10 @@ public class CmsController {
     }
 
     @PostMapping("/about/faqs/{id}/edit")
-    public String updateFaq(@PathVariable("id") Long id,
+    public Object updateFaq(@PathVariable("id") Long id,
                             @ModelAttribute("faq") FaqDto dto,
-                            RedirectAttributes redirectAttributes) {
+                            RedirectAttributes redirectAttributes,
+                            HttpServletRequest request) {
         try {
             validateFaq(dto);
             Faq faq = faqService.findById(id)
@@ -685,12 +747,22 @@ public class CmsController {
             faq.setAnswer(dto.getAnswer().trim());
             faq.setSortOrder(parseIntOrNull(dto.getSortOrder()));
             faqService.update(faq);
+            if (isXhr(request)) {
+                return jsonOk(faq);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Question updated.");
             return "redirect:/admin/cms/about";
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/admin/cms/about/faqs/" + id + "/edit";
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. "
+                        + "If the problem continues, contact your site administrator.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -699,13 +771,26 @@ public class CmsController {
     }
 
     @PostMapping("/about/faqs/{id}/delete")
-    public String deleteFaq(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public Object deleteFaq(@PathVariable("id") Long id,
+                            RedirectAttributes redirectAttributes,
+                            HttpServletRequest request) {
         try {
             faqService.delete(id);
+            if (isXhr(request)) {
+                Map<String, Object> body = new LinkedHashMap<>();
+                body.put("success", true);
+                return ResponseEntity.ok(body);
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Question deleted.");
         } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again.");
+            }
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -991,6 +1076,40 @@ public class CmsController {
                             + "If the problem continues, contact your site administrator.");
         }
         return "redirect:/admin/cms/media";
+    }
+
+    // ---------------------------------------------------------------------
+    // XHR helpers
+    // ---------------------------------------------------------------------
+
+    private boolean isXhr(HttpServletRequest request) {
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    }
+
+    private ResponseEntity<Map<String, Object>> jsonOk(Object entity) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        if (entity instanceof TeamMember point) {
+            body.put("id", point.getId());
+            body.put("orderNumber", point.getOrderNumber());
+            body.put("pointTitle", point.getPointTitle());
+            body.put("pointDescription", point.getPointDescription());
+            body.put("sortOrder", point.getSortOrder());
+            body.put("imageUrl", point.getImageUrl());
+        } else if (entity instanceof Faq faq) {
+            body.put("id", faq.getId());
+            body.put("question", faq.getQuestion());
+            body.put("answer", faq.getAnswer());
+            body.put("sortOrder", faq.getSortOrder());
+        }
+        return ResponseEntity.ok(body);
+    }
+
+    private ResponseEntity<Map<String, Object>> jsonError(String message) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", false);
+        body.put("message", message);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
     }
 
     // ---------------------------------------------------------------------

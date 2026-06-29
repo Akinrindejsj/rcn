@@ -1,10 +1,504 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Page Editor</title>
+    <style>
+        /* ── Upload Zone (unchanged) ── */
+        .upload-zone {
+            position: relative;
+            border: 2px dashed var(--rev-border, #d0d0d0);
+            border-radius: 1rem;
+            background: var(--rev-subtle, #f8f6f2);
+            transition: border-color 0.25s ease, background 0.25s ease, transform 0.15s ease;
+            cursor: pointer;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .upload-zone:hover {
+            border-color: var(--rev-red, #b31b1b);
+            background: var(--rev-surface, #fffdf9);
+        }
+        .upload-zone.dragover {
+            border-color: var(--rev-red, #b31b1b);
+            background: rgba(179, 27, 27, 0.06);
+            transform: scale(1.01);
+        }
+        .upload-zone.has-image {
+            padding: 0;
+            border-color: var(--rev-border, #d0d0d0);
+            background: var(--rev-surface, #fffdf9);
+            min-height: auto;
+        }
+        .upload-zone.has-image:hover {
+            border-color: var(--rev-red, #b31b1b);
+        }
+
+        .upload-zone .upload-icon {
+            font-size: 3rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+            color: var(--rev-ink, #1a1a1a);
+        }
+        .upload-zone .upload-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--rev-ink, #1a1a1a);
+        }
+        .upload-zone .upload-hint {
+            font-size: 0.875rem;
+            color: var(--rev-muted, #6b6b6b);
+            margin-top: 0.25rem;
+        }
+        .upload-zone .upload-formats {
+            font-size: 0.75rem;
+            color: var(--rev-muted, #6b6b6b);
+            margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .upload-preview {
+            position: relative;
+            width: 100%;
+            max-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--rev-subtle, #f8f6f2);
+        }
+        .upload-preview img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .upload-preview .overlay-actions {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .upload-preview:hover .overlay-actions {
+            opacity: 1;
+        }
+        .upload-preview .overlay-actions button {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 9999px;
+            color: #fff;
+            padding: 0.45rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+        .upload-preview .overlay-actions button:hover {
+            background: rgba(179, 27, 27, 0.85);
+        }
+        .upload-preview .overlay-actions button.remove-btn:hover {
+            background: rgba(179, 27, 27, 0.9);
+        }
+
+        .file-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--rev-surface, #fffdf9);
+            border: 1px solid var(--rev-border, #d0d0d0);
+            border-radius: 9999px;
+            padding: 0.3rem 1rem 0.3rem 1.2rem;
+            font-size: 0.8rem;
+            color: var(--rev-ink, #1a1a1a);
+            margin-top: 0.75rem;
+            max-width: 100%;
+        }
+        .file-badge .file-size {
+            color: var(--rev-muted, #6b6b6b);
+            font-size: 0.7rem;
+        }
+
+        .img-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--rev-subtle, #f8f6f2);
+            border: 1px dashed var(--rev-border, #d0d0d0);
+            border-radius: 0.75rem;
+            color: var(--rev-muted, #6b6b6b);
+            font-size: 0.9rem;
+            font-weight: 400;
+            min-height: 160px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .upload-zone {
+                padding: 1.5rem 1rem;
+                min-height: 160px;
+            }
+            .upload-zone .upload-icon {
+                font-size: 2.25rem;
+            }
+            .upload-preview .overlay-actions {
+                opacity: 1;
+                bottom: 0.75rem;
+                right: 0.75rem;
+            }
+            .upload-preview .overlay-actions button {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-slide-up {
+            animation: fadeSlideUp 0.25s ease forwards;
+        }
+
+        /* ── Modal Styles ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-box {
+            background: var(--rev-surface, #fffdf9);
+            border: 1px solid var(--rev-border, #d0d0d0);
+            border-radius: 1.25rem;
+            max-width: 560px;
+            width: 100%;
+            padding: 2rem 2rem 1.75rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.25s ease;
+            position: relative;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--rev-muted, #6b6b6b);
+            cursor: pointer;
+            transition: color 0.15s;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: var(--rev-ink, #1a1a1a);
+        }
+
+        .modal-title {
+            font-family: var(--font-display, 'Arial Black', sans-serif);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--rev-ink, #1a1a1a);
+            margin-bottom: 1.5rem;
+            padding-right: 2rem;
+        }
+
+        .modal-field {
+            margin-bottom: 1.25rem;
+        }
+        .modal-field label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--rev-muted, #6b6b6b);
+            margin-bottom: 0.3rem;
+        }
+        .modal-field input,
+        .modal-field textarea {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid var(--rev-border, #d0d0d0);
+            background: var(--rev-subtle, #f8f6f2);
+            padding: 0.7rem 1rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .modal-field input:focus,
+        .modal-field textarea:focus {
+            border-color: var(--rev-red, #b31b1b);
+            background: var(--rev-surface, #fffdf9);
+        }
+        .modal-field textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.75rem;
+        }
+        .modal-actions button {
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-actions .btn-cancel {
+            background: transparent;
+            border-color: var(--rev-border, #d0d0d0);
+            color: var(--rev-muted, #6b6b6b);
+        }
+        .modal-actions .btn-cancel:hover {
+            background: var(--rev-subtle, #f8f6f2);
+        }
+        .modal-actions .btn-submit {
+            background: var(--rev-red, #b31b1b);
+            color: #fff;
+            border-color: var(--rev-red, #b31b1b);
+        }
+        .modal-actions .btn-submit:hover {
+            background: #8f1515;
+            border-color: #8f1515;
+        }
+
+        .modal-error {
+            color: #b31b1b;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .modal-error.visible {
+            display: block;
+        }
+
+        /* ── Row styling to match hardcoded version ── */
+        .point-row, .faq-row {
+            display: grid;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .point-row .point-number,
+        .point-row .point-title,
+        .point-row .point-desc,
+        .faq-row .faq-question,
+        .faq-row .faq-answer {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--rev-border, #d0d0d0);
+            border-radius: 0.375rem;
+            background: var(--rev-subtle, #f8f6f2);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--rev-ink, #1a1a1a);
+            width: 100%;
+            min-height: 38px; /* matches input height */
+        }
+        .point-row .point-number {
+            text-align: center;
+            font-family: monospace;
+            background: var(--rev-subtle, #f8f6f2);
+        }
+        .point-row .point-title {
+            font-weight: 500;
+        }
+        .point-row .point-desc {
+            font-size: 0.8rem;
+            color: var(--rev-muted, #6b6b6b);
+        }
+        .faq-row .faq-question {
+            font-weight: 500;
+        }
+        .faq-row .faq-answer {
+            font-size: 0.8rem;
+            color: var(--rev-muted, #6b6b6b);
+        }
+
+        .row-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            align-items: center;
+            justify-content: center;
+        }
+        .row-actions a,
+        .row-actions button {
+            font-size: 0.7rem;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.15rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.15s;
+        }
+        .row-actions a:hover,
+        .row-actions button:hover {
+            background: var(--rev-subtle, #f8f6f2);
+        }
+
+        /* override for the outline-btn to match hardcoded look */
+        .outline-btn {
+            border: 1px solid var(--rev-border, #d0d0d0);
+            background: transparent;
+            border-radius: 9999px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--rev-ink, #1a1a1a);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .outline-btn:hover {
+            background: var(--rev-subtle, #f8f6f2);
+            border-color: var(--rev-ink, #1a1a1a);
+        }
+        .red-btn {
+            background: var(--rev-red, #b31b1b);
+            color: #fff;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .red-btn:hover {
+            background: #8f1515;
+        }
+        .red-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .mono-label {
+            font-family: monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--rev-muted, #6b6b6b);
+        }
+        .font-display {
+            font-family: var(--font-display, 'Arial Black', sans-serif);
+            letter-spacing: 0.02em;
+        }
+        .text-rev-ink { color: var(--rev-ink, #1a1a1a); }
+        .text-rev-muted { color: var(--rev-muted, #6b6b6b); }
+        .bg-rev-surface { background: var(--rev-surface, #fffdf9); }
+        .bg-rev-subtle { background: var(--rev-subtle, #f8f6f2); }
+        .border-rev-border { border-color: var(--rev-border, #d0d0d0); }
+        .border-rev-red { border-color: var(--rev-red, #b31b1b); }
+        .hover\\:border-rev-red:hover { border-color: var(--rev-red, #b31b1b); }
+        .hover\\:bg-rev-surface:hover { background: var(--rev-surface, #fffdf9); }
+        .focus\\:border-rev-red:focus { border-color: var(--rev-red, #b31b1b); }
+        .focus\\:bg-rev-surface:focus { background: var(--rev-surface, #fffdf9); }
+        .transition { transition: all 0.2s; }
+        .no-underline { text-decoration: none; }
+        .cursor-not-allowed { cursor: not-allowed; }
+        .italic { font-style: italic; }
+        .inline { display: inline; }
+    </style>
+</head>
 <body>
+
 <main layout:fragment="content" th:with="pageTitle='About Page'">
     <div class="mx-auto max-w-6xl space-y-8">
 
-        <!-- Page Header -->
+        <!-- ─── Flash banners ─── -->
+        <div th:if="${successMessage}"
+             id="successBanner"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <div class="flex-1">
+                <p class="font-medium text-sm" th:text="${successMessage}">Saved.</p>
+            </div>
+            <button onclick="document.getElementById('successBanner').remove()"
+                    class="text-white/80 hover:text-white transition-colors flex-shrink-0">
+                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
+            </button>
+        </div>
+        <script th:if="${successMessage}">
+            setTimeout(function () {
+                var el = document.getElementById('successBanner');
+                if (el) el.remove();
+            }, 4000);
+        </script>
+
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <div class="flex-1">
+                <p class="font-medium text-sm" th:text="${errorMessage}">Something went wrong.</p>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
+                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
+            </button>
+        </div>
+
+        <!-- ─── Page Header ─── -->
         <div class="flex items-end justify-between">
             <div>
                 <h1 class="font-display text-3xl uppercase text-rev-ink">About Page</h1>
@@ -12,134 +506,581 @@
             </div>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- ─── Main form ─── -->
+        <form id="aboutForm" method="post" th:action="@{/admin/cms/about}"
+              enctype="multipart/form-data" th:object="${about}">
 
-        <!-- Intro -->
-        <form th:action="@{/admin/cms/about}" method="post" enctype="multipart/form-data" th:object="${about}">
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <!-- ─── Intro ─── -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5 mb-7">
+
                 <h3 class="font-display text-lg uppercase text-rev-ink">Introduction</h3>
+
                 <div>
                     <label class="mono-label block mb-2">Page heading</label>
-                    <input type="text" th:field="*{heading}" placeholder="Who We Are"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                    <input type="text" th:field="*{heading}"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface transition">
                 </div>
+
                 <div>
                     <label class="mono-label block mb-2">Intro paragraph</label>
-                    <textarea rows="3" th:field="*{introText}" placeholder="Who we are…"
-                              class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                    <textarea rows="3" th:field="*{introText}"
+                              class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface transition"></textarea>
                 </div>
+
+                <!-- UPLOAD SECTION (enhanced) -->
                 <div>
                     <label class="mono-label block mb-2">Top-of-page image</label>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${about.introImageUrl != null and !about.introImageUrl.isBlank()}"
-                             th:src="${about.introImageUrl}" alt="Intro image"
-                             class="w-full h-48 object-cover"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder h-48 w-full"
-                             th:classappend="${about.introImageUrl != null and !about.introImageUrl.isBlank() ? ' hidden' : ''}">
-                            <span class="ph-label">Upload a photo — 1200×400 px, max 5 MB</span>
+                    <div class="upload-zone" id="uploadZone"
+                         th:classappend="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? 'has-image' : ''">
+                        <input type="file" name="introImage" id="fileInput" accept="image/png, image/jpeg, image/gif, image/webp, image/svg+xml" />
+                        <div id="uploadPlaceholder" class="upload-placeholder"
+                             th:style="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? 'display:none' : ''">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-title">Drop an image here</div>
+                            <div class="upload-hint">or click to browse</div>
+                            <div class="upload-formats">PNG · JPG · GIF · WEBP · SVG · up to 5 MB</div>
+                        </div>
+                        <div id="uploadPreview" class="upload-preview"
+                             th:style="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? '' : 'display:none'">
+                            <img id="previewImage"
+                                 th:src="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? ${about.introImageUrl} : '#'"
+                                 alt="Page image preview" />
+                            <div class="overlay-actions">
+                                <button type="button" class="replace-btn" id="replaceBtn">⟳ Replace</button>
+                                <button type="button" class="remove-btn" id="removeBtn">✕ Remove</button>
+                            </div>
+                        </div>
+                        <div id="fileBadge" class="file-badge" style="display:none;">
+                            <span id="fileName">image.jpg</span>
+                            <span class="file-size" id="fileSize">—</span>
                         </div>
                     </div>
-                    <input type="file" name="introImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-3 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
                 </div>
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+                <!-- Join banner -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="mono-label block mb-2">Join banner text</label>
-                        <input type="text" th:field="*{joinBannerText}" placeholder="Ready? Join the RCN →"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <input type="text" th:field="*{joinBannerText}"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface transition">
                     </div>
                     <div>
-                        <label class="mono-label block mb-2">Join banner link</label>
-                        <input type="text" th:field="*{joinBannerUrl}" placeholder="/join"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <label class="mono-label block mb-2">Join banner URL</label>
+                        <input type="text" th:field="*{joinBannerUrl}"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface transition">
                     </div>
                 </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="red-btn">Save About Page</button>
+
+            </div>
+
+            <!-- ─── Programme Points ─── -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Programme Points</h3>
+                    <button type="button" class="outline-btn" id="addPointBtn">+ Add point</button>
+                </div>
+                <div class="space-y-3" id="pointsContainer">
+                    <!-- dynamic rows will be injected here by Thymeleaf -->
+                    <div th:each="point, iter : ${programmePoints}"
+                         class="grid grid-cols-12 gap-3 items-center point-row fade-slide-up"
+                         th:data-id="${point.id}">
+                        <div class="col-span-1">
+                            <span class="point-number text-center" th:text="${#numbers.formatInteger(iter.count, 2)}">01</span>
+                        </div>
+                        <div class="col-span-4">
+                            <span class="point-title" th:text="${point.pointTitle}">Title</span>
+                        </div>
+                        <div class="col-span-6">
+                            <span class="point-desc" th:text="${point.pointDescription}">Description</span>
+                        </div>
+                        <div class="col-span-1 row-actions">
+                            <a class="text-rev-muted hover:text-rev-red text-xs"
+                               th:href="@{|/admin/cms/about/programme-points/${point.id}/edit|}">Edit</a>
+                            <form method="post" th:action="@{|/admin/cms/about/programme-points/${point.id}/delete|}"
+                                  class="inline" onsubmit="return confirm('Remove this programme point?');">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(programmePoints)}" class="text-sm text-rev-muted italic">No programme points yet. Click "+ Add point" to add one.</p>
                 </div>
             </div>
+
+            <!-- ─── FAQ ─── -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Frequently Asked Questions</h3>
+                    <button type="button" class="outline-btn" id="addFaqBtn">+ Add question</button>
+                </div>
+                <div class="space-y-3" id="faqContainer">
+                    <div th:each="faq, iter : ${faqs}"
+                         class="grid grid-cols-12 gap-3 items-center faq-row fade-slide-up"
+                         th:data-id="${faq.id}">
+                        <div class="col-span-5">
+                            <span class="faq-question" th:text="${faq.question}">Question</span>
+                        </div>
+                        <div class="col-span-6">
+                            <span class="faq-answer" th:text="${faq.answer}">Answer</span>
+                        </div>
+                        <div class="col-span-1 row-actions">
+                            <a class="text-rev-muted hover:text-rev-red text-xs"
+                               th:href="@{|/admin/cms/about/faqs/${faq.id}/edit|}">Edit</a>
+                            <form method="post" th:action="@{|/admin/cms/about/faqs/${faq.id}/delete|}"
+                                  class="inline" onsubmit="return confirm('Remove this FAQ?');">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(faqs)}" class="text-sm text-rev-muted italic">No FAQs yet. Click "+ Add question" to add one.</p>
+                </div>
+            </div>
+
+            <!-- ─── Save ─── -->
+            <div class="flex justify-end gap-3">
+                <a th:href="@{/admin/cms/about}" class="outline-btn no-underline">Cancel</a>
+                <button type="submit" class="red-btn" id="saveBtn">Save About Page</button>
+            </div>
+
         </form>
 
-        <!-- Programme points -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-            <div class="flex items-center justify-between">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Programme Points</h3>
-                <a th:href="@{/admin/cms/about/programme-points/new}" class="outline-btn no-underline">+ Add point</a>
-            </div>
-
-            <div th:if="${#lists.isEmpty(programmePoints)}" class="text-sm text-rev-muted py-4">
-                No programme points yet. Add the first one.
-            </div>
-
-            <div th:if="${!#lists.isEmpty(programmePoints)}" class="space-y-3">
-                <div th:each="p : ${programmePoints}" class="grid grid-cols-12 gap-3 items-end border-b border-rev-border pb-3">
-                    <div class="col-span-1">
-                        <label class="mono-label block mb-2">No.</label>
-                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center" th:text="${p.orderNumber} ?: '—'">01</span>
-                    </div>
-                    <div class="col-span-4">
-                        <label class="mono-label block mb-2">Title</label>
-                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${p.pointTitle}">Title</span>
-                    </div>
-                    <div class="col-span-5">
-                        <label class="mono-label block mb-2">Description</label>
-                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${p.pointDescription}">Description</span>
-                    </div>
-                    <div class="col-span-2 flex gap-2 justify-end">
-                        <a th:href="@{/admin/cms/about/programme-points/{id}/edit(id=${p.id})}" class="text-rev-muted hover:text-red-700 text-xs">Edit</a>
-                        <form method="post" th:action="@{/admin/cms/about/programme-points/{id}/delete(id=${p.id})}" class="inline"
-                              onsubmit="return confirm('Remove this programme point?')">
-                            <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FAQ -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-            <div class="flex items-center justify-between">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Frequently Asked Questions</h3>
-                <a th:href="@{/admin/cms/about/faqs/new}" class="outline-btn no-underline">+ Add question</a>
-            </div>
-
-            <div th:if="${#lists.isEmpty(faqs)}" class="text-sm text-rev-muted py-4">
-                No questions yet. Add the first one.
-            </div>
-
-            <div th:if="${!#lists.isEmpty(faqs)}" class="space-y-3">
-                <div th:each="f : ${faqs}" class="grid grid-cols-12 gap-3 items-end border-b border-rev-border pb-3">
-                    <div class="col-span-5">
-                        <label class="mono-label block mb-2">Question</label>
-                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${f.question}">Question</span>
-                    </div>
-                    <div class="col-span-5">
-                        <label class="mono-label block mb-2">Answer</label>
-                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${f.answer}">Answer</span>
-                    </div>
-                    <div class="col-span-2 flex gap-2 justify-end">
-                        <a th:href="@{/admin/cms/about/faqs/{id}/edit(id=${f.id})}" class="text-rev-muted hover:text-red-700 text-xs">Edit</a>
-                        <form method="post" th:action="@{/admin/cms/about/faqs/{id}/delete(id=${f.id})}" class="inline"
-                              onsubmit="return confirm('Remove this question?')">
-                            <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+
+    <!-- ─── MODALS ─── -->
+    <!-- Add Point Modal -->
+    <div class="modal-overlay" id="addPointModal">
+        <div class="modal-box">
+            <button type="button" class="modal-close" data-modal-close>&times;</button>
+            <h2 class="modal-title">Add Programme Point</h2>
+            <form id="pointForm" autocomplete="off">
+                <div class="modal-field">
+                    <label for="pointNumber">Number (auto‑filled)</label>
+                    <input type="text" id="pointNumber" readonly class="bg-rev-subtle/60 cursor-not-allowed" />
+                </div>
+                <div class="modal-field">
+                    <label for="pointTitle">Title</label>
+                    <input type="text" id="pointTitle" name="pointTitle" placeholder="e.g. Workers' Democracy" required />
+                </div>
+                <div class="modal-field">
+                    <label for="pointDesc">Description</label>
+                    <textarea id="pointDesc" name="pointDescription" rows="2" placeholder="Brief description of the point" required></textarea>
+                </div>
+                <div class="modal-field">
+                    <label for="pointSortOrder">Sort order</label>
+                    <input type="number" id="pointSortOrder" name="sortOrder" placeholder="Auto" min="1" />
+                </div>
+                <div class="modal-field">
+                    <label for="pointImage">Image (optional)</label>
+                    <input type="file" id="pointImage" name="image" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml" />
+                </div>
+                <div class="modal-error" id="pointModalError"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" data-modal-close>Cancel</button>
+                    <button type="submit" class="btn-submit" id="pointSubmitBtn">Add Point</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add FAQ Modal -->
+    <div class="modal-overlay" id="addFaqModal">
+        <div class="modal-box">
+            <button type="button" class="modal-close" data-modal-close>&times;</button>
+            <h2 class="modal-title">Add FAQ</h2>
+            <form id="faqForm" autocomplete="off">
+                <div class="modal-field">
+                    <label for="faqQuestion">Question</label>
+                    <input type="text" id="faqQuestion" name="question" placeholder="e.g. What is the RCN?" required />
+                </div>
+                <div class="modal-field">
+                    <label for="faqAnswer">Answer</label>
+                    <textarea id="faqAnswer" name="answer" rows="2" placeholder="Write a clear answer" required></textarea>
+                </div>
+                <div class="modal-field">
+                    <label for="faqSortOrder">Sort order</label>
+                    <input type="number" id="faqSortOrder" name="sortOrder" placeholder="Auto" min="1" />
+                </div>
+                <div class="modal-error" id="faqModalError"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" data-modal-close>Cancel</button>
+                    <button type="submit" class="btn-submit" id="faqSubmitBtn">Add FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ─── JavaScript ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ── Upload logic (unchanged) ──
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+            const placeholder = document.getElementById('uploadPlaceholder');
+            const previewWrap = document.getElementById('uploadPreview');
+            const previewImg = document.getElementById('previewImage');
+            const fileBadge = document.getElementById('fileBadge');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const replaceBtn = document.getElementById('replaceBtn');
+            const removeBtn = document.getElementById('removeBtn');
+
+            // Track whether the image was removed by user (so we don't re-show server image)
+            let imageRemoved = false;
+
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+
+            function resetUpload() {
+                placeholder.style.display = 'flex';
+                previewWrap.style.display = 'none';
+                fileBadge.style.display = 'none';
+                uploadZone.classList.remove('has-image');
+                previewImg.src = '#';
+                fileInput.value = '';
+                imageRemoved = true;
+                // Add a hidden input to signal removal to the server
+                let removeFlag = document.getElementById('imageRemovedFlag');
+                if (!removeFlag) {
+                    removeFlag = document.createElement('input');
+                    removeFlag.type = 'hidden';
+                    removeFlag.name = 'imageRemoved';
+                    removeFlag.id = 'imageRemovedFlag';
+                    removeFlag.value = 'true';
+                    uploadZone.closest('form').appendChild(removeFlag);
+                }
+            }
+
+            function showPreview(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file (PNG, JPG, GIF, WEBP, SVG).');
+                    resetUpload();
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image is too large. Maximum size is 5 MB.');
+                    resetUpload();
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewWrap.style.display = 'flex';
+                    placeholder.style.display = 'none';
+                    uploadZone.classList.add('has-image');
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    fileBadge.style.display = 'inline-flex';
+                    previewWrap.classList.remove('fade-slide-up');
+                    void previewWrap.offsetWidth;
+                    previewWrap.classList.add('fade-slide-up');
+                    imageRemoved = false;
+                    // Remove the removal flag if re-uploading
+                    const removeFlag = document.getElementById('imageRemovedFlag');
+                    if (removeFlag) removeFlag.remove();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            fileInput.addEventListener('change', function(e) {
+                if (this.files && this.files.length > 0) showPreview(this.files[0]);
+                else resetUpload();
+            });
+
+            uploadZone.addEventListener('dragover', function(e) { e.preventDefault();
+                this.classList.add('dragover'); });
+            uploadZone.addEventListener('dragleave', function(e) { e.preventDefault();
+                this.classList.remove('dragover'); });
+            uploadZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    if (file.type.startsWith('image/')) {
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        fileInput.files = dt.files;
+                        showPreview(file);
+                    } else {
+                        alert('Please drop an image file.');
+                        resetUpload();
+                    }
+                }
+            });
+
+            replaceBtn.addEventListener('click', function(e) { e.stopPropagation();
+                fileInput.click(); });
+            removeBtn.addEventListener('click', function(e) { e.stopPropagation();
+                resetUpload(); });
+            uploadZone.addEventListener('click', function(e) { if (e.target.closest('button')) return;
+                fileInput.click(); });
+
+            // ── Modal logic ──
+            const modals = {
+                point: {
+                    overlay: document.getElementById('addPointModal'),
+                    form: document.getElementById('pointForm'),
+                    numberInput: document.getElementById('pointNumber'),
+                    titleInput: document.getElementById('pointTitle'),
+                    descInput: document.getElementById('pointDesc'),
+                    sortOrderInput: document.getElementById('pointSortOrder'),
+                    submitBtn: document.getElementById('pointSubmitBtn'),
+                    errorEl: document.getElementById('pointModalError'),
+                    openBtn: document.getElementById('addPointBtn'),
+                },
+                faq: {
+                    overlay: document.getElementById('addFaqModal'),
+                    form: document.getElementById('faqForm'),
+                    questionInput: document.getElementById('faqQuestion'),
+                    answerInput: document.getElementById('faqAnswer'),
+                    sortOrderInput: document.getElementById('faqSortOrder'),
+                    submitBtn: document.getElementById('faqSubmitBtn'),
+                    errorEl: document.getElementById('faqModalError'),
+                    openBtn: document.getElementById('addFaqBtn'),
+                }
+            };
+
+            function openModal(modalObj) {
+                modalObj.overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                // Clear error
+                if (modalObj.errorEl) {
+                    modalObj.errorEl.classList.remove('visible');
+                    modalObj.errorEl.textContent = '';
+                }
+                // Auto-number for point
+                if (modalObj === modals.point) {
+                    const rows = document.querySelectorAll('.point-row');
+                    const nextNum = String(rows.length + 1).padStart(2, '0');
+                    modalObj.numberInput.value = nextNum;
+                    modalObj.titleInput.value = '';
+                    modalObj.descInput.value = '';
+                    if (modalObj.sortOrderInput) modalObj.sortOrderInput.value = '';
+                    modalObj.titleInput.focus();
+                } else {
+                    modalObj.questionInput.value = '';
+                    modalObj.answerInput.value = '';
+                    if (modalObj.sortOrderInput) modalObj.sortOrderInput.value = '';
+                    modalObj.questionInput.focus();
+                }
+            }
+
+            function closeModal(modalObj) {
+                modalObj.overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function closeAllModals() {
+                Object.values(modals).forEach(m => closeModal(m));
+            }
+
+            function showModalError(modalObj, message) {
+                if (modalObj.errorEl) {
+                    modalObj.errorEl.textContent = message;
+                    modalObj.errorEl.classList.add('visible');
+                }
+            }
+
+            // ── open button clicks ──
+            modals.point.openBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal(modals.point);
+            });
+            modals.faq.openBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal(modals.faq);
+            });
+
+            // ── close via overlay click or close button ──
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        const key = Object.keys(modals).find(k => modals[k].overlay === this);
+                        if (key) closeModal(modals[key]);
+                    }
+                });
+            });
+            document.querySelectorAll('[data-modal-close]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const overlay = this.closest('.modal-overlay');
+                    if (overlay) {
+                        const key = Object.keys(modals).find(k => modals[k].overlay === overlay);
+                        if (key) closeModal(modals[key]);
+                    }
+                });
+            });
+
+            // ── close on ESC ──
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const active = document.querySelector('.modal-overlay.active');
+                    if (active) {
+                        const key = Object.keys(modals).find(k => modals[k].overlay === active);
+                        if (key) closeModal(modals[key]);
+                    }
+                }
+            });
+
+            // ── Re‑number points ──
+            function renumberPoints() {
+                const rows = document.querySelectorAll('.point-row');
+                rows.forEach((row, idx) => {
+                    const numEl = row.querySelector('.point-number');
+                    if (numEl) {
+                        numEl.textContent = String(idx + 1).padStart(2, '0');
+                    }
+                });
+            }
+
+            // ── Add Point form submit (via fetch) ──
+            modals.point.form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const title = modals.point.titleInput.value.trim();
+                const desc = modals.point.descInput.value.trim();
+                if (!title || !desc) {
+                    showModalError(modals.point, 'Please fill in both title and description.');
+                    return;
+                }
+                // Spinner
+                const btn = modals.point.submitBtn;
+                btn.disabled = true;
+                const origText = btn.textContent;
+                btn.textContent = 'Adding…';
+
+                const fd = new FormData(modals.point.form);
+                // Sort order auto
+                if (!fd.get('sortOrder') || fd.get('sortOrder') === '') {
+                    const rows = document.querySelectorAll('.point-row');
+                    fd.set('sortOrder', String(rows.length + 1));
+                }
+
+                fetch('/admin/cms/about/programme-points/new', {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: fd
+                })
+                    .then(function(res) { return res.json().then(function(data) { return { status: res.status, data: data }; }); })
+                    .then(function(result) {
+                        if (result.data.success) {
+                            const d = result.data;
+                            const container = document.getElementById('pointsContainer');
+                            // Remove empty-state message if present
+                            const emptyMsg = container.querySelector('.italic');
+                            if (emptyMsg) emptyMsg.remove();
+                            const row = document.createElement('div');
+                            row.className = 'grid grid-cols-12 gap-3 items-center point-row fade-slide-up';
+                            row.dataset.id = d.id;
+                            row.innerHTML =
+                                '<div class="col-span-1"><span class="point-number text-center"></span></div>' +
+                                '<div class="col-span-4"><span class="point-title"></span></div>' +
+                                '<div class="col-span-6"><span class="point-desc"></span></div>' +
+                                '<div class="col-span-1 row-actions">' +
+                                '<a class="text-rev-muted hover:text-rev-red text-xs" href="/admin/cms/about/programme-points/' + d.id + '/edit">Edit</a>' +
+                                '<form method="post" action="/admin/cms/about/programme-points/' + d.id + '/delete" class="inline" onsubmit="return confirm(\'Remove this programme point?\');">' +
+                                '<button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>' +
+                                '</form></div>';
+                            row.querySelector('.point-number').textContent = d.sortOrder ? String(d.sortOrder).padStart(2, '0') : '??';
+                            row.querySelector('.point-title').textContent = d.pointTitle || title;
+                            row.querySelector('.point-desc').textContent = d.pointDescription || desc;
+                            container.appendChild(row);
+                            renumberPoints();
+                            closeModal(modals.point);
+                        } else {
+                            showModalError(modals.point, result.data.message || 'Failed to add point.');
+                        }
+                        btn.disabled = false;
+                        btn.textContent = origText;
+                    })
+                    .catch(function() {
+                        showModalError(modals.point, 'Network error. Please try again.');
+                        btn.disabled = false;
+                        btn.textContent = origText;
+                    });
+            });
+
+            // ── Add FAQ form submit (via fetch) ──
+            modals.faq.form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const question = modals.faq.questionInput.value.trim();
+                const answer = modals.faq.answerInput.value.trim();
+                if (!question || !answer) {
+                    showModalError(modals.faq, 'Please fill in both question and answer.');
+                    return;
+                }
+                const btn = modals.faq.submitBtn;
+                btn.disabled = true;
+                const origText = btn.textContent;
+                btn.textContent = 'Adding…';
+
+                const fd = new FormData(modals.faq.form);
+                if (!fd.get('sortOrder') || fd.get('sortOrder') === '') {
+                    const rows = document.querySelectorAll('.faq-row');
+                    fd.set('sortOrder', String(rows.length + 1));
+                }
+
+                fetch('/admin/cms/about/faqs/new', {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: fd
+                })
+                    .then(function(res) { return res.json().then(function(data) { return { status: res.status, data: data }; }); })
+                    .then(function(result) {
+                        if (result.data.success) {
+                            const d = result.data;
+                            const container = document.getElementById('faqContainer');
+                            const emptyMsg = container.querySelector('.italic');
+                            if (emptyMsg) emptyMsg.remove();
+                            const row = document.createElement('div');
+                            row.className = 'grid grid-cols-12 gap-3 items-center faq-row fade-slide-up';
+                            row.dataset.id = d.id;
+                            row.innerHTML =
+                                '<div class="col-span-5"><span class="faq-question"></span></div>' +
+                                '<div class="col-span-6"><span class="faq-answer"></span></div>' +
+                                '<div class="col-span-1 row-actions">' +
+                                '<a class="text-rev-muted hover:text-rev-red text-xs" href="/admin/cms/about/faqs/' + d.id + '/edit">Edit</a>' +
+                                '<form method="post" action="/admin/cms/about/faqs/' + d.id + '/delete" class="inline" onsubmit="return confirm(\'Remove this FAQ?\');">' +
+                                '<button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>' +
+                                '</form></div>';
+                            row.querySelector('.faq-question').textContent = d.question || question;
+                            row.querySelector('.faq-answer').textContent = d.answer || answer;
+                            container.appendChild(row);
+                            closeModal(modals.faq);
+                        } else {
+                            showModalError(modals.faq, result.data.message || 'Failed to add FAQ.');
+                        }
+                        btn.disabled = false;
+                        btn.textContent = origText;
+                    })
+                    .catch(function() {
+                        showModalError(modals.faq, 'Network error. Please try again.');
+                        btn.disabled = false;
+                        btn.textContent = origText;
+                    });
+            });
+
+            // ── ensure initial numbering is correct ──
+            renumberPoints();
+
+            // ── Main form spinner ──
+            const aboutForm = document.getElementById('aboutForm');
+            const saveBtn = document.getElementById('saveBtn');
+            if (aboutForm && saveBtn) {
+                aboutForm.addEventListener('submit', function() {
+                    if (saveBtn.disabled) return;
+                    saveBtn.disabled = true;
+                    saveBtn.dataset.originalText = saveBtn.textContent;
+                    saveBtn.textContent = 'Saving…';
+                });
+            }
+
+        })();
+    </script>
 </main>
 </body>
 </html>

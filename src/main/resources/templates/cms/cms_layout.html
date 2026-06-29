@@ -356,6 +356,18 @@
         }
     });
 
+    // Shared spinner: forms with data-spinner get submit-button disabled + text change
+    document.querySelectorAll('form[data-spinner]').forEach(function(form) {
+        form.addEventListener('submit', function() {
+            var btn = form.querySelector('button[type="submit"]');
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                btn.dataset.originalText = btn.textContent;
+                btn.textContent = 'Saving…';
+            }
+        });
+    });
+
     // Tailwind script already loaded
 </script>
 </body>

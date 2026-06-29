@@ -6,34 +6,27 @@
 </head>
 <body>
 <main layout:fragment="content">
-<section class="py-24 bg-white">
+    <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div th:if="${about.introImageUrl != null and !about.introImageUrl.isBlank()}" class="mb-10">
-                <img th:src="${about.introImageUrl}" alt="About the RCN" class="w-full h-64 object-cover rounded">
+            <div th:if="${about.introImageUrl != null and !about.introImageUrl.isBlank()}"
+                 class="h-64 w-full rounded mb-10 overflow-hidden">
+                <img th:src="${about.introImageUrl}" alt="RCN" class="w-full h-full object-cover" />
             </div>
-            <div th:if="${about.introImageUrl == null or about.introImageUrl.isBlank()}" class="img-placeholder h-64 w-full rounded mb-10"><span class="ph-label">RCN crowd/rally photo</span></div>
-            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase" th:text="${about.heading} ?: 'Who We Are'">Who We Are</h1>
-            <p class="text-rev-muted text-lg mt-4 max-w-2xl" th:text="${about.introText}">Intro text.</p>
+            <div th:if="${about.introImageUrl == null or about.introImageUrl.isBlank()}"
+                 class="img-placeholder h-64 w-full rounded mb-10"><span class="ph-label">RCN crowd/rally photo</span></div>
+            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase" th:text="${about.heading}">Who We Are</h1>
+            <p class="text-rev-muted text-lg mt-4 max-w-2xl" th:text="${about.introText}">The Revolutionary Communists of Nigeria — Nigerian section of the Revolutionary Communist International. We fight for a socialist Nigeria, for workers' power, for human liberation.</p>
         </div>
     </section>
 
     <section class="py-20 bg-rev-page border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h2 class="font-display text-4xl text-rev-ink uppercase mb-10">Our Programme</h2>
-
-            <div th:if="${#lists.isEmpty(programmePoints)}"
-                 class="rounded border border-rev-border bg-white p-10 text-center text-rev-muted">
-                Programme points coming soon.
-            </div>
-
-            <div th:if="${!#lists.isEmpty(programmePoints)}" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div th:each="p, iter : ${programmePoints}" class="border p-6 bg-white">
-                    <span class="font-display text-3xl text-rev-red" th:text="${p.orderNumber} ?: ${String.format('%02d', iter.count)}">01</span>
-                    <div th:if="${p.imageUrl != null and !p.imageUrl.isBlank()}" class="my-3">
-                        <img th:src="${p.imageUrl}" alt="" class="w-full h-32 object-cover rounded">
-                    </div>
-                    <h3 class="font-bold mt-2" th:text="${p.pointTitle}">Title</h3>
-                    <p class="text-xs text-rev-muted mt-2" th:text="${p.pointDescription}">Description</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div th:each="point, iter : ${programmePoints}" class="border p-6 bg-white">
+                    <span class="font-display text-3xl text-rev-red" th:text="${#numbers.formatInteger(iter.count, 2)}">01</span>
+                    <h3 class="font-bold mt-2" th:text="${point.pointTitle}">Point title</h3>
+                    <p class="text-xs text-rev-muted mt-2" th:text="${point.pointDescription}">Point description</p>
                 </div>
             </div>
         </div>
@@ -42,15 +35,12 @@
     <section class="py-20 bg-white border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h2 class="font-display text-4xl text-rev-ink uppercase mb-10">FAQ</h2>
-
-            <div th:if="${#lists.isEmpty(faqs)}" class="max-w-3xl rounded border border-rev-border bg-rev-page p-8 text-rev-muted">
-                No questions have been added yet.
-            </div>
-
-            <div th:if="${!#lists.isEmpty(faqs)}" class="space-y-2 max-w-3xl">
-                <details th:each="f : ${faqs}" class="border p-4 bg-rev-page">
-                    <summary class="font-bold cursor-pointer" th:text="${f.question}">Question</summary>
-                    <p class="text-sm text-rev-muted mt-2" th:text="${f.answer}">Answer</p>
+            <div class="space-y-2 max-w-3xl">
+                <details th:each="faq, iter : ${faqs}"
+                         th:classappend="${iter.count % 2 == 0} ? 'bg-white' : 'bg-rev-page'"
+                         class="border p-4">
+                    <summary class="font-bold cursor-pointer" th:text="${faq.question}">Question?</summary>
+                    <p class="text-sm text-rev-muted mt-2" th:text="${faq.answer}">Answer.</p>
                 </details>
             </div>
         </div>
@@ -58,8 +48,8 @@
 
     <div class="bg-rev-red py-12 text-center">
         <p class="text-white font-mono text-sm uppercase tracking-widest">
-            <span th:text="${about.joinBannerText} ?: 'Ready?'">Ready?</span>
-            <a th:href="@{${about.joinBannerUrl} ?: '/join'}" href="/join" class="underline hover:no-underline ml-2">Join the RCN →</a>
+            <span th:text="${about.joinBannerText != null ? about.joinBannerText : 'Ready?'}">Ready?</span>
+            <a th:href="@{${about.joinBannerUrl != null ? about.joinBannerUrl : '/join'}}" href="/join" class="underline hover:no-underline">→</a>
         </p>
     </div>
 </main>
