@@ -3,12 +3,43 @@
 <head>
     <title>Study Marxism — Revolutionary Communists of Nigeria</title>
     <meta name="description" content="Theory is a weapon. Study guides, reading lists, and the Marxist University from the RCN."/>
+    <style>
+        /* Inline preview styles — remove when integrating into Thymeleaf layout */
+        :root {
+            --rev-red: #c0182a;
+            --rev-gold: #c9a84c;
+            --rev-ink: #1a1a1a;
+            --rev-muted: #6b6b6b;
+            --rev-page: #f5f3ee;
+            --rev-border: #ddd;
+        }
+        body { font-family: sans-serif; margin: 0; background: var(--rev-page); }
+        .theory-card { transition: box-shadow .2s; }
+        .theory-card:hover { box-shadow: 0 4px 20px rgba(192,24,42,.12); }
+        .theory-card img {
+            width: 100%;
+            height: 112px;       /* h-28 */
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+            filter: grayscale(30%) contrast(1.05);
+        }
+        .red-link { color: var(--rev-red); text-decoration: none; font-weight: 700; }
+        .red-link:hover { text-decoration: underline; }
+        /* hide placeholder spans now that we have real images */
+        .ph-label { display: none; }
+    </style>
 </head>
 <body>
 <main layout:fragment="content">
-<section class="py-24 bg-rev-page">
+
+    <!-- ── Hero ── -->
+    <section class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Education</span></div>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-px w-10 bg-rev-red"></div>
+                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Education</span>
+            </div>
             <h1 class="font-display text-7xl text-rev-ink uppercase">Study Marxism</h1>
             <p class="text-rev-muted text-lg mt-4 max-w-xl">Theory is a weapon. Arm yourself.</p>
             <blockquote class="mt-10 max-w-2xl text-rev-ink font-serif italic text-xl border-l-4 border-rev-red pl-6">
@@ -18,33 +49,181 @@
         </div>
     </section>
 
+    <!-- ── Getting Started Cards ── -->
     <section class="py-20 bg-white border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h2 class="font-display text-4xl text-rev-ink uppercase mb-12">Getting Started</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">I.</span></div><div class="font-display text-rev-red text-4xl mb-3">I.</div><h3 class="font-bold text-sm mb-2">Historical Materialism</h3><p class="text-xs text-rev-muted mb-4">The foundation of Marxist science.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">II.</span></div><div class="font-display text-rev-red text-4xl mb-3">II.</div><h3 class="font-bold text-sm mb-2">Marxist Economics</h3><p class="text-xs text-rev-muted mb-4">Surplus value, exploitation, crisis.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">III.</span></div><div class="font-display text-rev-red text-4xl mb-3">III.</div><h3 class="font-bold text-sm mb-2">Imperialism and Africa</h3><p class="text-xs text-rev-muted mb-4">Lenin's analysis of the highest stage of capitalism.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">IV.</span></div><div class="font-display text-rev-red text-4xl mb-3">IV.</div><h3 class="font-bold text-sm mb-2">The State and Revolution</h3><p class="text-xs text-rev-muted mb-4">Why the state must be smashed.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">V.</span></div><div class="font-display text-rev-red text-4xl mb-3">V.</div><h3 class="font-bold text-sm mb-2">Trade Unions & Labour</h3><p class="text-xs text-rev-muted mb-4">The role and limits of unions.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">VI.</span></div><div class="font-display text-rev-red text-4xl mb-3">VI.</div><h3 class="font-bold text-sm mb-2">Women's Oppression</h3><p class="text-xs text-rev-muted mb-4">Class struggle and gender liberation.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">VII.</span></div><div class="font-display text-rev-red text-4xl mb-3">VII.</div><h3 class="font-bold text-sm mb-2">Fascism</h3><p class="text-xs text-rev-muted mb-4">How to understand and fight it.</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
-                <div class="theory-card bg-white border p-7"><div class="img-placeholder h-28 mb-4 rounded"><span class="ph-label">VIII.</span></div><div class="font-display text-rev-red text-4xl mb-3">VIII.</div><h3 class="font-bold text-sm mb-2">The Revolutionary Party</h3><p class="text-xs text-rev-muted mb-4">What kind of party do we need?</p><a href="#" class="red-link text-[11px] uppercase">Begin →</a></div>
+
+                <!-- I. Historical Materialism -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Karl Marx & Friedrich Engels — co-authors of historical materialism.
+                        Source: Wikimedia Commons (public domain photograph, 19th-century)
+                    -->
+                    <img th:src="@{/images/historicalMaterialism.jpg}" alt="Karl Marx, father of historical materialism"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">I.</div>
+                    <h3 class="font-bold text-sm mb-2">Historical Materialism</h3>
+                    <p class="text-xs text-rev-muted mb-4">The foundation of Marxist science.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- II. Marxist Economics -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Das Kapital frontispiece — the ur-text of Marxist economics.
+                        Source: Wikimedia Commons (public domain, 1867 first edition title page)
+                    -->
+                    <img th:src="@{/images/marxistEconomy.jpg}" alt="Das Kapital title page — Marxist economics"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">II.</div>
+                    <h3 class="font-bold text-sm mb-2">Marxist Economics</h3>
+                    <p class="text-xs text-rev-muted mb-4">Surplus value, exploitation, crisis.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- III. Imperialism and Africa -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Scramble for Africa map (Berlin Conference 1885) — canonical image
+                        for imperialism and colonial partition of Africa.
+                        Source: Wikimedia Commons (public domain)
+                    -->
+                    <img th:src="@{/images/imperialism.jpg}" alt="Colonial partition of Africa map 1913"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">III.</div>
+                    <h3 class="font-bold text-sm mb-2">Imperialism and Africa</h3>
+                    <p class="text-xs text-rev-muted mb-4">Lenin's analysis of the highest stage of capitalism.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- IV. The State and Revolution -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Lenin addressing workers — the defining image of the Bolshevik state question.
+                        Source: Wikimedia Commons (public domain, 1917 photograph)
+                    -->
+                    <img th:src="@{/images/the-state-and-revolution.jpg}" alt="Lenin addressing workers — the state question"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">IV.</div>
+                    <h3 class="font-bold text-sm mb-2">The State and Revolution</h3>
+                    <p class="text-xs text-rev-muted mb-4">Why the state must be smashed.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- V. Trade Unions & Labour -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Workers' May Day march — universal symbol of trade union solidarity.
+                        Source: Wikimedia Commons (public domain, early 20th-century photograph)
+                    -->
+                    <img th:src="@{/images/trade-unions.jpg}"
+                            alt="May Day workers' strike march 1913"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">V.</div>
+                    <h3 class="font-bold text-sm mb-2">Trade Unions &amp; Labour</h3>
+                    <p class="text-xs text-rev-muted mb-4">The role and limits of unions.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- VI. Women's Oppression -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Women's liberation march London 1971 — classic image of feminist class struggle.
+                        Source: Wikimedia Commons (public domain / free licence)
+                    -->
+                    <img th:src="@{/images/women-oppression.jpg}" alt="Women's liberation march, 1970"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">VI.</div>
+                    <h3 class="font-bold text-sm mb-2">Women's Oppression</h3>
+                    <p class="text-xs text-rev-muted mb-4">Class struggle and gender liberation.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- VII. Fascism -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        Anti-fascist resistance fighters (Spanish Civil War / WWII era).
+                        Source: Wikimedia Commons (public domain)
+                    -->
+                    <img
+                            th:src="@{/images/facisim.jpg}"
+                            alt="Anti-fascist action symbol"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">VII.</div>
+                    <h3 class="font-bold text-sm mb-2">Fascism</h3>
+                    <p class="text-xs text-rev-muted mb-4">How to understand and fight it.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
+                <!-- VIII. The Revolutionary Party -->
+                <div class="theory-card bg-white border p-7">
+                    <!--
+                        What Is to Be Done? — Lenin's pamphlet on the vanguard party.
+                        Source: Wikimedia Commons (public domain, 1902 first-edition cover)
+                    -->
+                    <img
+                            th:src="@{/images/revolutionary-party.jpg}"
+                            alt="What Is to Be Done? — Lenin's pamphlet on the revolutionary party"
+                            class="h-28 mb-4 rounded"
+                    />
+                    <div class="font-display text-rev-red text-4xl mb-3">VIII.</div>
+                    <h3 class="font-bold text-sm mb-2">The Revolutionary Party</h3>
+                    <p class="text-xs text-rev-muted mb-4">What kind of party do we need?</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Begin →</a>
+                </div>
+
             </div>
         </div>
     </section>
 
+    <!-- ── Study Guides ── -->
     <section class="py-20 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h2 class="font-display text-4xl text-rev-ink uppercase mb-12">Study Guides</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="border p-8 bg-white"><h3 class="font-display text-2xl text-rev-ink uppercase mb-4">New to Marxism?</h3><ul class="space-y-2 text-sm text-rev-muted"><li>→ The Communist Manifesto</li><li>→ Wage Labour and Capital</li><li>→ Socialism: Utopian and Scientific</li><li>→ The Three Sources and Three Component Parts of Marxism</li></ul></div>
-                <div class="border p-8 bg-white"><h3 class="font-display text-2xl text-rev-ink uppercase mb-4">The Nigerian Context</h3><ul class="space-y-2 text-sm text-rev-muted"><li>→ Lenin on Imperialism</li><li>→ Walter Rodney: How Europe Underdeveloped Africa</li><li>→ The National Question in Nigeria</li></ul></div>
-                <div class="border p-8 bg-white"><h3 class="font-display text-2xl text-rev-ink uppercase mb-4">Organising Skills</h3><ul class="space-y-2 text-sm text-rev-muted"><li>→ What Is to Be Done? (Lenin)</li><li>→ On Agitation and Propaganda</li><li>→ The Role of the Revolutionary Newspaper</li></ul></div>
-                <div class="border p-8 bg-white"><h3 class="font-display text-2xl text-rev-gold uppercase mb-4">World School 2026</h3><p class="text-sm text-rev-muted mb-4">2–7 August. Thousands of communists from across the globe. Nigerian delegates welcome.</p><a href="#" class="red-link text-[11px] uppercase">Sign Up →</a></div>
+                <div class="border p-8 bg-white">
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-4">New to Marxism?</h3>
+                    <ul class="space-y-2 text-sm text-rev-muted">
+                        <li>→ The Communist Manifesto</li>
+                        <li>→ Wage Labour and Capital</li>
+                        <li>→ Socialism: Utopian and Scientific</li>
+                        <li>→ The Three Sources and Three Component Parts of Marxism</li>
+                    </ul>
+                </div>
+                <div class="border p-8 bg-white">
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-4">The Nigerian Context</h3>
+                    <ul class="space-y-2 text-sm text-rev-muted">
+                        <li>→ Lenin on Imperialism</li>
+                        <li>→ Walter Rodney: How Europe Underdeveloped Africa</li>
+                        <li>→ The National Question in Nigeria</li>
+                    </ul>
+                </div>
+                <div class="border p-8 bg-white">
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-4">Organising Skills</h3>
+                    <ul class="space-y-2 text-sm text-rev-muted">
+                        <li>→ What Is to Be Done? (Lenin)</li>
+                        <li>→ On Agitation and Propaganda</li>
+                        <li>→ The Role of the Revolutionary Newspaper</li>
+                    </ul>
+                </div>
+                <div class="border p-8 bg-white">
+                    <h3 class="font-display text-2xl text-rev-gold uppercase mb-4">World School 2026</h3>
+                    <p class="text-sm text-rev-muted mb-4">2–7 August. Thousands of communists from across the globe. Nigerian delegates welcome.</p>
+                    <a href="#" class="red-link text-[11px] uppercase">Sign Up →</a>
+                </div>
             </div>
         </div>
     </section>
+
 </main>
 </body>
 </html>
