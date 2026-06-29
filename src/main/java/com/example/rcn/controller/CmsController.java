@@ -1,7 +1,10 @@
 package com.example.rcn.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/cms")
 public class CmsController {
+
+    /**
+     * Exposes the current request URI to every CMS view as ${currentUrl}.
+     * Used by the shared sidebar to highlight the active page.
+     *
+     * Note: we inject jakarta.servlet.http.HttpServletRequest here rather than
+     * relying on Thymeleaf's #request expression object, which is no longer
+     * available by default in Thymeleaf 3.1+.
+     */
+    @ModelAttribute("currentUrl")
+    public String currentUrl(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
 
     @GetMapping
     public String index() {

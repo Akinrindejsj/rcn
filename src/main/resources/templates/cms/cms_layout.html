@@ -34,126 +34,247 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F7F4F0; color: #1E1E1E; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #E0DAD3; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #C0182A; }
-        .sidebar-link { border-left: 3px solid transparent; transition: all 0.15s ease; }
-        .sidebar-link:hover, .sidebar-link.active { border-left-color: #C0182A; background: #F0EBE4; }
-        .metric-card { transition: box-shadow 0.2s ease; }
-        .metric-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .article-row { border-left: 3px solid transparent; transition: all 0.15s ease; }
-        .article-row:hover { border-left-color: #C0182A; background: #F0EBE4; }
-        button.red-btn { background-color: #C0182A; color: white; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; padding: 0.5rem 1rem; transition: background 0.2s; }
-        button.red-btn:hover { background-color: #8B0E1C; }
-        button.outline-btn { border: 1px solid #E0DAD3; color: #1E1E1E; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; padding: 0.5rem 1rem; background: transparent; transition: border-color 0.2s, color 0.2s; }
-        button.outline-btn:hover { border-color: #C0182A; color: #C0182A; }
-        .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: #7A726A; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F4F0;
+            color: #1E1E1E;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E0DAD3;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C0182A;
+        }
+
+        .sidebar-link {
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            border-left-color: #C0182A;
+            background: #F0EBE4;
+        }
+
+        .metric-card {
+            transition: box-shadow 0.2s ease;
+        }
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .article-row {
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .article-row:hover {
+            border-left-color: #C0182A;
+            background: #F0EBE4;
+        }
+
+        button.red-btn {
+            background-color: #C0182A;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            transition: background 0.2s;
+        }
+        button.red-btn:hover {
+            background-color: #8B0E1C;
+        }
+
+        button.outline-btn {
+            border: 1px solid #E0DAD3;
+            color: #1E1E1E;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        button.outline-btn:hover {
+            border-color: #C0182A;
+            color: #C0182A;
+        }
+
+        .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #7A726A;
+        }
+
         .status-published { background: #F9E8EA; color: #C0182A; }
         .status-draft { background: #F0EBE4; color: #7A726A; }
         .status-scheduled { background: #FDF6E3; color: #A07800; }
         .status-pending { background: #F0EBE4; color: #1E1E1E; }
-        iconify-icon { display: inline-flex; vertical-align: middle; }
+
+        iconify-icon {
+            display: inline-flex;
+            vertical-align: middle;
+        }
+
+        /* Mobile sidebar improvements */
+        @media (max-width: 768px) {
+            .sidebar-overlay {
+                animation: slideIn 0.3s ease forwards;
+            }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
     </style>
 </head>
 <body class="bg-rev-page text-rev-ink antialiased">
-
 <div class="flex h-screen w-full overflow-hidden">
 
     <!-- Sidebar Navigation -->
-    <aside class="hidden w-64 flex-col border-r border-rev-border bg-rev-surface md:flex">
+    <aside id="sidebar"
+           class="fixed inset-y-0 left-0 z-50 w-72 flex-col border-r border-rev-border bg-rev-surface shadow-2xl md:static md:w-64 md:flex md:shadow-none transition-transform duration-300 -translate-x-full md:translate-x-0">
+
         <!-- Logo Area -->
         <div class="flex h-16 items-center border-b border-rev-border px-6">
             <div class="flex items-center gap-2">
-                <img src="images/logo-red.png" alt="RCN Logo" class="h-8 w-auto">
+                <img th:src="@{/images/logo-red.png}" alt="RCN Logo" class="h-8 w-auto">
             </div>
+            <!-- Mobile close button -->
+            <button onclick="toggleSidebar()"
+                    class="ml-auto md:hidden text-rev-muted hover:text-rev-ink">
+                <iconify-icon icon="lucide:x" width="22" height="22" stroke-width="2"></iconify-icon>
+            </button>
         </div>
 
         <!-- Nav Links -->
-        <div class="flex-1 overflow-y-auto py-4">
-            <nav class="space-y-1 px-3">
-                <a th:href="@{/admin/cms/dashboard}" href="/admin/cms/dashboard" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                    <iconify-icon icon="lucide:layout-dashboard" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+        <div class="flex-1 overflow-y-auto py-6">
+            <nav class="space-y-6 px-3">
+
+                <!-- Overview -->
+                <a th:href="@{/admin/cms/dashboard}" href="/admin/cms/dashboard"
+                   th:class="${#strings.startsWith(currentUrl, '/admin/cms/dashboard') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                    <iconify-icon icon="lucide:layout-dashboard" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
                     Overview
                 </a>
 
-                <div class="pt-6">
-                    <p class="mono-label px-3 pb-2">Content</p>
-                    <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:file-text" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Articles
-                    </a>
-                    <a th:href="@{/admin/cms/approval}" href="/admin/cms/approval" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:clipboard-check" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Approval Queue
-                        <span class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-rev-red text-xs font-medium text-white">3</span>
-                    </a>
-                    <a th:href="@{/admin/cms/homepage}" href="/admin/cms/homepage" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:home" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Homepage
-                    </a>
-                    <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:info" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        About Page
-                    </a>
-                    <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:map-pin" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Activity Reports
-                    </a>
-                    <a th:href="@{/admin/cms/donations}" href="/admin/cms/donations" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:banknote" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Donations
-                    </a>
-                    <a th:href="@{/admin/cms/podcast}" href="/admin/cms/podcast" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:headphones" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Podcast Episodes
-                    </a>
+                <!-- Content Section -->
+                <div>
+                    <p class="mono-label px-4 mb-3">Content</p>
+                    <div class="space-y-1">
+                        <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/articles') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:file-text" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Articles
+                        </a>
+                        <a th:href="@{/admin/cms/approval}" href="/admin/cms/approval"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/approval') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:clipboard-check" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Approval Queue
+                            <span class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-rev-red text-xs font-medium text-white">3</span>
+                        </a>
+                        <a th:href="@{/admin/cms/homepage}" href="/admin/cms/homepage"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/homepage') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:home" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Homepage
+                        </a>
+                        <a th:href="@{/admin/cms/about}" href="/admin/cms/about"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/about') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:info" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            About Page
+                        </a>
+                        <a th:href="@{/admin/cms/events}" href="/admin/cms/events"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/events') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:map-pin" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Events
+                        </a>
+                        <a th:href="@{/admin/cms/donations}" href="/admin/cms/donations"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/donations') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:banknote" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Donations
+                        </a>
+                        <a th:href="@{/admin/cms/podcast}" href="/admin/cms/podcast"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/podcast') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:headphones" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Podcast
+                        </a>
+                    </div>
                 </div>
 
-                <div class="pt-6">
-                    <p class="mono-label px-3 pb-2">Media</p>
-                    <a th:href="@{/admin/cms/images}" href="/admin/cms/images" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:image" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Image Placeholders
-                    </a>
-                    <a th:href="@{/admin/cms/media}" href="/admin/cms/media" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:folder-open" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Media Library
-                    </a>
+                <!-- Media Section -->
+                <div>
+                    <p class="mono-label px-4 mb-3">Media</p>
+                    <div class="space-y-1">
+                        <a th:href="@{/admin/cms/images}" href="/admin/cms/images"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/images') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:image" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Image Placeholders
+                            <span class="ml-auto flex h-5 items-center rounded-full bg-rev-subtle px-2 text-xs font-medium text-rev-muted">18</span>
+                        </a>
+                        <a th:href="@{/admin/cms/media}" href="/admin/cms/media"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/media') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:folder-open" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Media Library
+                        </a>
+                    </div>
                 </div>
 
-                <div class="pt-6">
-                    <p class="mono-label px-3 pb-2">People</p>
-                    <a th:href="@{/admin/cms/users}" href="/admin/cms/users" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:users" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Users &amp; Admins
-                        <span class="ml-auto flex h-5 items-center rounded-full bg-rev-red-light px-2 text-xs font-medium text-rev-red">12</span>
-                    </a>
+                <!-- People Section -->
+                <div>
+                    <p class="mono-label px-4 mb-3">People</p>
+                    <div class="space-y-1">
+                        <a th:href="@{/admin/cms/users}" href="/admin/cms/users"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/users') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:users" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Users &amp; Admins
+                            <span class="ml-auto flex h-5 items-center rounded-full bg-rev-red-light px-2 text-xs font-medium text-rev-red">5</span>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="pt-6">
-                    <p class="mono-label px-3 pb-2">Configuration</p>
-                    <a th:href="@{/admin/cms/settings}" href="/admin/cms/settings" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
-                        <iconify-icon icon="lucide:settings-2" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                        Settings
-                    </a>
+                <!-- Configuration Section -->
+                <div>
+                    <p class="mono-label px-4 mb-3">Configuration</p>
+                    <div class="space-y-1">
+                        <a th:href="@{/admin/cms/settings}" href="/admin/cms/settings"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/settings') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:settings-2" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Settings
+                        </a>
+                    </div>
                 </div>
             </nav>
         </div>
 
         <!-- User Profile -->
         <div class="border-t border-rev-border p-4">
-            <a href="#" class="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-rev-subtle">
-                <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-rev-red to-rev-red-dark flex items-center justify-center text-white font-bold text-xs">AO</div>
+            <a href="#" class="flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-rev-subtle">
+                <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-rev-red to-rev-red-dark flex items-center justify-center text-white font-bold text-sm">AO</div>
                 <div class="flex-1 overflow-hidden">
                     <p class="truncate text-sm font-medium text-rev-ink">Amaka Okonkwo</p>
                     <p class="truncate text-xs text-rev-muted">Editorial Collective</p>
                 </div>
-                <iconify-icon icon="lucide:settings-2" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                <iconify-icon icon="lucide:settings-2" width="18" height="18" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
             </a>
         </div>
     </aside>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"
+         class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
     <!-- Main Content -->
     <main class="flex flex-1 flex-col overflow-hidden">
@@ -161,17 +282,16 @@
         <header class="flex h-16 w-full items-center justify-between border-b border-rev-border bg-rev-surface px-4 md:px-8">
             <!-- Mobile Menu Trigger -->
             <div class="flex items-center gap-4 md:hidden">
-                <button class="text-rev-muted hover:text-rev-ink">
-                    <iconify-icon icon="lucide:menu" width="20" height="20" stroke-width="1.5"></iconify-icon>
+                <button onclick="toggleSidebar()" class="text-rev-muted hover:text-rev-ink focus:outline-none">
+                    <iconify-icon icon="lucide:menu" width="24" height="24" stroke-width="1.75"></iconify-icon>
                 </button>
-                <span class="font-display text-lg uppercase tracking-tight">RCN CMS</span>
             </div>
 
             <!-- Breadcrumbs/Title (Desktop) -->
             <div class="hidden items-center gap-2 text-sm text-rev-muted md:flex">
                 <span class="hover:text-rev-ink cursor-pointer">CMS</span>
                 <iconify-icon icon="lucide:chevron-right" width="14" height="14" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                <span class="font-medium text-rev-ink" th:text="${pageTitle}">Page Title</span>
+                <span class="font-medium text-rev-ink" th:text="${pageTitle} ?: 'Page Title'">Page Title</span>
             </div>
 
             <!-- Right Actions -->
@@ -179,32 +299,64 @@
                 <!-- Search -->
                 <div class="relative hidden sm:block">
                     <iconify-icon icon="lucide:search" width="14" height="14" stroke-width="1.5" class="absolute left-3 top-1/2 -translate-y-1/2 text-rev-muted"></iconify-icon>
-                    <input type="text" placeholder="Search articles, reports..." class="h-9 w-64 rounded-md border border-rev-border bg-rev-subtle pl-9 pr-4 text-sm outline-none placeholder:text-rev-muted focus:border-rev-red focus:bg-rev-surface focus:ring-0">
-                    <div class="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+                    <input type="text" placeholder="Search articles, reports..."
+                           class="h-10 w-72 rounded-2xl border border-rev-border bg-rev-subtle pl-10 pr-4 text-sm outline-none placeholder:text-rev-muted focus:border-rev-red focus:bg-rev-surface focus:ring-0">
+                    <div class="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
                         <span class="rounded border border-rev-border bg-rev-surface px-1.5 py-0.5 text-[10px] font-medium text-rev-muted">⌘K</span>
                     </div>
                 </div>
 
                 <button class="relative text-rev-muted transition-colors hover:text-rev-ink">
-                    <iconify-icon icon="lucide:bell" width="18" height="18" stroke-width="1.5"></iconify-icon>
-                    <span class="absolute right-0 top-0 h-2 w-2 rounded-full border border-rev-surface bg-rev-red"></span>
+                    <iconify-icon icon="lucide:bell" width="20" height="20" stroke-width="1.5"></iconify-icon>
+                    <span class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-rev-surface bg-rev-red"></span>
                 </button>
 
                 <button class="red-btn flex items-center gap-2 shadow-sm">
-                    <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                    <iconify-icon icon="lucide:plus" width="18" height="18" stroke-width="1.5"></iconify-icon>
                     <span class="hidden sm:inline">New</span>
                 </button>
             </div>
         </header>
 
-        <!-- Scrollable Content Area — PAGE CONTENT INJECTED HERE -->
+        <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto bg-rev-page p-4 md:p-8">
-            <!-- PAGE CONTENT GOES HERE -->
             <main layout:fragment="content">
-                <!-- Child pages override this block with their own content. -->
+                <!-- Child pages override this block -->
             </main>
         </div>
     </main>
 </div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        if (sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('block');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('block');
+        }
+    }
+
+    // Close sidebar when pressing Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                overlay.classList.remove('block');
+            }
+        }
+    });
+
+    // Tailwind script already loaded
+</script>
 </body>
 </html>
