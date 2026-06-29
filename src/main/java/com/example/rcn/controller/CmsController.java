@@ -1,12 +1,22 @@
 package com.example.rcn.controller;
 
+import com.example.rcn.exception.CloudinaryUploadException;
+import com.example.rcn.service.HomepageContentService;
 import jakarta.servlet.http.HttpServletRequest;
 
+import com.example.rcn.model.HomepageContent;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Map;
 
 /**
  * CMS admin panel. Every method returns a Thymeleaf view name under templates/cms/,
@@ -15,6 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/cms")
 public class CmsController {
+
+    private final HomepageContentService homepageContentService;
+
+    public CmsController(HomepageContentService homepageContentService) {
+        this.homepageContentService = homepageContentService;
+    }
 
     /**
      * Exposes the current request URI to every CMS view as ${currentUrl}.
@@ -27,6 +43,42 @@ public class CmsController {
     @ModelAttribute("currentUrl")
     public String currentUrl(HttpServletRequest request) {
         return request.getRequestURI();
+    }
+
+    /**
+     * GET /admin/cms/homepage — renders the homepage editor pre-filled with
+     * the current singleton content row.
+     */
+    @GetMapping("/homepage")
+    public String homepage(Model model) {
+        HomepageContent content = homepageContentService.getSingleton();
+        model.addAttribute("content", content);
+        return "cms/cms_homepage";
+    }
+
+    /**
+     * POST /admin/cms/homepage — persists text + image edits to the singleton
+     * row and redirects back with a flash success/error message.
+     */
+    @PostMapping("/homepage")
+    public String homepageSave(@ModelAttribute("content") com.example.rcn.dto.HomepageContentUpdateDto dto,
+                                @RequestParam Map<String, MultipartFile> images,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            homepageContentService.update(dto, images);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Homepage updated successfully.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (CloudinaryUploadException e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Image upload failed: " + e.getMessage()
+                            + " Please try again or use a different file.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong. Please try again.");
+        }
+        return "redirect:/admin/cms/homepage";
     }
 
     @GetMapping
@@ -71,11 +123,6 @@ public class CmsController {
     }
 
     // Site pages
-    @GetMapping("/homepage")
-    public String homepage() {
-        return "cms/cms_homepage";
-    }
-
     @GetMapping("/about")
     public String about() {
         return "cms/cms_about";

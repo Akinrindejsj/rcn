@@ -9,9 +9,17 @@
 <!-- HERO -->
 <section class="relative min-h-[92vh] flex flex-col overflow-hidden bg-white">
     <div class="absolute inset-0 lg:left-1/2 lg:right-0 top-0 bottom-0 z-0">
-        <div class="img-placeholder w-full h-full">
-            <svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span class="ph-label">Hero Image<br/>Replace with RCN march / rally photo</span>
+        <div class="w-full h-full">
+            <img th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
+                 th:src="${content.heroImage}"
+                 alt="Hero"
+                 class="w-full h-full object-cover"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-placeholder w-full h-full"
+                 th:classappend="${content.heroImage != null and !content.heroImage.isBlank() ? ' hidden' : ''}">
+                <svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <span class="ph-label">Hero Image<br/>Replace with RCN march / rally photo</span>
+            </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent lg:via-white/20 lg:to-transparent"></div>
     </div>
@@ -21,24 +29,28 @@
                 <div class="sweep-in h-px w-10 bg-rev-red"></div>
                 <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Nigerian Section · Revolutionary Communist International</span>
             </div>
-            <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-rev-ink mb-4" style="font-size: clamp(3.5rem, 10vw, 7rem);">
+            <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-rev-ink mb-4" style="font-size: clamp(3.5rem, 10vw, 7rem);"
+                th:text="${content.heroHeadline}">
                 Workers<br/><span class="text-rev-red">of Nigeria,</span><br/>Unite.
             </h1>
             <p class="fade-up-3 font-serif italic text-rev-gold text-xl md:text-2xl mt-6 leading-snug max-w-lg">
                 "The history of all hitherto existing society is the history of class struggles."
             </p>
             <p class="fade-up-3 font-mono text-rev-muted text-[11px] mt-2 tracking-widest">— Marx &amp; Engels, The Communist Manifesto</p>
-            <p class="fade-up-4 text-rev-muted text-base md:text-lg max-w-xl mt-8 leading-relaxed">
-                Nigeria's oil wealth feeds billionaires while millions go hungry. The naira collapses, fuel costs a fortune, and politicians loot without consequence. This is not mismanagement — it is capitalism working exactly as designed. The RCN says: <strong class="text-rev-ink">enough.</strong>
+            <p class="fade-up-4 text-rev-muted text-base md:text-lg max-w-xl mt-8 leading-relaxed"
+               th:text="${content.heroSubtext}">
+                Nigeria's oil wealth feeds billionaires while millions go hungry. The naira collapses, fuel costs a fortune, and politicians loot without consequence. This is not mismanagement — it is capitalism working exactly as designed. The RCN says: enough.
             </p>
             <div class="fade-in-late flex flex-wrap gap-4 mt-10">
-                <a th:href="@{/join}" href="/join" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors">Join the Revolution →</a>
-                <a th:href="@{/news}" href="/news" class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:text-rev-red">Read Analysis</a>
+                <a th:href="${content.heroPrimaryButtonUrl}" href="/join" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors"
+                   th:text="${content.heroPrimaryButtonText}">Join the Revolution →</a>
+                <a th:href="${content.heroSecondaryButtonUrl}" href="/news" class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:text-rev-red"
+                   th:text="${content.heroSecondaryButtonText}">Read Analysis</a>
             </div>
             <div class="fade-in-late mt-16 flex flex-wrap gap-10 border-t border-rev-border pt-8">
-                <div><p class="font-display text-4xl text-rev-red">133M+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1">Nigerians below poverty line</p></div>
-                <div><p class="font-display text-4xl text-rev-ink">53%</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1">Youth unemployment rate</p></div>
-                <div><p class="font-display text-4xl text-rev-gold">$1T+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1">Looted since independence</p></div>
+                <div><p class="font-display text-4xl text-rev-red" th:text="${content.stat1Number}">133M+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat1Label}">Nigerians below poverty line</p></div>
+                <div><p class="font-display text-4xl text-rev-ink" th:text="${content.stat2Number}">53%</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat2Label}">Youth unemployment rate</p></div>
+                <div><p class="font-display text-4xl text-rev-gold" th:text="${content.stat3Number}">$1T+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat3Label}">Looted since independence</p></div>
             </div>
         </div>
     </div>
@@ -47,16 +59,16 @@
 <!-- TICKER -->
 <div class="bg-rev-red py-3 overflow-hidden">
     <div class="marquee-track font-mono text-white text-[11px] uppercase tracking-widest whitespace-nowrap select-none">
-        <span class="px-12">⬤ NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</span>
-        <span class="px-12">⬤ Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</span>
-        <span class="px-12">⬤ Nigeria's ruling class has looted over $1 trillion since independence</span>
-        <span class="px-12">⬤ Youth unemployment stands above 53% — the highest in decades</span>
-        <span class="px-12">⬤ The RCN is the Nigerian section of the Revolutionary Communist International</span>
-        <span class="px-12">⬤ NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</span>
-        <span class="px-12">⬤ Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</span>
-        <span class="px-12">⬤ Nigeria's ruling class has looted over $1 trillion since independence</span>
-        <span class="px-12">⬤ Youth unemployment stands above 53% — the highest in decades</span>
-        <span class="px-12">⬤ The RCN is the Nigerian section of the Revolutionary Communist International</span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine1}">NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine2}">Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine3}">Nigeria's ruling class has looted over $1 trillion since independence</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine4}">Youth unemployment stands above 53% — the highest in decades</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine5}">The RCN is the Nigerian section of the Revolutionary Communist International</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine1}">NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine2}">Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine3}">Nigeria's ruling class has looted over $1 trillion since independence</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine4}">Youth unemployment stands above 53% — the highest in decades</th:block></span>
+        <span class="px-12">⬤ <th:block th:text="${content.tickerLine5}">The RCN is the Nigerian section of the Revolutionary Communist International</th:block></span>
     </div>
 </div>
 
@@ -115,12 +127,16 @@
                     <div>
                         <div class="flex items-center gap-3 mb-6">
                             <span class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1">Featured</span>
-                            <span class="font-mono text-rev-muted text-[11px]">Economy · June 2026</span>
+                            <span class="font-mono text-rev-muted text-[11px]" th:text="${content.featuredArticleDate}">Economy · June 2026</span>
                         </div>
-                        <h2 class="font-display text-4xl md:text-5xl text-rev-ink uppercase leading-tight mb-5">The Tinubu Subsidy Removal: Who Really Paid?</h2>
-                        <p class="text-rev-muted text-sm leading-relaxed mb-6">When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe — transport costs tripled overnight, food prices surged, and millions already living on the edge were pushed off it. But who was the subsidy really for? Marxist economics gives us the answer.</p>
+                        <h2 class="font-display text-4xl md:text-5xl text-rev-ink uppercase leading-tight mb-5"
+                            th:text="${content.featuredArticleTitle}">The Tinubu Subsidy Removal: Who Really Paid?</h2>
+                        <p class="text-rev-muted text-sm leading-relaxed mb-6"
+                           th:text="${content.featuredArticleBody}">
+                            When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe — transport costs tripled overnight, food prices surged, and millions already living on the edge were pushed off it. But who was the subsidy really for? Marxist economics gives us the answer.
+                        </p>
                     </div>
-                    <a th:href="@{/article}" href="/article" class="red-link font-mono text-[12px] uppercase tracking-widest inline-flex items-center gap-2">Read Full Analysis →</a>
+                    <a th:href="${content.featuredArticleUrl}" href="/article" class="red-link font-mono text-[12px] uppercase tracking-widest inline-flex items-center gap-2">Read Full Analysis →</a>
                 </div>
             </div>
             <div class="lg:col-span-2 flex flex-col divide-y divide-rev-border">
