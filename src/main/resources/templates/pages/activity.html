@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">From the Frontlines</span></div>
             <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase">On the Ground</h1>
-            <p class="text-rev-muted text-lg mt-4 max-w-xl">The RCN is active in Lagos, Abuja, Port Harcourt, Kano, and beyond. Here's what we're doing.</p>
+            <p class="text-rev-muted text-lg mt-4 max-w-xl">The RCN is active in Lagos, Abuja, Port Harcourt, Kano, and beyond.</p>
             <div class="img-placeholder h-48 w-full mt-10 rounded max-w-lg"><svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="10" r="8"/><path d="M12 2v4M12 16v4M2 10h4M20 10h4"/><circle cx="12" cy="10" r="2" fill="#C0182A"/></svg><span class="ph-label">Map of Nigeria with activity pins</span></div>
         </div>
     </section>
@@ -25,30 +25,40 @@
                 <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Public Meetings</button>
                 <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Campus</button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="article-card bg-white border border-rev-border p-6">
-                    <div class="flex justify-between items-center mb-3"><span class="font-mono text-rev-muted text-[10px] uppercase">Lagos · June 2026</span><span class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span></div>
-                    <span class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Street Tabling</span>
-                    <h4 class="font-body font-bold text-rev-ink text-sm mb-2">Ojota bus terminal distribution: 80 papers in one hour</h4>
-                    <p class="text-rev-muted text-xs mb-3">Workers took every copy; one driver called it "the truth nobody says."</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Amaka T</p>
-                </div>
-                <div class="article-card bg-white border border-rev-border p-6">
-                    <div class="flex justify-between items-center mb-3"><span class="font-mono text-rev-muted text-[10px] uppercase">Abuja · May 2026</span><span class="w-2 h-2 bg-rev-gold rounded-full animate-pulse"></span></div>
-                    <span class="bg-rev-gold text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Study Circle</span>
-                    <h4 class="font-body font-bold text-rev-ink text-sm mb-2">UniAbuja Marxist study group formed</h4>
-                    <p class="text-rev-muted text-xs mb-3">Seven students joined after ASUU briefing; now meeting weekly.</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Emeka O</p>
-                </div>
-                <div class="article-card bg-white border border-rev-border p-6">
-                    <div class="flex justify-between items-center mb-3"><span class="font-mono text-rev-muted text-[10px] uppercase">Port Harcourt · April 2026</span><span class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span></div>
-                    <span class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Rally</span>
-                    <h4 class="font-body font-bold text-rev-ink text-sm mb-2">Oil workers speak out at NUPENG rally</h4>
-                    <p class="text-rev-muted text-xs mb-3">Worker denounced gas flaring and poverty amid oil wealth.</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Blessing A</p>
+
+            <div th:if="${#lists.isEmpty(activities)}" class="text-center text-rev-muted py-12">
+                No activity reports yet. Check back soon — or write the first one.
+            </div>
+
+            <div th:if="${!#lists.isEmpty(activities)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div th:each="a : ${activities}" class="article-card bg-white border border-rev-border p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-mono text-rev-muted text-[10px] uppercase">
+                            <span th:text="${a.location} ?: '—'">Location</span>
+                            <span th:if="${a.activityDate}" th:text="' · ' + ${#temporals.format(a.activityDate, 'MMM d, yyyy')}">Date</span>
+                        </span>
+                        <!-- Status dot: red for upcoming, gold for ongoing, muted for past -->
+                        <span th:if="${a.eventStatus?.name() == 'UPCOMING'}" class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span>
+                        <span th:if="${a.eventStatus?.name() == 'ONGOING'}" class="w-2 h-2 bg-rev-gold rounded-full animate-pulse"></span>
+                        <span th:if="${a.eventStatus?.name() == 'PAST'}" class="w-2 h-2 bg-rev-muted rounded-full"></span>
+                        <span th:if="${a.eventStatus == null}"></span>
+                    </div>
+
+                    <!-- Type badge -->
+                    <span th:if="${a.type == 'Street Tabling'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Street Tabling</span>
+                    <span th:if="${a.type == 'Study Circle'}" class="bg-rev-gold text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Study Circle</span>
+                    <span th:if="${a.type == 'Protest'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Protest</span>
+                    <span th:if="${a.type == 'Rally'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Rally</span>
+                    <span th:if="${a.type == 'Public Meeting'}" class="bg-rev-ink text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Public Meeting</span>
+                    <span th:if="${a.type == 'Campus'}" class="bg-rev-ink text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Campus</span>
+                    <span th:if="${a.type != null and a.type != 'Street Tabling' and a.type != 'Study Circle' and a.type != 'Protest' and a.type != 'Rally' and a.type != 'Public Meeting' and a.type != 'Campus'}"
+                          class="bg-rev-subtle text-rev-muted font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block" th:text="${a.type}">Type</span>
+
+                    <h4 class="font-body font-bold text-rev-ink text-sm mb-2" th:text="${a.title}">Title</h4>
+                    <p class="text-rev-muted text-xs mb-3" th:text="${a.body} ?: '—'">Body</p>
+                    <p th:if="${a.authorName}" class="font-mono text-rev-muted text-[10px]" th:text="'— ' + ${a.authorName}">— Author</p>
                 </div>
             </div>
-            <div class="text-center mt-12"><button class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors">Load More</button></div>
         </div>
     </section>
 </main>

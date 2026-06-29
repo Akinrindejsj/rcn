@@ -8,169 +8,140 @@
         <div class="flex items-end justify-between">
             <div>
                 <h1 class="font-display text-3xl uppercase text-rev-ink">Donations</h1>
-                <p class="mt-1 text-sm text-rev-muted">Donation page copy, contribution tiers, payment details, and recent donations log.</p>
+                <p class="mt-1 text-sm text-rev-muted">Donation page copy, contribution tiers, and payment details.</p>
             </div>
         </div>
 
-        <!-- Summary metric -->
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
-                <span class="mono-label">Total this month</span>
-                <div class="mt-2 font-display text-3xl text-rev-ink">₦2.8M</div>
-            </div>
-            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
-                <span class="mono-label">Recurring sustainers</span>
-                <div class="mt-2 font-display text-3xl text-rev-ink">34</div>
-            </div>
-            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
-                <span class="mono-label">One-time (this month)</span>
-                <div class="mt-2 font-display text-3xl text-rev-ink">18</div>
-            </div>
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
         </div>
 
         <!-- Donation page copy -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
-            <h3 class="font-display text-lg uppercase text-rev-ink">Donation Page Copy</h3>
-            <div>
-                <label class="mono-label block mb-2">Page heading</label>
-                <input type="text" value="Fund the Revolution" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+        <form th:action="@{/admin/cms/donations}" method="post" enctype="multipart/form-data" th:object="${donation}">
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Donation Page Copy</h3>
+                <div>
+                    <label class="mono-label block mb-2">Page heading</label>
+                    <input type="text" th:field="*{pageHeading}" placeholder="Fund the Revolution"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Intro paragraph</label>
+                    <textarea rows="2" th:field="*{introText}" placeholder="Why comrades should contribute…"
+                              class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Footer quote</label>
+                    <input type="text" th:field="*{footerQuote}" placeholder="A quote shown at the bottom of the page"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Footnote</label>
+                    <input type="text" th:field="*{footnote}" placeholder="Attribution for the quote"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Printing press image</label>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${donation.printingPressImageUrl != null and !donation.printingPressImageUrl.isBlank()}"
+                             th:src="${donation.printingPressImageUrl}" alt="Printing press"
+                             class="w-full h-48 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-48 w-full"
+                             th:classappend="${donation.printingPressImageUrl != null and !donation.printingPressImageUrl.isBlank() ? ' hidden' : ''}">
+                            <span class="ph-label">Upload an image — 1200×400 px, max 5 MB</span>
+                        </div>
+                    </div>
+                    <input type="file" name="printingPressImage" accept="image/jpeg,image/png,image/webp"
+                           class="mt-3 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="red-btn">Save Donation Page</button>
+                </div>
             </div>
-            <div>
-                <label class="mono-label block mb-2">Intro paragraph</label>
-                <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">Every naira builds the revolutionary press, funds organising work, and trains the next generation of Nigerian communists.</textarea>
-            </div>
-            <div>
-                <label class="mono-label block mb-2">Footer quote</label>
-                <input type="text" value="The liberation of the working class must be the act of the working class itself." class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
-            </div>
-        </div>
+        </form>
 
         <!-- Contribution tiers -->
         <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h3 class="font-display text-lg uppercase text-rev-ink">Contribution Tiers</h3>
-                <button class="outline-btn">+ Add tier</button>
+                <a th:href="@{/admin/cms/donations/tiers/new}" class="outline-btn no-underline">+ Add tier</a>
             </div>
-            <div class="space-y-3">
-                <div class="grid grid-cols-12 gap-3 items-end">
-                    <div class="col-span-3"><label class="mono-label block mb-2">Amount (₦)</label><input type="text" value="5,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-3"><label class="mono-label block mb-2">Tier name</label><input type="text" value="Sustainer" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-5"><label class="mono-label block mb-2">What it funds</label><input type="text" value="One week of newspaper printing" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
-                </div>
-                <div class="grid grid-cols-12 gap-3 items-end">
-                    <div class="col-span-3"><input type="text" value="10,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-3"><input type="text" value="Builder" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-5"><input type="text" value="Transport for one street-tabling day" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
-                </div>
-                <div class="grid grid-cols-12 gap-3 items-end">
-                    <div class="col-span-3"><input type="text" value="25,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-3"><input type="text" value="Organiser" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-5"><input type="text" value="One campus outreach event" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
-                </div>
-                <div class="grid grid-cols-12 gap-3 items-end">
-                    <div class="col-span-3"><input type="text" value="50,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-3"><input type="text" value="Revolutionary" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-5"><input type="text" value="Sponsor a comrade to the World School" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
-                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+
+            <div th:if="${#lists.isEmpty(tiers)}" class="text-sm text-rev-muted py-4">
+                No tiers yet. Add the first contribution tier.
+            </div>
+
+            <div th:if="${!#lists.isEmpty(tiers)}" class="space-y-3">
+                <div th:each="t : ${tiers}" class="grid grid-cols-12 gap-3 items-end border-b border-rev-border pb-3">
+                    <div class="col-span-2">
+                        <label class="mono-label block mb-2">Amount (₦)</label>
+                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm font-mono" th:text="${t.amount}">5,000</span>
+                    </div>
+                    <div class="col-span-3">
+                        <label class="mono-label block mb-2">Tier name</label>
+                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${t.tierName}">Sustainer</span>
+                    </div>
+                    <div class="col-span-3">
+                        <label class="mono-label block mb-2">What it funds</label>
+                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" th:text="${t.description} ?: '—'">Description</span>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="mono-label block mb-2">Recurring</label>
+                        <span class="block rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm"
+                              th:text="${t.recurring != null and t.recurring ? 'Yes' : 'No'}">No</span>
+                    </div>
+                    <div class="col-span-2 flex gap-2 justify-end">
+                        <a th:href="@{/admin/cms/donations/tiers/{id}/edit(id=${t.id})}" class="text-rev-muted hover:text-red-700 text-xs">Edit</a>
+                        <form method="post" th:action="@{/admin/cms/donations/tiers/{id}/delete(id=${t.id})}" class="inline"
+                              onsubmit="return confirm('Remove this tier?')">
+                            <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Payment details -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-            <h3 class="font-display text-lg uppercase text-rev-ink">Payment Details</h3>
-            <p class="text-xs text-rev-muted">Bank details shown to comrades at the bottom of the donation form.</p>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                    <label class="mono-label block mb-2">Bank name</label>
-                    <input type="text" value="First Bank of Nigeria" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+        <form th:action="@{/admin/cms/donations/payment}" method="post" th:object="${payment}">
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Payment Details</h3>
+                <p class="text-xs text-rev-muted">Bank details shown to comrades at the bottom of the donation form.</p>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="mono-label block mb-2">Bank name</label>
+                        <input type="text" th:field="*{bankName}" placeholder="First Bank of Nigeria"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Account name</label>
+                        <input type="text" th:field="*{accountName}" placeholder="Revolutionary Communists of Nigeria"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Account number</label>
+                        <input type="text" th:field="*{accountNumber}" placeholder="1234567890"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Sort code (if applicable)</label>
+                        <input type="text" th:field="*{sortCode}" placeholder="011"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
                 </div>
-                <div>
-                    <label class="mono-label block mb-2">Account name</label>
-                    <input type="text" value="Revolutionary Communists of Nigeria" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
-                </div>
-                <div>
-                    <label class="mono-label block mb-2">Account number</label>
-                    <input type="text" value="1234567890" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
-                </div>
-                <div>
-                    <label class="mono-label block mb-2">Sort code (if applicable)</label>
-                    <input type="text" value="011" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                <div class="flex justify-end">
+                    <button type="submit" class="red-btn">Save Payment Details</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Recent donations log -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
-            <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Recent Donations</h3>
-                <span class="mono-label">Last 30 days</span>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
-                    <tr>
-                        <th class="px-6 py-3 font-medium font-mono">Donor</th>
-                        <th class="px-6 py-3 font-medium font-mono">Amount</th>
-                        <th class="px-6 py-3 font-medium font-mono">Type</th>
-                        <th class="px-6 py-3 font-medium font-mono">Date</th>
-                        <th class="px-6 py-3 font-medium font-mono"></th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-rev-border">
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4 text-rev-ink">Chinedu O.</td>
-                        <td class="px-6 py-4 font-mono text-rev-gold">₦25,000</td>
-                        <td class="px-6 py-4 text-rev-muted">One-time</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 20, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4 text-rev-ink">Anonymous Comrade</td>
-                        <td class="px-6 py-4 font-mono text-rev-gold">₦50,000</td>
-                        <td class="px-6 py-4 text-rev-muted">One-time</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 18, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4 text-rev-ink">Ngozi A.</td>
-                        <td class="px-6 py-4 font-mono text-rev-gold">₦10,000</td>
-                        <td class="px-6 py-4 text-rev-muted">Monthly</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 15, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4 text-rev-ink">Emeka O.</td>
-                        <td class="px-6 py-4 font-mono text-rev-gold">₦5,000</td>
-                        <td class="px-6 py-4 text-rev-muted">Monthly</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 12, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Save -->
-        <div class="flex justify-end gap-3">
-            <button class="outline-btn">Cancel</button>
-            <button class="red-btn">Save Donations</button>
-        </div>
+        </form>
 
     </div>
 </main>

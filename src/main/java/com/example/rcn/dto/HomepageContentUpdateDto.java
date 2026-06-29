@@ -28,6 +28,19 @@ public class HomepageContentUpdateDto {
     private String featuredArticleDate;
     private String featuredArticleUrl;
 
+    // Homepage selections
+    private String featuredArticleId;
+    private String homepageArticleIds;
+    private String homepagePodcastIds;
+    private String homepageActivityIds;
+
+    // Per-section image URLs (populated by the service after upload; echoed back
+    // so the CMS editor can re-render previews after a save).
+    private String featuredArticleImageUrl;
+    private String podcastSectionImageUrl;
+    private String activitySectionImageUrl;
+    private String tickerBackgroundImageUrl;
+
     // Stats
     private String stat1Number;
     private String stat1Label;
@@ -202,5 +215,69 @@ public class HomepageContentUpdateDto {
 
     public void setStat3Label(String stat3Label) {
         this.stat3Label = stat3Label;
+    }
+
+    public String getFeaturedArticleId() {
+        return featuredArticleId;
+    }
+
+    public void setFeaturedArticleId(String featuredArticleId) {
+        this.featuredArticleId = featuredArticleId;
+    }
+
+    public String getHomepageArticleIds() {
+        return homepageArticleIds;
+    }
+
+    public void setHomepageArticleIds(String homepageArticleIds) {
+        this.homepageArticleIds = homepageArticleIds;
+    }
+
+    public String getHomepagePodcastIds() {
+        return homepagePodcastIds;
+    }
+
+    public void setHomepagePodcastIds(String homepagePodcastIds) {
+        this.homepagePodcastIds = homepagePodcastIds;
+    }
+
+    public String getHomepageActivityIds() {
+        return homepageActivityIds;
+    }
+
+    public void setHomepageActivityIds(String homepageActivityIds) {
+        this.homepageActivityIds = homepageActivityIds;
+    }
+
+    public String getFeaturedArticleImageUrl() {
+        return featuredArticleImageUrl;
+    }
+
+    public void setFeaturedArticleImageUrl(String featuredArticleImageUrl) {
+        this.featuredArticleImageUrl = featuredArticleImageUrl;
+    }
+
+    public String getPodcastSectionImageUrl() {
+        return podcastSectionImageUrl;
+    }
+
+    public void setPodcastSectionImageUrl(String podcastSectionImageUrl) {
+        this.podcastSectionImageUrl = podcastSectionImageUrl;
+    }
+
+    public String getActivitySectionImageUrl() {
+        return activitySectionImageUrl;
+    }
+
+    public void setActivitySectionImageUrl(String activitySectionImageUrl) {
+        this.activitySectionImageUrl = activitySectionImageUrl;
+    }
+
+    public String getTickerBackgroundImageUrl() {
+        return tickerBackgroundImageUrl;
+    }
+
+    public void setTickerBackgroundImageUrl(String tickerBackgroundImageUrl) {
+        this.tickerBackgroundImageUrl = tickerBackgroundImageUrl;
     }
 }

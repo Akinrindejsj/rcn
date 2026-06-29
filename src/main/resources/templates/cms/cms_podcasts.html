@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle='Podcasts'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Podcast Episodes</h1>
+                <p class="mt-1 text-sm text-rev-muted">Manage episodes for The Nigerian Communist Podcast.</p>
+            </div>
+            <a th:href="@{/admin/cms/podcasts/new}" href="/admin/cms/podcasts/new" class="red-btn flex items-center gap-2">
+                <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                New Episode
+            </a>
+        </div>
+
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(podcasts)}"
+             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+            <iconify-icon icon="lucide:headphones" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+            <p class="mt-4 text-rev-muted">No episodes yet. Click "New Episode" to record the first one.</p>
+        </div>
+
+        <!-- Episodes Table -->
+        <div th:if="${!#lists.isEmpty(podcasts)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Episodes</h3>
+                <span class="mono-label" th:text="${#lists.size(podcasts)} + ' episodes'">0 episodes</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Episode</th>
+                        <th class="px-6 py-3 font-medium font-mono">Title</th>
+                        <th class="px-6 py-3 font-medium font-mono">Duration</th>
+                        <th class="px-6 py-3 font-medium font-mono">Date</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr th:each="p : ${podcasts}" class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono" th:text="${p.episodeNumber != null ? 'EP ' + p.episodeNumber : '—'}">EP 1</td>
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink" th:text="${p.title}">Episode Title</div>
+                            <div class="text-xs text-rev-muted line-clamp-1" th:if="${p.description}" th:text="${p.description}">Description</div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${p.duration ?: '—'}">Duration</td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${p.publishedAt != null ? #temporals.format(p.publishedAt, 'MMM d, yyyy') : '—'}">Date</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/podcasts/{id}/edit(id=${p.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <form method="post" th:action="@{/admin/cms/podcasts/{id}/delete(id=${p.id})}" class="inline"
+                                  onsubmit="return confirm('Delete this episode? This cannot be undone.')">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

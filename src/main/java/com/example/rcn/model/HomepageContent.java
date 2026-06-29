@@ -74,6 +74,36 @@ public class HomepageContent {
     @Column(name = "featured_article_url")
     private String featuredArticleUrl;
 
+    // ---- Homepage article / podcast / activity selections ----
+    /** Id of the article featured in the hero (optional). */
+    @Column(name = "featured_article_id")
+    private Long featuredArticleId;
+
+    /** Comma-separated ids of up to 6 additional articles shown on the homepage. */
+    @Column(name = "homepage_article_ids")
+    private String homepageArticleIds = "";
+
+    /** Comma-separated ids of up to 4 podcasts shown in the homepage podcast section. */
+    @Column(name = "homepage_podcast_ids")
+    private String homepagePodcastIds = "";
+
+    /** Comma-separated ids of up to 3 activities shown in the homepage activity section. */
+    @Column(name = "homepage_activity_ids")
+    private String homepageActivityIds = "";
+
+    /** Cloudinary URLs for the per-section images added in Part A. */
+    @Column(name = "featured_article_image_url", length = 1024)
+    private String featuredArticleImageUrl = "";
+
+    @Column(name = "podcast_section_image_url", length = 1024)
+    private String podcastSectionImageUrl = "";
+
+    @Column(name = "activity_section_image_url", length = 1024)
+    private String activitySectionImageUrl = "";
+
+    @Column(name = "ticker_background_image_url", length = 1024)
+    private String tickerBackgroundImageUrl = "";
+
     // ---- Statistics strip ----
     @Column(name = "stat_1_number")
     private String stat1Number;
@@ -143,6 +173,16 @@ public class HomepageContent {
                 + "Marxist economics gives us the answer.";
         c.featuredArticleDate = "Economy · June 2026";
         c.featuredArticleUrl = "/article";
+
+        // Homepage selections
+        c.featuredArticleId = null;
+        c.homepageArticleIds = "";
+        c.homepagePodcastIds = "";
+        c.homepageActivityIds = "";
+        c.featuredArticleImageUrl = "";
+        c.podcastSectionImageUrl = "";
+        c.activitySectionImageUrl = "";
+        c.tickerBackgroundImageUrl = "";
 
         // Stats
         c.stat1Number = "133M+";
@@ -339,5 +379,98 @@ public class HomepageContent {
 
     public void setStat3Label(String stat3Label) {
         this.stat3Label = stat3Label;
+    }
+
+    // ---- Homepage selection fields ----
+
+    public Long getFeaturedArticleId() {
+        return featuredArticleId;
+    }
+
+    public void setFeaturedArticleId(Long featuredArticleId) {
+        this.featuredArticleId = featuredArticleId;
+    }
+
+    public String getHomepageArticleIds() {
+        return homepageArticleIds;
+    }
+
+    public void setHomepageArticleIds(String homepageArticleIds) {
+        this.homepageArticleIds = homepageArticleIds;
+    }
+
+    public String getHomepagePodcastIds() {
+        return homepagePodcastIds;
+    }
+
+    public void setHomepagePodcastIds(String homepagePodcastIds) {
+        this.homepagePodcastIds = homepagePodcastIds;
+    }
+
+    public String getHomepageActivityIds() {
+        return homepageActivityIds;
+    }
+
+    public void setHomepageActivityIds(String homepageActivityIds) {
+        this.homepageActivityIds = homepageActivityIds;
+    }
+
+    public String getFeaturedArticleImageUrl() {
+        return featuredArticleImageUrl;
+    }
+
+    public void setFeaturedArticleImageUrl(String featuredArticleImageUrl) {
+        this.featuredArticleImageUrl = featuredArticleImageUrl;
+    }
+
+    public String getPodcastSectionImageUrl() {
+        return podcastSectionImageUrl;
+    }
+
+    public void setPodcastSectionImageUrl(String podcastSectionImageUrl) {
+        this.podcastSectionImageUrl = podcastSectionImageUrl;
+    }
+
+    public String getActivitySectionImageUrl() {
+        return activitySectionImageUrl;
+    }
+
+    public void setActivitySectionImageUrl(String activitySectionImageUrl) {
+        this.activitySectionImageUrl = activitySectionImageUrl;
+    }
+
+    public String getTickerBackgroundImageUrl() {
+        return tickerBackgroundImageUrl;
+    }
+
+    public void setTickerBackgroundImageUrl(String tickerBackgroundImageUrl) {
+        this.tickerBackgroundImageUrl = tickerBackgroundImageUrl;
+    }
+
+    /**
+     * Splits the stored {@code homepageArticleIds} ("1,2,3") into a list of ids.
+     * Returns an empty list when unset.
+     */
+    public java.util.List<Long> getHomepageArticleIdList() {
+        return idListFrom(homepageArticleIds);
+    }
+
+    public java.util.List<Long> getHomepagePodcastIdList() {
+        return idListFrom(homepagePodcastIds);
+    }
+
+    public java.util.List<Long> getHomepageActivityIdList() {
+        return idListFrom(homepageActivityIds);
+    }
+
+    private static java.util.List<Long> idListFrom(String csv) {
+        if (csv == null || csv.isBlank()) {
+            return java.util.List.of();
+        }
+        return java.util.Arrays.stream(csv.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Long::parseLong)
+                .toList();
     }
 }

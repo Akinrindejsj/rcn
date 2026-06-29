@@ -40,13 +40,38 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="lg:col-span-2">
                 <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
-                <form class="space-y-6">
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Title</label><input type="text" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Category</label><select class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"><option>Analysis</option><option>Frontline Report</option><option>Letter & Debate</option><option>Other</option></select></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Body</label><textarea rows="10" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-none"></textarea></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your Name (as you want it published)</label><input type="text" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address (for editorial contact, not published)</label><input type="email" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Attachments (images, max 5MB each)</label><div class="border-2 border-dashed border-rev-border p-6 text-center bg-rev-subtle"><span class="font-mono text-rev-muted text-xs">Drag files here or click to upload (JPG, PNG)</span></div></div>
+
+                <!-- Flash banners -->
+                <div th:if="${successMessage}"
+                     class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
+                    <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+                    <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+                </div>
+                <div th:if="${errorMessage}"
+                     class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
+                    <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+                    <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+                </div>
+
+                <form th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" class="space-y-6">
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Title</label><input type="text" th:field="*{title}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Category</label>
+                        <select th:field="*{category}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors">
+                            <option value="">— Choose a category —</option>
+                            <option>Analysis</option>
+                            <option>Frontline Report</option>
+                            <option>Letter & Debate</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Body</label><textarea rows="10" th:field="*{body}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-y"></textarea></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your Name (as you want it published)</label><input type="text" th:field="*{authorName}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address (for editorial contact, not published)</label><input type="email" th:field="*{emailAddress}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div>
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Attachment (image, max 5 MB)</label>
+                        <input type="file" name="attachment" accept="image/jpeg,image/png,image/webp"
+                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    </div>
                     <button type="submit" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review →</button>
                 </form>
             </div>
@@ -56,12 +81,12 @@
                     <p class="text-rev-muted text-sm">The revolutionary press is a collective organiser. Your words can inspire action, expose exploitation, and sharpen our theory.</p>
                 </div>
                 <div class="bg-rev-page p-6 border border-rev-border">
-                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Current Calls</h4>
+                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">What We Look For</h4>
                     <ul class="text-rev-muted text-sm space-y-2">
-                        <li>→ Naira devaluation & inflation</li>
-                        <li>→ ASUU & education crisis</li>
-                        <li>→ Niger Delta environmental crimes</li>
-                        <li>→ Women in the informal economy</li>
+                        <li>→ Clear, plain English</li>
+                        <li>→ Marxist analysis, not slogans</li>
+                        <li>→ Concrete examples from Nigerian life</li>
+                        <li>→ 800–2,000 words for analysis</li>
                     </ul>
                 </div>
             </aside>

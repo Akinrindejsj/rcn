@@ -1,115 +1,122 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
 <body>
-<main layout:fragment="content" th:with="pageTitle='Article'">
+<main layout:fragment="content" th:with="pageTitle=${article.id} ? 'Edit Article' : 'New Article'">
     <div class="mx-auto max-w-6xl space-y-8">
 
         <!-- Page Header -->
         <div class="flex items-end justify-between">
             <div>
-                <h1 class="font-display text-3xl uppercase text-rev-ink">Edit Article</h1>
-                <p class="mt-1 text-sm text-rev-muted">Editing: <span class="text-rev-ink font-medium">The Tinubu Subsidy Removal: Who Really Paid?</span></p>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${article.id} ? 'Edit Article' : 'New Article'">New Article</h1>
+                <p class="mt-1 text-sm text-rev-muted" th:if="${article.id}">Editing an existing article.</p>
             </div>
-            <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn">← Back to Articles</a>
+            <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn no-underline">← Back to Articles</a>
         </div>
 
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <!-- Main content column -->
-            <div class="space-y-6 lg:col-span-2">
-
-                <!-- Title -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Article title</label>
-                    <input type="text" value="The Tinubu Subsidy Removal: Who Really Paid?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
-                </div>
-
-                <!-- Body -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                    <label class="mono-label block">Article body</label>
-                    <textarea rows="16" class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface">When President Bola Tinubu announced the immediate removal of the fuel subsidy on 29 May 2023, the International Monetary Fund issued a statement praising Nigeria's "bold reform." The World Bank followed. Financial markets cheered. But for the 133 million Nigerians already living below the poverty line, the announcement meant something entirely different.
-
-Within 24 hours of the announcement, the price of petrol tripled across Nigeria. Transport costs surged by over 200%. The price of staple foods — rice, beans, garri — climbed by 40–60% within weeks. For a worker earning the minimum wage of ₦30,000 per month, the maths became impossible.
-
-But was this really a "subsidy" — a generous gift from the government to ordinary Nigerians? Marxist economics reveals a different story. The subsidy was never a gift to the poor. It was a mechanism by which the Nigerian state, acting on behalf of the capitalist class, kept the working class just above the starvation line — cheaply — so that labour could continue to be exploited.
-
-The real beneficiaries of the fuel subsidy were not ordinary Nigerians but the oil corporations, the import-dependent bourgeoisie, and the state bureaucracy that skimmed billions from the subsidy regime. The removal has not ended the drain on public resources — it has simply redirected it.
-
-The answer is not to restore the subsidy, which would only patch a broken system. The answer is to nationalise the oil industry under workers' control. Nigeria's oil wealth must serve the Nigerian people — not Shell, not TotalEnergies, not the politicians who auction our common wealth for private gain.</textarea>
-                    <p class="text-xs text-rev-muted">Write the full article text. Use blank lines to separate paragraphs.</p>
-                </div>
-
-                <!-- Excerpt -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Short summary (shown on article cards and search)</label>
-                    <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe. Marxist economics gives us the answer.</textarea>
-                </div>
-            </div>
-
-            <!-- Sidebar column -->
-            <div class="space-y-6">
-
-                <!-- Publish settings -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">Publish</h3>
-                    <div>
-                        <label class="mono-label block mb-2">Status</label>
-                        <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                            <option>Published</option>
-                            <option>Draft</option>
-                            <option>Scheduled</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Publish date</label>
-                        <input type="date" value="2026-06-15" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Author</label>
-                        <input type="text" value="Editorial Collective" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                    <div class="flex gap-3 pt-2">
-                        <button class="red-btn flex-1">Save</button>
-                        <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn flex-1 text-center">Cancel</a>
-                    </div>
-                </div>
-
-                <!-- Category -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Category</label>
-                    <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                        <option>Economy</option>
-                        <option>Labour</option>
-                        <option>Oil &amp; Gas</option>
-                        <option>Youth</option>
-                        <option>Gender</option>
-                        <option>History</option>
-                        <option>Imperialism</option>
-                        <option>State &amp; Politics</option>
-                        <option>Theory</option>
-                    </select>
-                </div>
-
-                <!-- Featured image -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
-                    <label class="mono-label block">Featured image</label>
-                    <div class="img-placeholder h-40 w-full rounded">
-                        <span class="ph-label">Current: fuel queue photograph<br/>Click below to replace</span>
-                    </div>
-                    <button class="outline-btn w-full text-center">Replace image</button>
-                    <p class="text-xs text-rev-muted">Recommended: 1200 × 630 px, JPG or PNG.</p>
-                </div>
-
-                <!-- URL slug -->
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Web address (slug)</label>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-rev-muted">/articles/</span>
-                        <input type="text" value="tinubu-subsidy-removal" class="flex-1 rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                </div>
-
-            </div>
+        <!-- Success / error banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
         </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <form th:action="${article.id} ? @{/admin/cms/articles/{id}/edit(id=${article.id})} : @{/admin/cms/articles/new}"
+              method="post" enctype="multipart/form-data" th:object="${article}">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <!-- Main content column -->
+                <div class="space-y-6 lg:col-span-2">
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Article title</label>
+                        <input type="text" th:field="*{title}" placeholder="A clear, compelling headline"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                    </div>
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <label class="mono-label block">Article body</label>
+                        <textarea rows="16" th:field="*{body}" placeholder="Write the full article. Use blank lines to separate paragraphs."
+                                  class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                        <p class="text-xs text-rev-muted">Write the full article text. Use blank lines to separate paragraphs.</p>
+                    </div>
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Short summary (shown on article cards)</label>
+                        <textarea rows="2" th:field="*{excerpt}" placeholder="A one or two sentence summary."
+                                  class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sidebar column -->
+                <div class="space-y-6">
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Publish</h3>
+                        <div>
+                            <label class="mono-label block mb-2">Status</label>
+                            <select th:field="*{status}"
+                                    class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}">DRAFT</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Publish date</label>
+                            <input type="datetime-local" th:field="*{publishedAt}"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            <p class="text-xs text-rev-muted mt-1">Leave blank to unpublish; the date is set automatically when you publish.</p>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Author</label>
+                            <input type="text" th:field="*{authorName}" placeholder="Author name"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" class="red-btn flex-1">Save</button>
+                            <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Category</label>
+                        <input type="text" th:field="*{category}" placeholder="e.g. Economy, Labour, Oil & Gas"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+
+                    <!-- Featured image -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                        <label class="mono-label block">Featured image</label>
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                            <img th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}"
+                                 th:src="${article.featuredImageUrl}" alt="Current image"
+                                 class="w-full h-40 object-cover"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-placeholder h-40 w-full"
+                                 th:classappend="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank() ? ' hidden' : ''}">
+                                <span class="ph-label">Upload a featured image — 1200×630 px, max 5 MB</span>
+                            </div>
+                        </div>
+                        <input type="file" name="featuredImage" accept="image/jpeg,image/png,image/webp"
+                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    </div>
+
+                    <!-- URL slug -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Web address (slug)</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-rev-muted">/article/slug/</span>
+                            <input type="text" th:field="*{slug}" placeholder="leave blank to generate from title"
+                                   class="flex-1 rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red font-mono">
+                        </div>
+                        <p class="text-xs text-rev-muted mt-1">Lowercase letters, numbers and hyphens only. Leave blank to generate.</p>
+                    </div>
+
+                </div>
+            </div>
+        </form>
 
     </div>
 </main>

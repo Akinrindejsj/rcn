@@ -129,8 +129,9 @@
 <!-- Top Banner -->
 <div class="bg-rev-red text-white py-2 px-4 text-center">
     <p class="font-mono text-xs uppercase tracking-widest">
-        Nigerian Section of the <a href="https://marxist.com" target="_blank" class="underline hover:no-underline">Revolutionary Communist International</a>
-        &nbsp;·&nbsp; Workers of All Countries, Unite!
+        <span th:text="${settings.tagline} ?: 'Nigerian Section of the Revolutionary Communist International'">Tagline</span>
+        &nbsp;·&nbsp;
+        <span th:text="${settings.closingSlogan} ?: 'Workers of All Countries, Unite!'">Slogan</span>
     </p>
 </div>
 
@@ -147,7 +148,7 @@
             <a th:href="@{/write}" href="/write" class="hover:text-rev-red transition-colors">Write</a>
             <a th:href="@{/theory}" href="/theory" class="hover:text-rev-red transition-colors">Theory</a>
             <a th:href="@{/about}" href="/about" class="hover:text-rev-red transition-colors">About</a>
-            <a href="https://www.marxistbooks.com/" target="_blank" class="hover:text-rev-red transition-colors">Shop ↗</a>
+            <a th:href="${settings.booksUrl} ?: 'https://www.marxistbooks.com/'" href="https://www.marxistbooks.com/" target="_blank" class="hover:text-rev-red transition-colors">Shop ↗</a>
         </div>
         <div class="flex items-center gap-3">
             <a th:href="@{/join}" href="/join" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 transition-colors cta-pulse hidden sm:block">Join Us →</a>
@@ -165,7 +166,7 @@
         <a th:href="@{/write}" href="/write" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Write</a>
         <a th:href="@{/theory}" href="/theory" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Theory</a>
         <a th:href="@{/about}" href="/about" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">About</a>
-        <a href="https://shop.example.com" target="_blank" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Shop ↗</a>
+        <a th:href="${settings.booksUrl} ?: 'https://www.marxistbooks.com/'" href="#" target="_blank" class="block font-mono text-sm uppercase tracking-widest text-rev-muted hover:text-rev-red py-2">Shop ↗</a>
         <a th:href="@{/join}" href="/join" class="block bg-rev-red text-white font-mono text-sm uppercase tracking-widest px-5 py-3 text-center mt-2">Join Us →</a>
     </div>
 </nav>
@@ -177,7 +178,7 @@
         <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
             <div class="max-w-xs">
                 <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="RCN Logo" class="h-14 w-auto mb-5">
-                <p class="text-white/40 text-xs leading-relaxed mb-6">Nigerian section of the Revolutionary Communist International. Fighting for a socialist Nigeria, for workers' power, for human liberation.</p>
+                <p class="text-white/40 text-xs leading-relaxed mb-6" th:text="${settings.footerDescription} ?: ''">Footer description.</p>
                 <div class="img-placeholder h-24 w-full rounded" style="background:#2a2a2a;"><span class="ph-label text-white/30">RCN newspaper front page</span></div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-x-14 gap-y-8 text-xs">
@@ -196,21 +197,21 @@
                 </div>
                 <div class="space-y-3">
                     <p class="font-mono text-rev-red uppercase tracking-widest mb-4">International</p>
-                    <a href="https://marxist.com" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">marxist.com</a>
+                    <a th:href="${settings.marxistUrl} ?: 'https://marxist.com'" href="https://marxist.com" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">marxist.com</a>
                     <a href="#" class="block text-white/50 hover:text-white transition-colors font-body">All RCI Sections</a>
-                    <a href="https://shop.example.com" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">Shop ↗</a>
+                    <a th:href="${settings.booksUrl} ?: 'https://www.marxistbooks.com/'" href="#" target="_blank" class="block text-white/50 hover:text-white transition-colors font-body">Shop ↗</a>
                 </div>
             </div>
         </div>
         <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="font-mono text-white/30 text-[11px]">© 2026 Revolutionary Communists of Nigeria · Nigerian Section of the RCI</p>
+            <p class="font-mono text-white/30 text-[11px]" th:text="${settings.copyrightLine} ?: '© 2026 Revolutionary Communists of Nigeria'">Copyright line</p>
             <div class="flex items-center gap-6">
-                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">X / Twitter</a>
-                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Instagram</a>
-                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">YouTube</a>
-                <a href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Telegram</a>
+                <a th:if="${settings.socialX}" th:href="${settings.socialX}" href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">X / Twitter</a>
+                <a th:if="${settings.socialInstagram}" th:href="${settings.socialInstagram}" href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Instagram</a>
+                <a th:if="${settings.socialYoutube}" th:href="${settings.socialYoutube}" href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">YouTube</a>
+                <a th:if="${settings.socialTelegram}" th:href="${settings.socialTelegram}" href="#" class="font-mono text-white/30 text-[11px] hover:text-rev-red transition-colors uppercase tracking-widest">Telegram</a>
             </div>
-            <p class="font-mono text-white/30 text-[11px] italic">Workers of All Countries, Unite!</p>
+            <p class="font-mono text-white/30 text-[11px] italic" th:text="${settings.closingSlogan} ?: 'Workers of All Countries, Unite!'">Slogan</p>
         </div>
     </div>
 </footer>

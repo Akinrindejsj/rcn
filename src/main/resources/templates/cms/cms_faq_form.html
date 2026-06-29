@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle=${faq.id} ? 'Edit Question' : 'New Question'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${faq.id} ? 'Edit Question' : 'New Question'">New Question</h1>
+            </div>
+            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn no-underline">← Back to About Page</a>
+        </div>
+
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <form th:action="${faq.id} ? @{/admin/cms/about/faqs/{id}/edit(id=${faq.id})} : @{/admin/cms/about/faqs/new}"
+              method="post" th:object="${faq}">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div class="space-y-6 lg:col-span-2">
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <div>
+                            <label class="mono-label block mb-2">Question</label>
+                            <input type="text" th:field="*{question}" placeholder="e.g. Is the RCN a political party?"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Answer</label>
+                            <textarea rows="4" th:field="*{answer}" placeholder="Write a clear, plain-English answer."
+                                      class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></textarea>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Sort order (optional)</label>
+                            <input type="number" th:field="*{sortOrder}" placeholder="Lower numbers appear first"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Save</h3>
+                        <div class="flex gap-3">
+                            <button type="submit" class="red-btn flex-1">Save</button>
+                            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</main>
+</body>
+</html>

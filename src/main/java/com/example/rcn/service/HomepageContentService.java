@@ -34,11 +34,6 @@ public class HomepageContentService {
     /**
      * Loads the singleton homepage row, seeding it from {@link HomepageContent#defaults()}
      * the first time it is requested.
-     *
-     * The seed is saved as a *transient* entity (no id assigned) so JPA performs a
-     * persist() and the database assigns id = 1 via the identity column. Passing a
-     * pre-assigned id would make the instance detached, causing save() to run
-     * merge() and throw StaleObjectStateException when no row exists yet.
      */
     public HomepageContent getSingleton() {
         return repository.findById(HomepageContent.SINGLETON_ID)
@@ -129,20 +124,55 @@ public class HomepageContentService {
             entity.setStat3Label(dto.getStat3Label().trim());
         }
 
+        // ---- Selection fields: store the submitted id CSV verbatim. ----
+        if (dto.getFeaturedArticleId() != null) {
+            entity.setFeaturedArticleId(parseNullableLong(dto.getFeaturedArticleId()));
+        }
+        if (dto.getHomepageArticleIds() != null) {
+            entity.setHomepageArticleIds(dto.getHomepageArticleIds().trim());
+        }
+        if (dto.getHomepagePodcastIds() != null) {
+            entity.setHomepagePodcastIds(dto.getHomepagePodcastIds().trim());
+        }
+        if (dto.getHomepageActivityIds() != null) {
+            entity.setHomepageActivityIds(dto.getHomepageActivityIds().trim());
+        }
+
         // ---- Validation: reject any currently-set field that has been blanked out. ----
         assertNoBlankedField(entity);
 
         // ---- Image fields: upload any newly provided file to Cloudinary. ----
         if (images != null) {
-            MultipartFile heroImage = images.get("heroImage");
-            if (heroImage != null && !heroImage.isEmpty()) {
-                validateImage(heroImage);
-                String url = cloudinaryService.uploadImage(heroImage, "rcn/homepage");
-                entity.setHeroImage(url);
-            }
+            uploadIfPresent(images, "heroImage", "rcn/homepage", entity::setHeroImage);
+            uploadIfPresent(images, "featuredArticleImage", "rcn/homepage",
+                    entity::setFeaturedArticleImageUrl);
+            uploadIfPresent(images, "podcastSectionImage", "rcn/homepage",
+                    entity::setPodcastSectionImageUrl);
+            uploadIfPresent(images, "activitySectionImage", "rcn/homepage",
+                    entity::setActivitySectionImageUrl);
+            uploadIfPresent(images, "tickerBackgroundImage", "rcn/homepage",
+                    entity::setTickerBackgroundImageUrl);
         }
 
         return repository.save(entity);
+    }
+
+    private void uploadIfPresent(Map<String, MultipartFile> images, String key,
+                                 String folder,
+                                 java.util.function.Consumer<String> setter) throws CloudinaryUploadException {
+        MultipartFile file = images.get(key);
+        if (file != null && !file.isEmpty()) {
+            validateImage(file);
+            String url = cloudinaryService.uploadImage(file, folder);
+            setter.accept(url);
+        }
+    }
+
+    private static Long parseNullableLong(String s) {
+        if (s == null || s.isBlank()) {
+            return null;
+        }
+        return Long.parseLong(s.trim());
     }
 
     private static boolean notBlank(String s) {
@@ -150,10 +180,6 @@ public class HomepageContentService {
     }
 
     private void assertNoBlankedField(HomepageContent entity) {
-        // A field that is currently set may not be saved as blank. We only fire
-        // this when the DTO value was non-blank (i.e. the user submitted a new
-        // value), so the check below is belt-and-suspenders against programmatic
-        // misuse rather than a user-facing trap.
         if (entity.getHeroHeadline() != null && entity.getHeroHeadline().isBlank()) {
             throw new IllegalArgumentException("Hero headline cannot be blank.");
         }

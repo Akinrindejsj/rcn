@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle='Overview'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Dashboard</h1>
+                <p class="mt-1 text-sm text-rev-muted">The pulse of the revolutionary press and organising work.</p>
+            </div>
+        </div>
+
+        <!-- Metrics Grid — one card per CMS-managed resource -->
+        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <!-- Published articles -->
+            <a th:href="@{/admin/cms/articles}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+                <div class="flex items-center justify-between">
+                    <span class="mono-label">Published Articles</span>
+                    <iconify-icon icon="lucide:file-text" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                </div>
+                <div class="mt-2 flex items-baseline gap-2">
+                    <span class="font-display text-3xl text-rev-ink" th:text="${articleCount}">0</span>
+                </div>
+            </a>
+
+            <!-- Pending approval -->
+            <a th:href="@{/editor}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+                <div class="flex items-center justify-between">
+                    <span class="mono-label">Pending Approval</span>
+                    <iconify-icon icon="lucide:clipboard-check" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                </div>
+                <div class="mt-2 flex items-baseline gap-2">
+                    <span class="font-display text-3xl text-rev-ink" th:text="${pendingCount}">0</span>
+                    <span th:if="${pendingCount > 0}" class="text-xs font-medium text-rev-red">Needs review</span>
+                </div>
+            </a>
+
+            <!-- Podcast episodes -->
+            <a th:href="@{/admin/cms/podcasts}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+                <div class="flex items-center justify-between">
+                    <span class="mono-label">Podcast Episodes</span>
+                    <iconify-icon icon="lucide:headphones" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                </div>
+                <div class="mt-2 flex items-baseline gap-2">
+                    <span class="font-display text-3xl text-rev-ink" th:text="${podcastCount}">0</span>
+                </div>
+            </a>
+
+            <!-- Activity reports -->
+            <a th:href="@{/admin/cms/events}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+                <div class="flex items-center justify-between">
+                    <span class="mono-label">Activity Reports</span>
+                    <iconify-icon icon="lucide:globe" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                </div>
+                <div class="mt-2 flex items-baseline gap-2">
+                    <span class="font-display text-3xl text-rev-ink" th:text="${activityCount ?: 0}">0</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Quick links -->
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 lg:col-span-2">
+                <h3 class="font-display text-lg uppercase text-rev-ink mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <a th:href="@{/admin/cms/articles/new}" class="rounded-lg border border-rev-border p-4 text-center no-underline hover:border-rev-red transition-colors">
+                        <iconify-icon icon="lucide:file-plus" width="24" height="24" stroke-width="1.5" class="text-rev-red"></iconify-icon>
+                        <p class="mt-2 text-xs font-medium text-rev-ink">New Article</p>
+                    </a>
+                    <a th:href="@{/admin/cms/podcasts/new}" class="rounded-lg border border-rev-border p-4 text-center no-underline hover:border-rev-red transition-colors">
+                        <iconify-icon icon="lucide:headphones" width="24" height="24" stroke-width="1.5" class="text-rev-red"></iconify-icon>
+                        <p class="mt-2 text-xs font-medium text-rev-ink">New Episode</p>
+                    </a>
+                    <a th:href="@{/admin/cms/events/new}" class="rounded-lg border border-rev-border p-4 text-center no-underline hover:border-rev-red transition-colors">
+                        <iconify-icon icon="lucide:globe" width="24" height="24" stroke-width="1.5" class="text-rev-red"></iconify-icon>
+                        <p class="mt-2 text-xs font-medium text-rev-ink">New Report</p>
+                    </a>
+                    <a th:href="@{/admin/cms/homepage}" class="rounded-lg border border-rev-border p-4 text-center no-underline hover:border-rev-red transition-colors">
+                        <iconify-icon icon="lucide:layout" width="24" height="24" stroke-width="1.5" class="text-rev-red"></iconify-icon>
+                        <p class="mt-2 text-xs font-medium text-rev-ink">Edit Homepage</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5">
+                <h3 class="font-display text-lg uppercase text-rev-ink mb-3">CMS Sections</h3>
+                <div class="space-y-2">
+                    <a th:href="@{/admin/cms/homepage}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
+                        <iconify-icon icon="lucide:layout" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        Homepage
+                    </a>
+                    <a th:href="@{/admin/cms/about}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
+                        <iconify-icon icon="lucide:info" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        About Page
+                    </a>
+                    <a th:href="@{/admin/cms/donations}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
+                        <iconify-icon icon="lucide:banknote" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        Donations
+                    </a>
+                    <a th:href="@{/admin/cms/settings}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
+                        <iconify-icon icon="lucide:settings" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        Settings
+                    </a>
+                    <a th:href="@{/admin/cms/media}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
+                        <iconify-icon icon="lucide:folder-open" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        Media Library
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

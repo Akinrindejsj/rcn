@@ -217,6 +217,146 @@
                 </div>
             </div>
 
+            <!-- Ticker background image -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Ticker Background Image</h3>
+                <p class="text-xs text-rev-muted">Optional background image behind the scrolling ticker bar.</p>
+                <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                    <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}"
+                         th:src="${content.tickerBackgroundImageUrl}"
+                         alt="Current ticker background"
+                         class="w-full h-32 object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-placeholder h-32 w-full"
+                         th:classappend="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank() ? ' hidden' : ''}">
+                        <span class="ph-label">Ticker background — 1920×200 px, max 5 MB, jpg/png/webp</span>
+                    </div>
+                </div>
+                <input type="file" name="tickerBackgroundImage" accept="image/jpeg,image/png,image/webp"
+                       class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+            </div>
+
+            <!-- Homepage article selection -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Featured Article (from the library)</h3>
+                    <span class="text-xs text-rev-muted">Choose up to 1 article</span>
+                </div>
+                <p class="text-xs text-rev-muted">Optionally pick the article shown large on the homepage. The free-text fields below are used when no article is chosen.</p>
+                <div>
+                    <label class="mono-label block mb-2">Featured article</label>
+                    <select th:field="*{featuredArticleId}"
+                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+                        <option value="">— None (use the free-text fields below) —</option>
+                        <option th:each="a : ${articles}" th:value="${a.id}" th:text="${a.title}">Article title</option>
+                    </select>
+                </div>
+                <!-- Featured article image -->
+                <div>
+                    <label class="mono-label block mb-2">Featured article image</label>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${content.featuredArticleImageUrl != null and !content.featuredArticleImageUrl.isBlank()}"
+                             th:src="${content.featuredArticleImageUrl}"
+                             alt="Current featured article image"
+                             class="w-full h-40 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-40 w-full"
+                             th:classappend="${content.featuredArticleImageUrl != null and !content.featuredArticleImageUrl.isBlank() ? ' hidden' : ''}">
+                            <span class="ph-label">Featured article image — 800×500 px, max 5 MB, jpg/png/webp</span>
+                        </div>
+                    </div>
+                    <input type="file" name="featuredArticleImage" accept="image/jpeg,image/png,image/webp"
+                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                </div>
+
+                <div>
+                    <label class="mono-label block mb-2">Additional articles (up to 6)</label>
+                    <p class="text-xs text-rev-muted mb-2">Choose up to 6 articles (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepageArticleIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 6 reached — untick one to choose another.</span></p>
+                    <input type="text" th:field="*{homepageArticleIds}" placeholder="e.g. 1,2,3"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
+                    <div class="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
+                        <label th:each="a : ${articles}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${a.id}" class="featured-article-checkbox accent-rev-red">
+                            <span class="truncate" th:text="${a.title}">Article title</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Homepage podcast selection -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Podcast Section</h3>
+                    <span class="text-xs text-rev-muted">Choose up to 4 podcasts</span>
+                </div>
+                <!-- Podcast section image -->
+                <div>
+                    <label class="mono-label block mb-2">Podcast section image</label>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${content.podcastSectionImageUrl != null and !content.podcastSectionImageUrl.isBlank()}"
+                             th:src="${content.podcastSectionImageUrl}"
+                             alt="Current podcast section image"
+                             class="w-full h-40 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-40 w-full"
+                             th:classappend="${content.podcastSectionImageUrl != null and !content.podcastSectionImageUrl.isBlank() ? ' hidden' : ''}">
+                            <span class="ph-label">Podcast section image — 800×500 px, max 5 MB, jpg/png/webp</span>
+                        </div>
+                    </div>
+                    <input type="file" name="podcastSectionImage" accept="image/jpeg,image/png,image/webp"
+                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Podcasts to show</label>
+                    <p class="text-xs text-rev-muted mb-2">Choose up to 4 podcasts (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepagePodcastIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 4 reached — untick one to choose another.</span></p>
+                    <input type="text" th:field="*{homepagePodcastIds}" placeholder="e.g. 1,2,3,4"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
+                    <div class="mt-3 grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                        <label th:each="p : ${podcasts}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${p.id}" class="podcast-checkbox accent-rev-red">
+                            <span class="truncate"><span class="font-mono text-rev-muted" th:text="${p.episodeNumber}">Ep 1</span> — <span th:text="${p.title}">Title</span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Homepage activity selection -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">On the Ground Section</h3>
+                    <span class="text-xs text-rev-muted">Choose up to 3 activities</span>
+                </div>
+                <!-- Activity section image -->
+                <div>
+                    <label class="mono-label block mb-2">Activity section image</label>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${content.activitySectionImageUrl != null and !content.activitySectionImageUrl.isBlank()}"
+                             th:src="${content.activitySectionImageUrl}"
+                             alt="Current activity section image"
+                             class="w-full h-40 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-40 w-full"
+                             th:classappend="${content.activitySectionImageUrl != null and !content.activitySectionImageUrl.isBlank() ? ' hidden' : ''}">
+                            <span class="ph-label">Activity section image — 800×500 px, max 5 MB, jpg/png/webp</span>
+                        </div>
+                    </div>
+                    <input type="file" name="activitySectionImage" accept="image/jpeg,image/png,image/webp"
+                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Activities to show</label>
+                    <p class="text-xs text-rev-muted mb-2">Choose up to 3 activities (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepageActivityIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 3 reached — untick one to choose another.</span></p>
+                    <input type="text" th:field="*{homepageActivityIds}" placeholder="e.g. 1,2,3"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                        <label th:each="ac : ${activities}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${ac.id}" class="activity-checkbox accent-rev-red">
+                            <span class="truncate" th:text="${ac.title}">Activity title</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <!-- Actions -->
             <div class="flex justify-end gap-3">
                 <a th:href="@{/admin/cms/homepage}" class="outline-btn no-underline">Cancel</a>
@@ -236,10 +376,69 @@
             saveBtn.disabled = true;
             saveBtn.dataset.originalText = saveBtn.textContent;
             saveBtn.textContent = 'Saving…';
-            // Let the form submit normally; the server will redirect.
-            // The button stays disabled until the redirect lands the user back.
         });
     }
+
+    // Selection limits + syncing checkboxes into the CSV text fields.
+    // idValidators: pick the checkbox class, the CSV input name, and the max.
+    function wireSelection(checkboxClass, csvInputName, max) {
+        const checkboxes = document.querySelectorAll('.' + checkboxClass);
+        const csvInput = document.querySelector('input[name="' + csvInputName + '"]');
+        if (!checkboxes.length || !csvInput) return;
+
+        function readIds() {
+            return csvInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+        }
+
+        function writeIds(ids) {
+            csvInput.value = ids.join(',');
+            // Update any counter siblings that show "X selected".
+            const parent = csvInput.closest('div');
+            if (parent) {
+                parent.querySelectorAll('.selection-counter').forEach(el => {
+                    el.textContent = ids.length;
+                });
+            }
+        }
+
+        // Reflect existing CSV into checkbox state on load.
+        const existing = readIds();
+        checkboxes.forEach(cb => {
+            cb.checked = existing.includes(cb.value);
+        });
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function () {
+                let ids = readIds();
+                if (this.checked) {
+                    if (ids.length >= max) {
+                        // Reject the over-limit tick — keep the oldest max selections.
+                        this.checked = false;
+                        const note = csvInput.closest('div')?.querySelector('.limit-note');
+                        if (note) {
+                            note.classList.remove('text-rev-muted');
+                            note.classList.add('text-rev-red');
+                            setTimeout(() => {
+                                note.classList.add('text-rev-muted');
+                                note.classList.remove('text-rev-red');
+                            }, 1500);
+                        }
+                        return;
+                    }
+                    if (!ids.includes(this.value)) {
+                        ids.push(this.value);
+                    }
+                } else {
+                    ids = ids.filter(id => id !== this.value);
+                }
+                writeIds(ids);
+            });
+        });
+    }
+
+    wireSelection('featured-article-checkbox', 'homepageArticleIds', 6);
+    wireSelection('podcast-checkbox', 'homepagePodcastIds', 4);
+    wireSelection('activity-checkbox', 'homepageActivityIds', 3);
 </script>
 </body>
 </html>

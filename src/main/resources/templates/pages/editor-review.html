@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle='Review Submission'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Review Submission</h1>
+                <p class="mt-1 text-sm text-rev-muted">Read the submission, then approve or reject it.</p>
+            </div>
+            <a th:href="@{/editor}" href="/editor" class="outline-btn no-underline">← Back to Queue</a>
+        </div>
+
+        <!-- Flash banners -->
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <!-- Submission preview -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <div>
+                <span class="mono-label">Title</span>
+                <h2 class="mt-1 font-display text-2xl text-rev-ink" th:text="${article.title}">Title</h2>
+            </div>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3 text-sm">
+                <div>
+                    <span class="mono-label">Author</span>
+                    <p class="mt-1 text-rev-ink" th:text="${article.authorName} ?: 'Anonymous'">Author</p>
+                </div>
+                <div>
+                    <span class="mono-label">Category</span>
+                    <p class="mt-1 text-rev-ink" th:text="${article.category} ?: '—'">Category</p>
+                </div>
+                <div>
+                    <span class="mono-label">Submitted</span>
+                    <p class="mt-1 text-rev-ink" th:text="${article.createdAt != null ? #temporals.format(article.createdAt, 'MMM d, yyyy') : '—'}">Date</p>
+                </div>
+            </div>
+            <div th:if="${article.excerpt}">
+                <span class="mono-label">Summary</span>
+                <p class="mt-1 text-rev-ink" th:text="${article.excerpt}">Excerpt</p>
+            </div>
+            <div>
+                <span class="mono-label">Body</span>
+                <div class="mt-1 rounded-md border border-rev-border bg-rev-subtle p-4 text-sm leading-relaxed text-rev-ink whitespace-pre-wrap" th:text="${article.body}">Body</div>
+            </div>
+            <div th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}">
+                <span class="mono-label">Attachment</span>
+                <div class="mt-1">
+                    <img th:src="${article.featuredImageUrl}" alt="Attachment" class="max-w-xs rounded-md border border-rev-border">
+                </div>
+            </div>
+        </div>
+
+        <!-- Decision form -->
+        <form th:action="@{/editor/tasks/{taskId}(taskId=${task.id})}" method="post" class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Your Decision</h3>
+            <div>
+                <label class="mono-label block mb-2">Comment (optional)</label>
+                <textarea rows="3" name="comment" placeholder="Add a note for the author or your fellow editors."
+                          class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" name="decision" value="approve" class="red-btn flex-1">Approve &amp; Publish</button>
+                <button type="submit" name="decision" value="reject" class="outline-btn flex-1">Reject</button>
+            </div>
+        </form>
+
+    </div>
+</main>
+</body>
+</html>

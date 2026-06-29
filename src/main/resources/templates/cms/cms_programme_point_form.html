@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle=${point.id} ? 'Edit Programme Point' : 'New Programme Point'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${point.id} ? 'Edit Programme Point' : 'New Programme Point'">New Programme Point</h1>
+            </div>
+            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn no-underline">← Back to About Page</a>
+        </div>
+
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <form th:action="${point.id} ? @{/admin/cms/about/programme-points/{id}/edit(id=${point.id})} : @{/admin/cms/about/programme-points/new}"
+              method="post" enctype="multipart/form-data" th:object="${point}">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div class="space-y-6 lg:col-span-2">
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <div class="grid grid-cols-4 gap-4">
+                            <div class="col-span-1">
+                                <label class="mono-label block mb-2">No.</label>
+                                <input type="text" th:field="*{orderNumber}" placeholder="01"
+                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red">
+                            </div>
+                            <div class="col-span-3">
+                                <label class="mono-label block mb-2">Title</label>
+                                <input type="text" th:field="*{pointTitle}" placeholder="e.g. For a Workers' Government"
+                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Description</label>
+                            <textarea rows="3" th:field="*{pointDescription}" placeholder="What this point means in practice."
+                                      class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></textarea>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Sort order (optional)</label>
+                            <input type="number" th:field="*{sortOrder}" placeholder="Lower numbers appear first"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                        <label class="mono-label block">Image (optional)</label>
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                            <img th:if="${point.imageUrl != null and !point.imageUrl.isBlank()}"
+                                 th:src="${point.imageUrl}" alt="Point image"
+                                 class="w-full h-40 object-cover"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-placeholder h-40 w-full"
+                                 th:classappend="${point.imageUrl != null and !point.imageUrl.isBlank() ? ' hidden' : ''}">
+                                <span class="ph-label">Upload an image — max 5 MB</span>
+                            </div>
+                        </div>
+                        <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
+                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Save</h3>
+                        <div class="flex gap-3">
+                            <button type="submit" class="red-btn flex-1">Save</button>
+                            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</main>
+</body>
+</html>

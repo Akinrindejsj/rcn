@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://rcn.example.com/processes">
+
+    <process id="article-approval" name="Article Approval" isExecutable="true">
+
+        <startEvent id="start" flowable:initiator="submitter" flowable:formKey="article-approval-form"/>
+
+        <sequenceFlow sourceRef="start" targetRef="recordSubmission"/>
+
+        <!-- System: record the submission and mark the article pending approval -->
+        <serviceTask id="recordSubmission" name="Record Submission"
+                     flowable:class="com.example.rcn.flowable.RecordSubmissionDelegate"/>
+
+        <sequenceFlow sourceRef="recordSubmission" targetRef="editorReview"/>
+
+        <!-- User task for the editorial team -->
+        <userTask id="editorReview" name="Editor Review"
+                  flowable:assignee="${editorAssignee}"
+                  flowable:candidateGroups="rcn-editors"
+                  flowable:formKey="article-review-form">
+            <extensionElements>
+                <flowable:taskListener event="create"
+                    flowable:class="com.example.rcn.flowable.NotifyEditorsDelegate"/>
+            </extensionElements>
+        </userTask>
+
+        <sequenceFlow sourceRef="editorReview" targetRef="decision"/>
+
+        <exclusiveGateway id="decision"/>
+
+        <sequenceFlow sourceRef="decision" targetRef="notifyApproval">
+            <conditionExpression>${approved == true}</conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="decision" targetRef="notifyRejection">
+            <conditionExpression>${approved == false}</conditionExpression>
+        </sequenceFlow>
+
+        <serviceTask id="notifyApproval" name="Publish Article"
+                     flowable:class="com.example.rcn.flowable.ArticleApprovedDelegate"/>
+
+        <serviceTask id="notifyRejection" name="Reject Article"
+                     flowable:class="com.example.rcn.flowable.ArticleRejectedDelegate"/>
+
+        <sequenceFlow sourceRef="notifyApproval" targetRef="end"/>
+        <sequenceFlow sourceRef="notifyRejection" targetRef="end"/>
+
+        <endEvent id="end"/>
+
+    </process>
+</definitions>

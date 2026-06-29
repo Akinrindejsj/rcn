@@ -1,76 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
 <body>
-<main layout:fragment="content" th:with="pageTitle='Event'">
+<main layout:fragment="content" th:with="pageTitle=${edit} ? 'Edit Activity Report' : 'New Activity Report'">
     <div class="mx-auto max-w-6xl space-y-8">
 
         <!-- Page Header -->
         <div class="flex items-end justify-between">
             <div>
-                <h1 class="font-display text-3xl uppercase text-rev-ink">Edit Activity Report</h1>
-                <p class="mt-1 text-sm text-rev-muted">Editing: <span class="text-rev-ink font-medium">Ojota bus terminal distribution: 80 papers in one hour</span></p>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${edit} ? 'Edit Activity Report' : 'New Activity Report'">New Activity Report</h1>
+                <p class="mt-1 text-sm text-rev-muted" th:if="${edit} and ${activity.title}" th:text="'Editing: ' + ${activity.title}">Editing</p>
             </div>
-            <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn">← Back to Reports</a>
+            <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn no-underline">← Back to Reports</a>
         </div>
 
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <!-- Main column -->
-            <div class="space-y-6 lg:col-span-2">
-
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Report title</label>
-                    <input type="text" value="Ojota bus terminal distribution: 80 papers in one hour" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
-                </div>
-
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                    <label class="mono-label block mb-2">Report details</label>
-                    <textarea rows="10" class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface">We distributed our paper at the Ojota bus terminal. In one hour, 80 copies gone. One danfo driver held up the paper and said "this is the truth nobody says." That moment felt like the beginning of something.</textarea>
-                    <p class="text-xs text-rev-muted mt-2">Describe what happened, where, and what it means for the movement.</p>
-                </div>
-
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
-                    <label class="mono-label block">Photo</label>
-                    <div class="img-placeholder h-48 w-full rounded">
-                        <span class="ph-label">Street tabling / outreach photo — 800×500 px</span>
-                    </div>
-                    <button class="outline-btn">Replace photo</button>
-                </div>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">Details</h3>
-                    <div>
-                        <label class="mono-label block mb-2">Location (City)</label>
-                        <input type="text" value="Lagos" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Date</label>
-                        <input type="date" value="2026-06-12" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Type</label>
-                        <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                            <option>Street Tabling</option>
-                            <option>Protest</option>
-                            <option>Study Circle</option>
-                            <option>Public Meeting</option>
-                            <option>Campus</option>
-                            <option>Rally</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Author (reporting comrade)</label>
-                        <input type="text" value="Amaka T." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                    </div>
-                    <div class="flex gap-3 pt-2">
-                        <button class="red-btn flex-1">Save</button>
-                        <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn flex-1 text-center">Cancel</a>
-                    </div>
-                </div>
-            </div>
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
         </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <form th:action="${edit} ? @{/admin/cms/events/{id}/edit(id=${activity.id})} : @{/admin/cms/events/new}"
+              method="post" enctype="multipart/form-data" th:object="${activity}">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <!-- Main column -->
+                <div class="space-y-6 lg:col-span-2">
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Report title</label>
+                        <input type="text" th:field="*{title}" placeholder="A short, descriptive headline"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                    </div>
+
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <label class="mono-label block mb-2">Report details</label>
+                        <textarea rows="10" th:field="*{body}" placeholder="Describe what happened, where, and what it means for the movement."
+                                  class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                        <p class="text-xs text-rev-muted mt-2">Describe what happened, where, and what it means for the movement.</p>
+                    </div>
+
+                    <!-- Photo -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                        <label class="mono-label block">Photo</label>
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                            <img th:if="${activity.imageUrl != null and !activity.imageUrl.isBlank()}"
+                                 th:src="${activity.imageUrl}" alt="Report photo"
+                                 class="w-full h-48 object-cover"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-placeholder h-48 w-full"
+                                 th:classappend="${activity.imageUrl != null and !activity.imageUrl.isBlank() ? ' hidden' : ''}">
+                                <span class="ph-label">Upload a photo — 800×500 px, max 5 MB</span>
+                            </div>
+                        </div>
+                        <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
+                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Details</h3>
+                        <div>
+                            <label class="mono-label block mb-2">Location (City)</label>
+                            <input type="text" th:field="*{location}" placeholder="e.g. Lagos"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Date</label>
+                            <input type="date" th:field="*{activityDate}"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Type</label>
+                            <select th:field="*{type}"
+                                    class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                                <option value="">— Select type —</option>
+                                <option>Street Tabling</option>
+                                <option>Protest</option>
+                                <option>Study Circle</option>
+                                <option>Public Meeting</option>
+                                <option>Campus</option>
+                                <option>Rally</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Author (reporting comrade)</label>
+                            <input type="text" th:field="*{authorName}" placeholder="e.g. Amaka T."
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" class="red-btn flex-1">Save</button>
+                            <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </div>
 </main>

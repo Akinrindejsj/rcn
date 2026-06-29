@@ -16,18 +16,27 @@
             </a>
         </div>
 
-        <!-- Filter pills -->
-        <div class="flex flex-wrap gap-2">
-            <button class="rounded-md bg-rev-red px-3 py-1.5 text-xs font-medium text-white">All</button>
-            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Protests</button>
-            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Street Tabling</button>
-            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Study Circles</button>
-            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Public Meetings</button>
-            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Campus</button>
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(activities)}"
+             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+            <iconify-icon icon="lucide:globe" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+            <p class="mt-4 text-rev-muted">No activity reports yet. Click "New Report" to add the first one.</p>
         </div>
 
         <!-- Reports Table -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+        <div th:if="${!#lists.isEmpty(activities)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
@@ -41,46 +50,24 @@
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-rev-border">
-                    <tr class="article-row group hover:bg-rev-subtle/50">
+                    <tr th:each="a : ${activities}" class="article-row group hover:bg-rev-subtle/50">
                         <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">Ojota bus terminal distribution: 80 papers in one hour</div>
-                            <div class="text-xs text-rev-muted line-clamp-1">Workers took every copy; one driver called it "the truth nobody says."</div>
+                            <div class="font-medium text-rev-ink" th:text="${a.title}">Title</div>
+                            <div class="text-xs text-rev-muted line-clamp-1" th:if="${a.body}" th:text="${a.body}">Body</div>
                         </td>
-                        <td class="px-6 py-4 text-rev-ink">Lagos</td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red">Street Tabling</span></td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 1226</td>
-                        <td class="px-6 py-4 text-rev-muted">Amaka T.</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/events/1}" href="/admin/cms/events/1" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink" th:text="${a.location} ?: '—'">Location</td>
                         <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">UniAbuja Marxist study group formed</div>
-                            <div class="text-xs text-rev-muted line-clamp-1">Seven students joined after ASUU briefing; now meeting weekly.</div>
+                            <span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red"
+                                  th:text="${a.type} ?: 'Report'">Type</span>
                         </td>
-                        <td class="px-6 py-4 text-rev-ink">Abuja</td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold">Study Circle</span></td>
-                        <td class="px-6 py-4 text-rev-muted">May 28, 2026</td>
-                        <td class="px-6 py-4 text-rev-muted">Emeka O.</td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${a.activityDate != null ? #temporals.format(a.activityDate, 'MMM d, yyyy') : '—'}">Date</td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${a.authorName} ?: '—'">Author</td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/events/2}" href="/admin/cms/events/2" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">Oil workers speak out at NUPENG rally</div>
-                            <div class="text-xs text-rev-muted line-clamp-1">Worker denounced gas flaring and poverty amid oil wealth.</div>
-                        </td>
-                        <td class="px-6 py-4 text-rev-ink">Port Harcourt</td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red">Rally</span></td>
-                        <td class="px-6 py-4 text-rev-muted">Apr 15, 2026</td>
-                        <td class="px-6 py-4 text-rev-muted">Blessing A.</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/events/3}" href="/admin/cms/events/3" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            <a th:href="@{/admin/cms/events/{id}/edit(id=${a.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <form method="post" th:action="@{/admin/cms/events/{id}/delete(id=${a.id})}" class="inline"
+                                  onsubmit="return confirm('Delete this report? This cannot be undone.')">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
@@ -88,7 +75,7 @@
             </div>
             <div class="border-t border-rev-border px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs text-rev-muted">3 reports</span>
+                    <span class="text-xs text-rev-muted" th:text="${#lists.size(activities)} + ' reports'">0 reports</span>
                 </div>
             </div>
         </div>

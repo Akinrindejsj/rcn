@@ -8,139 +8,77 @@
         <div class="flex items-end justify-between">
             <div>
                 <h1 class="font-display text-3xl uppercase text-rev-ink">Media Library</h1>
-                <p class="mt-1 text-sm text-rev-muted">All uploaded images and documents. Use these across articles, pages, and the image placeholder manager.</p>
+                <p class="mt-1 text-sm text-rev-muted">All uploaded images and documents.</p>
             </div>
-            <button class="red-btn flex items-center gap-2">
-                <iconify-icon icon="lucide:upload" width="16" height="16" stroke-width="1.5"></iconify-icon>
-                Upload
-            </button>
         </div>
 
-        <!-- Filter / search -->
-        <div class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-rev-border bg-rev-surface px-6 py-4">
-            <div class="flex flex-wrap gap-2">
-                <button class="rounded-md bg-rev-red px-3 py-1.5 text-xs font-medium text-white">All</button>
-                <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Images</button>
-                <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Documents</button>
-            </div>
-            <span class="mono-label">24 files · 148 MB used</span>
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <!-- Upload form -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Upload a File</h3>
+            <form th:action="@{/admin/cms/media/upload}" method="post" enctype="multipart/form-data" class="flex flex-wrap items-end gap-4">
+                <div class="flex-1 min-w-[200px]">
+                    <label class="mono-label block mb-2">Choose file</label>
+                    <input type="file" name="file" accept="image/jpeg,image/png,image/webp" required
+                           class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                </div>
+                <div class="w-48">
+                    <label class="mono-label block mb-2">Uploaded by</label>
+                    <input type="text" name="uploadedBy" placeholder="Your name" value="cms"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <button type="submit" class="red-btn">Upload</button>
+            </form>
+        </div>
+
+        <!-- Count -->
+        <div class="flex items-center justify-between">
+            <span class="mono-label" th:text="${#lists.size(files)} + ' files'">0 files</span>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(files)}"
+             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+            <iconify-icon icon="lucide:folder-open" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+            <p class="mt-4 text-rev-muted">No files uploaded yet. Use the form above to upload the first one.</p>
         </div>
 
         <!-- Media grid -->
-        <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">RCN rally photo</span>
+        <div th:if="${!#lists.isEmpty(files)}" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            <div th:each="f : ${files}" class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
+                <div class="h-36 w-full bg-rev-subtle overflow-hidden">
+                    <img th:if="${f.cloudinaryUrl != null}" th:src="${f.cloudinaryUrl}" th:alt="${f.fileName}"
+                         class="w-full h-full object-cover"
+                         onerror="this.parentElement.innerHTML='<div class=\'img-placeholder h-full w-full\'><span class=\'ph-label\'>' + (this.alt || 'File') + '</span></div>'">
+                    <div th:if="${f.cloudinaryUrl == null}" class="img-placeholder h-full w-full">
+                        <span class="ph-label" th:text="${f.fileName}">File</span>
+                    </div>
                 </div>
                 <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">rcn-rally-lagos.jpg</p>
-                    <p class="text-xs text-rev-muted">2.4 MB · Jun 12, 2026</p>
+                    <p class="truncate text-sm font-medium text-rev-ink" th:text="${f.fileName}">filename.jpg</p>
+                    <p class="text-xs text-rev-muted">
+                        <span th:if="${f.bytes != null}" th:text="${#numbers.formatDecimal(f.bytes / 1024.0, 1, 1)} + ' KB'">0 KB</span>
+                        <span th:if="${f.uploadedAt != null}" th:text="' · ' + ${#temporals.format(f.uploadedAt, 'MMM d, yyyy')}">Date</span>
+                    </p>
                     <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
+                        <form method="post" th:action="@{/admin/cms/media/{id}/delete(id=${f.id})}"
+                              onsubmit="return confirm('Delete this file? This cannot be undone.')">
+                            <button type="submit" class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">Fuel queue</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">fuel-queue-2026.jpg</p>
-                    <p class="text-xs text-rev-muted">1.8 MB · Jun 10, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">Podcast cover</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">podcast-cover-v2.png</p>
-                    <p class="text-xs text-rev-muted">340 KB · May 28, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">NUPENG rally</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">nupeng-rally-ph.jpg</p>
-                    <p class="text-xs text-rev-muted">3.1 MB · Apr 15, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">World School</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">world-school-2026.jpg</p>
-                    <p class="text-xs text-rev-muted">1.2 MB · Apr 2, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">Ojota tabling</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">ojota-tabling.jpg</p>
-                    <p class="text-xs text-rev-muted">2.0 MB · Mar 20, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">RCN programme PDF</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">rcn-programme-2026.pdf</p>
-                    <p class="text-xs text-rev-muted">520 KB · Jan 15, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-xl border border-rev-border bg-rev-surface overflow-hidden group">
-                <div class="img-placeholder h-36 w-full rounded-none">
-                    <span class="ph-label">Newspaper front page</span>
-                </div>
-                <div class="p-3">
-                    <p class="truncate text-sm font-medium text-rev-ink">newspaper-frontpage.pdf</p>
-                    <p class="text-xs text-rev-muted">4.5 MB · Jun 1, 2026</p>
-                    <div class="mt-2 flex gap-3">
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Edit</button>
-                        <button class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
     </div>

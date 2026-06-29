@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle=${podcast.id} ? 'Edit Episode' : 'New Episode'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${podcast.id} ? 'Edit Episode' : 'New Episode'">New Episode</h1>
+                <p class="mt-1 text-sm text-rev-muted" th:if="${podcast.id}">Editing an existing episode.</p>
+            </div>
+            <a th:href="@{/admin/cms/podcasts}" href="/admin/cms/podcasts" class="outline-btn no-underline">← Back to Podcasts</a>
+        </div>
+
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <form th:action="${podcast.id} ? @{/admin/cms/podcasts/{id}/edit(id=${podcast.id})} : @{/admin/cms/podcasts/new}"
+              method="post" enctype="multipart/form-data" th:object="${podcast}">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <!-- Main column -->
+                <div class="space-y-6 lg:col-span-2">
+
+                    <!-- Episode details -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Episode Details</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="mono-label block mb-2">Episode number</label>
+                                <input type="text" th:field="*{episodeNumber}" placeholder="e.g. 6"
+                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            </div>
+                            <div>
+                                <label class="mono-label block mb-2">Duration</label>
+                                <input type="text" th:field="*{duration}" placeholder="e.g. 42:15"
+                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Episode title</label>
+                            <input type="text" th:field="*{title}" placeholder="A compelling episode title"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Description</label>
+                            <textarea rows="4" th:field="*{description}" placeholder="What is this episode about?"
+                                      class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Audio URL</label>
+                            <input type="url" th:field="*{audioUrl}" placeholder="https://…"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+
+                    <!-- Podcast identity (show-level) -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Podcast Show Details</h3>
+                        <p class="text-xs text-rev-muted">These fields set the overall show identity. Changing them here updates it for all episodes.</p>
+                        <div>
+                            <label class="mono-label block mb-2">Podcast title</label>
+                            <input type="text" th:field="*{podcastTitle}" placeholder="The Nigerian Communist Podcast"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Podcast description</label>
+                            <textarea rows="2" th:field="*{podcastDescription}" placeholder="Short tagline for the podcast"
+                                      class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="space-y-6">
+
+                    <!-- Publish / save -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Publish</h3>
+                        <div>
+                            <label class="mono-label block mb-2">Publish date</label>
+                            <input type="datetime-local" th:field="*{publishedAt}"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button type="submit" class="red-btn flex-1">Save</button>
+                            <a th:href="@{/admin/cms/podcasts}" href="/admin/cms/podcasts" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                        </div>
+                    </div>
+
+                    <!-- Cover image -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                        <label class="mono-label block">Cover image</label>
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                            <img th:if="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank()}"
+                                 th:src="${podcast.coverImageUrl}" alt="Cover"
+                                 class="w-full h-40 object-cover"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-placeholder h-40 w-full"
+                                 th:classappend="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank() ? ' hidden' : ''}">
+                                <span class="ph-label">Upload cover art — 600×600 px, max 5 MB</span>
+                            </div>
+                        </div>
+                        <input type="file" name="coverImage" accept="image/jpeg,image/png,image/webp"
+                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    </div>
+
+                    <!-- Platform links -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Platform Links</h3>
+                        <div>
+                            <label class="mono-label block mb-2">Spotify</label>
+                            <input type="url" th:field="*{spotifyUrl}" placeholder="https://open.spotify.com/…"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Apple Podcasts</label>
+                            <input type="url" th:field="*{applePodcastsUrl}" placeholder="https://podcasts.apple.com/…"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">YouTube</label>
+                            <input type="url" th:field="*{youtubeUrl}" placeholder="https://youtube.com/…"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">RSS Feed</label>
+                            <input type="url" th:field="*{rssUrl}" placeholder="https://rcn.ng/feed.xml"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+</main>
+</body>
+</html>

@@ -16,25 +16,32 @@
             </a>
         </div>
 
-        <!-- Filter bar -->
-        <div class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-rev-border bg-rev-surface px-6 py-4">
-            <div class="flex flex-wrap gap-2">
-                <button class="rounded-md bg-rev-red px-3 py-1.5 text-xs font-medium text-white">All</button>
-                <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Published</button>
-                <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Drafts</button>
-                <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Scheduled</button>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="mono-label">47 articles</span>
-                <select class="rounded-md border border-rev-border bg-rev-subtle px-3 py-1.5 text-xs outline-none">
-                    <option>Newest First</option>
-                    <option>Oldest First</option>
-                </select>
-            </div>
+        <!-- Flash banners -->
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <!-- Count -->
+        <div class="flex items-center justify-between">
+            <span class="mono-label" th:text="${#lists.size(articles)} + ' articles'">0 articles</span>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(articles)}"
+             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+            <iconify-icon icon="lucide:file-text" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+            <p class="mt-4 text-rev-muted">No articles yet. Click "New Article" to write the first one.</p>
         </div>
 
         <!-- Articles Table -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+        <div th:if="${!#lists.isEmpty(articles)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
@@ -48,87 +55,44 @@
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-rev-border">
-                    <tr class="article-row group hover:bg-rev-subtle/50">
+                    <tr th:each="a : ${articles}" class="article-row group hover:bg-rev-subtle/50">
                         <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">The Tinubu Subsidy Removal: Who Really Paid?</div>
-                            <div class="text-xs text-rev-muted">/articles/tinubu-subsidy-removal</div>
+                            <div class="font-medium text-rev-ink" th:text="${a.title}">Article title</div>
+                            <div class="text-xs text-rev-muted" th:if="${a.slug}" th:text="'/article/slug/' + ${a.slug}">/article/slug/…</div>
                         </td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span></td>
-                        <td class="px-6 py-4 text-rev-ink">Editorial Collective</td>
-                        <td class="px-6 py-4 text-rev-muted">Economy</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 15, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/articles/1}" href="/admin/cms/articles/1" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
                         <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">NLC's Betrayal: Why the Trade Union Bureaucracy Cannot Lead</div>
-                            <div class="text-xs text-rev-muted">/articles/nlc-betrayal</div>
+                            <!-- PUBLISHED -->
+                            <span th:if="${a.status?.name() == 'PUBLISHED'}"
+                                  class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span>
+                            <!-- DRAFT -->
+                            <span th:if="${a.status?.name() == 'DRAFT'}"
+                                  class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Draft</span>
+                            <!-- PENDING_APPROVAL -->
+                            <span th:if="${a.status?.name() == 'PENDING_APPROVAL'}"
+                                  class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Pending</span>
+                            <!-- APPROVED -->
+                            <span th:if="${a.status?.name() == 'APPROVED'}"
+                                  class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">Approved</span>
+                            <!-- REJECTED -->
+                            <span th:if="${a.status?.name() == 'REJECTED'}"
+                                  class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-200">Rejected</span>
                         </td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Draft</span></td>
-                        <td class="px-6 py-4 text-rev-ink">Amaka T.</td>
-                        <td class="px-6 py-4 text-rev-muted">Labour</td>
-                        <td class="px-6 py-4 text-rev-muted">2 hours ago</td>
+                        <td class="px-6 py-4 text-rev-ink" th:text="${a.authorName}">Author</td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${a.category}">Category</td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${a.publishedAt != null ? #temporals.format(a.publishedAt, 'MMM d, yyyy') : '—'}">Date</td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/articles/2}" href="/admin/cms/articles/2" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">From #EndSARS to Revolution: What the 2020 Uprising Taught Us</div>
-                            <div class="text-xs text-rev-muted">/articles/endsars-to-revolution</div>
-                        </td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Scheduled</span></td>
-                        <td class="px-6 py-4 text-rev-ink">Emeka O.</td>
-                        <td class="px-6 py-4 text-rev-muted">History</td>
-                        <td class="px-6 py-4 text-rev-muted">Tomorrow, 8:00 AM</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/articles/3}" href="/admin/cms/articles/3" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">Women's Oppression and Class Struggle</div>
-                            <div class="text-xs text-rev-muted">/articles/women-oppression-class</div>
-                        </td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span></td>
-                        <td class="px-6 py-4 text-rev-ink">Blessing A.</td>
-                        <td class="px-6 py-4 text-rev-muted">Gender</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 10, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/articles/4}" href="/admin/cms/articles/4" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                        </td>
-                    </tr>
-                    <tr class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink">Nigeria's Oil Belongs to Nigerians: The Case for Nationalisation</div>
-                            <div class="text-xs text-rev-muted">/articles/oil-nationalisation</div>
-                        </td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span></td>
-                        <td class="px-6 py-4 text-rev-ink">Editorial Collective</td>
-                        <td class="px-6 py-4 text-rev-muted">Oil &amp; Gas</td>
-                        <td class="px-6 py-4 text-rev-muted">Jun 5, 2026</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/articles/5}" href="/admin/cms/articles/5" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            <a th:href="@{/admin/cms/articles/{id}/edit(id=${a.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <form th:if="${a.status?.name() != 'PUBLISHED'}" method="post" th:action="@{/admin/cms/articles/{id}/publish(id=${a.id})}" class="inline">
+                                <button type="submit" class="text-rev-muted hover:text-emerald-700 font-mono text-xs uppercase tracking-widest mr-3">Publish</button>
+                            </form>
+                            <form method="post" th:action="@{/admin/cms/articles/{id}/delete(id=${a.id})}" class="inline"
+                                  onsubmit="return confirm('Delete this article? This cannot be undone.')">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="border-t border-rev-border px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs text-rev-muted">Page 1 of 10</span>
-                    <div class="flex gap-2">
-                        <button class="rounded-md border border-rev-border px-2 py-1 text-xs font-medium text-rev-muted hover:bg-rev-subtle disabled:opacity-50">Previous</button>
-                        <button class="rounded-md border border-rev-border px-2 py-1 text-xs font-medium text-rev-ink hover:bg-rev-subtle">Next</button>
-                    </div>
-                </div>
             </div>
         </div>
 

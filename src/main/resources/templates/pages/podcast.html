@@ -22,16 +22,19 @@
         </div>
     </section>
 
-    <section class="py-24 bg-rev-page">
+    <section th:if="${!#lists.isEmpty(episodes)}" class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-10"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Latest Episode</span></div>
-            <div class="bg-white border border-rev-border p-8 flex flex-col md:flex-row gap-8">
+            <div th:with="latest=${episodes[0]}" class="bg-white border border-rev-border p-8 flex flex-col md:flex-row gap-8">
                 <div class="vid-placeholder h-48 w-full md:w-64 flex-shrink-0"><div class="vid-play-btn"></div><span class="vid-label">Episode audio</span></div>
                 <div>
                     <span class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1">New</span>
-                    <h3 class="font-display text-3xl text-rev-ink uppercase mt-4">Why Nigerian Workers Need Communism</h3>
-                    <p class="text-rev-muted text-sm mt-2">Recorded live at the public lecture in Lagos, June 2026.</p>
-                    <p class="font-mono text-rev-muted text-[11px] mt-4">Duration: 00:00:00 · June 15, 2026</p>
+                    <h3 class="font-display text-3xl text-rev-ink uppercase mt-4" th:text="${latest.title}">Episode Title</h3>
+                    <p class="text-rev-muted text-sm mt-2" th:text="${latest.description} ?: 'Episode description.'">Description</p>
+                    <p class="font-mono text-rev-muted text-[11px] mt-4">
+                        <span th:if="${latest.duration}" th:text="'Duration: ' + ${latest.duration}">Duration</span>
+                        <span th:if="${latest.publishedAt}" th:text="' · ' + ${#temporals.format(latest.publishedAt, 'MMM d, yyyy')}">Date</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -40,29 +43,21 @@
     <section class="py-16 bg-white border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h2 class="font-display text-4xl text-rev-ink uppercase mb-10">All Episodes</h2>
-            <div class="space-y-4">
-                <div class="flex items-start gap-6 p-5 border border-rev-border bg-rev-page hover:bg-rev-subtle transition-colors group">
+
+            <div th:if="${#lists.isEmpty(episodes)}" class="text-center text-rev-muted py-12">
+                No episodes have been published yet. Check back soon.
+            </div>
+
+            <div th:if="${!#lists.isEmpty(episodes)}" class="space-y-4">
+                <div th:each="ep : ${episodes}" class="flex items-start gap-6 p-5 border border-rev-border bg-rev-page hover:bg-rev-subtle transition-colors group">
                     <div class="vid-placeholder h-16 w-16 flex-shrink-0"><div class="vid-play-btn" style="width:30px;height:30px;"></div></div>
                     <div class="flex-1">
-                        <span class="font-mono text-rev-muted text-[10px]">Episode 4 · May 28, 2026</span>
-                        <h4 class="font-body font-bold text-rev-ink group-hover:text-rev-red transition-colors">ASUU, NLC, and the Limits of Trade Unionism in Nigeria</h4>
-                        <p class="text-rev-muted text-xs mt-1">A discussion on why trade unions alone cannot deliver working-class power.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-6 p-5 border border-rev-border bg-white hover:bg-rev-subtle transition-colors group">
-                    <div class="vid-placeholder h-16 w-16 flex-shrink-0"><div class="vid-play-btn" style="width:30px;height:30px;"></div></div>
-                    <div class="flex-1">
-                        <span class="font-mono text-rev-muted text-[10px]">Episode 3 · May 14, 2026</span>
-                        <h4 class="font-body font-bold text-rev-ink group-hover:text-rev-red transition-colors">Nigeria's Debt Trap: IMF, World Bank, and the Road to Austerity</h4>
-                        <p class="text-rev-muted text-xs mt-1">How international finance capital keeps Nigeria in chains.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-6 p-5 border border-rev-border bg-rev-page hover:bg-rev-subtle transition-colors group">
-                    <div class="vid-placeholder h-16 w-16 flex-shrink-0"><div class="vid-play-btn" style="width:30px;height:30px;"></div></div>
-                    <div class="flex-1">
-                        <span class="font-mono text-rev-muted text-[10px]">Episode 2 · April 30, 2026</span>
-                        <h4 class="font-body font-bold text-rev-ink group-hover:text-rev-red transition-colors">#EndSARS Five Years Later: What We Learned, What We Must Do</h4>
-                        <p class="text-rev-muted text-xs mt-1">Reflections on the 2020 uprising and the tasks ahead.</p>
+                        <span class="font-mono text-rev-muted text-[10px]">
+                            <span th:text="${ep.episodeNumber} ?: 'Episode'">Episode</span>
+                            <span th:if="${ep.publishedAt}" th:text="' · ' + ${#temporals.format(ep.publishedAt, 'MMM d, yyyy')}">Date</span>
+                        </span>
+                        <h4 class="font-body font-bold text-rev-ink group-hover:text-rev-red transition-colors" th:text="${ep.title}">Title</h4>
+                        <p class="text-rev-muted text-xs mt-1" th:text="${ep.description} ?: '—'">Description</p>
                     </div>
                 </div>
             </div>
