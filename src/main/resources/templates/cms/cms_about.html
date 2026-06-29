@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">About Page</h1>
+                <p class="mt-1 text-sm text-rev-muted">Text, programme points, FAQ, and images on the About the RCN page.</p>
+            </div>
+        </div>
+
+        <!-- Intro -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Introduction</h3>
+            <div>
+                <label class="mono-label block mb-2">Page heading</label>
+                <input type="text" value="Who We Are" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Intro paragraph</label>
+                <textarea rows="3" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">The Revolutionary Communists of Nigeria — Nigerian section of the Revolutionary Communist International. We fight for a socialist Nigeria, for workers' power, for human liberation.</textarea>
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Top-of-page image</label>
+                <div class="img-placeholder h-48 w-full rounded">
+                    <span class="ph-label">RCN crowd/rally photo — 1200×400 px</span>
+                </div>
+                <button class="outline-btn mt-3">Replace image</button>
+            </div>
+        </div>
+
+        <!-- Programme points -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Programme Points</h3>
+                <button class="outline-btn">+ Add point</button>
+            </div>
+            <div class="space-y-3">
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><label class="mono-label block mb-2">No.</label><input type="text" value="01" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><label class="mono-label block mb-2">Title</label><input type="text" value="For a Workers' Government" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><label class="mono-label block mb-2">Description</label><input type="text" value="The state must serve the majority who produce all wealth." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><input type="text" value="02" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><input type="text" value="Nationalise Oil" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Nigeria's oil belongs to Nigerians, not Shell or Chevron." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><input type="text" value="03" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><input type="text" value="Land to the Peasants" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="End land grabbing; give land to those who work it." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><input type="text" value="04" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><input type="text" value="End Police Brutality" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Disband SARS; build community-controlled safety." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><input type="text" value="05" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><input type="text" value="Free Education & Healthcare" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Human needs before private profit." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-1"><input type="text" value="06" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm text-center outline-none focus:border-rev-red"></div>
+                    <div class="col-span-4"><input type="text" value="Socialist Federation of Africa" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Unity against imperialism and capitalism." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Frequently Asked Questions</h3>
+                <button class="outline-btn">+ Add question</button>
+            </div>
+            <div class="space-y-3">
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-5"><label class="mono-label block mb-2">Question</label><input type="text" value="Is the RCN a political party?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><label class="mono-label block mb-2">Answer</label><input type="text" value="We are building a revolutionary party. We do not participate in bourgeois elections that serve the ruling class." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-5"><input type="text" value="Can I join if I'm religious?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Yes. We are a political organisation, not a religious one. Many comrades are people of faith." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-5"><input type="text" value="Is it dangerous?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="The Nigerian state represses dissent. We take security seriously. But the greatest danger is doing nothing while the country burns." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-5"><input type="text" value="How is the RCN funded?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-6"><input type="text" value="Entirely by workers' contributions. We take no corporate, NGO, or government money." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save -->
+        <div class="flex justify-end gap-3">
+            <button class="outline-btn">Cancel</button>
+            <button class="red-btn">Save About Page</button>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

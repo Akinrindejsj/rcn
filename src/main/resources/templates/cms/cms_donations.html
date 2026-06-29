@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Donations</h1>
+                <p class="mt-1 text-sm text-rev-muted">Donation page copy, contribution tiers, payment details, and recent donations log.</p>
+            </div>
+        </div>
+
+        <!-- Summary metric -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                <span class="mono-label">Total this month</span>
+                <div class="mt-2 font-display text-3xl text-rev-ink">₦2.8M</div>
+            </div>
+            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                <span class="mono-label">Recurring sustainers</span>
+                <div class="mt-2 font-display text-3xl text-rev-ink">34</div>
+            </div>
+            <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                <span class="mono-label">One-time (this month)</span>
+                <div class="mt-2 font-display text-3xl text-rev-ink">18</div>
+            </div>
+        </div>
+
+        <!-- Donation page copy -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Donation Page Copy</h3>
+            <div>
+                <label class="mono-label block mb-2">Page heading</label>
+                <input type="text" value="Fund the Revolution" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Intro paragraph</label>
+                <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">Every naira builds the revolutionary press, funds organising work, and trains the next generation of Nigerian communists.</textarea>
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Footer quote</label>
+                <input type="text" value="The liberation of the working class must be the act of the working class itself." class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+            </div>
+        </div>
+
+        <!-- Contribution tiers -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Contribution Tiers</h3>
+                <button class="outline-btn">+ Add tier</button>
+            </div>
+            <div class="space-y-3">
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-3"><label class="mono-label block mb-2">Amount (₦)</label><input type="text" value="5,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-3"><label class="mono-label block mb-2">Tier name</label><input type="text" value="Sustainer" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-5"><label class="mono-label block mb-2">What it funds</label><input type="text" value="One week of newspaper printing" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-3"><input type="text" value="10,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-3"><input type="text" value="Builder" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-5"><input type="text" value="Transport for one street-tabling day" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-3"><input type="text" value="25,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-3"><input type="text" value="Organiser" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-5"><input type="text" value="One campus outreach event" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+                <div class="grid grid-cols-12 gap-3 items-end">
+                    <div class="col-span-3"><input type="text" value="50,000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-3"><input type="text" value="Revolutionary" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-5"><input type="text" value="Sponsor a comrade to the World School" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red"></div>
+                    <div class="col-span-1"><button class="text-rev-muted hover:text-red-700 text-xs">Remove</button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment details -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Payment Details</h3>
+            <p class="text-xs text-rev-muted">Bank details shown to comrades at the bottom of the donation form.</p>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                    <label class="mono-label block mb-2">Bank name</label>
+                    <input type="text" value="First Bank of Nigeria" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Account name</label>
+                    <input type="text" value="Revolutionary Communists of Nigeria" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Account number</label>
+                    <input type="text" value="1234567890" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Sort code (if applicable)</label>
+                    <input type="text" value="011" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent donations log -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Recent Donations</h3>
+                <span class="mono-label">Last 30 days</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Donor</th>
+                        <th class="px-6 py-3 font-medium font-mono">Amount</th>
+                        <th class="px-6 py-3 font-medium font-mono">Type</th>
+                        <th class="px-6 py-3 font-medium font-mono">Date</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink">Chinedu O.</td>
+                        <td class="px-6 py-4 font-mono text-rev-gold">₦25,000</td>
+                        <td class="px-6 py-4 text-rev-muted">One-time</td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 20, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink">Anonymous Comrade</td>
+                        <td class="px-6 py-4 font-mono text-rev-gold">₦50,000</td>
+                        <td class="px-6 py-4 text-rev-muted">One-time</td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 18, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink">Ngozi A.</td>
+                        <td class="px-6 py-4 font-mono text-rev-gold">₦10,000</td>
+                        <td class="px-6 py-4 text-rev-muted">Monthly</td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 15, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink">Emeka O.</td>
+                        <td class="px-6 py-4 font-mono text-rev-gold">₦5,000</td>
+                        <td class="px-6 py-4 text-rev-muted">Monthly</td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 12, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Save -->
+        <div class="flex justify-end gap-3">
+            <button class="outline-btn">Cancel</button>
+            <button class="red-btn">Save Donations</button>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

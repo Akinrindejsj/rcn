@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Podcast Episodes</h1>
+                <p class="mt-1 text-sm text-rev-muted">The Nigerian Communist Podcast — cover art, platform links, and episode list.</p>
+            </div>
+            <button class="red-btn flex items-center gap-2">
+                <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                New Episode
+            </button>
+        </div>
+
+        <!-- Podcast identity -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Podcast Identity</h3>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div class="md:col-span-1">
+                    <label class="mono-label block mb-2">Cover art</label>
+                    <div class="img-placeholder h-44 w-44 rounded">
+                        <span class="ph-label">Podcast Cover Art<br/>600×600 px</span>
+                    </div>
+                    <button class="outline-btn mt-3">Replace cover</button>
+                </div>
+                <div class="md:col-span-2 space-y-4">
+                    <div>
+                        <label class="mono-label block mb-2">Podcast title</label>
+                        <input type="text" value="The Nigerian Communist Podcast" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Short description</label>
+                        <input type="text" value="Marxist analysis for Nigerian workers. New episodes every week." class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="mono-label block mb-2">Spotify URL</label>
+                            <input type="url" value="https://open.spotify.com/show/rcn" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Apple Podcasts URL</label>
+                            <input type="url" value="https://podcasts.apple.com/rcn" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">YouTube URL</label>
+                            <input type="url" value="https://youtube.com/@rcn_ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">RSS feed URL</label>
+                            <input type="url" value="https://rcn.ng/feed.xml" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Episodes list -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Episodes</h3>
+                <span class="mono-label">4 episodes</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Episode</th>
+                        <th class="px-6 py-3 font-medium font-mono">Title</th>
+                        <th class="px-6 py-3 font-medium font-mono">Description</th>
+                        <th class="px-6 py-3 font-medium font-mono">Duration</th>
+                        <th class="px-6 py-3 font-medium font-mono">Date</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono">EP 5</td>
+                        <td class="px-6 py-4 font-medium text-rev-ink">Why Nigerian Workers Need Communism</td>
+                        <td class="px-6 py-4 text-rev-muted line-clamp-1">Recorded live at the public lecture in Lagos, June 2026.</td>
+                        <td class="px-6 py-4 text-rev-muted">48:22</td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 15, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono">EP 4</td>
+                        <td class="px-6 py-4 font-medium text-rev-ink">ASUU, NLC, and the Limits of Trade Unionism in Nigeria</td>
+                        <td class="px-6 py-4 text-rev-muted line-clamp-1">A discussion on why trade unions alone cannot deliver working-class power.</td>
+                        <td class="px-6 py-4 text-rev-muted">41:10</td>
+                        <td class="px-6 py-4 text-rev-muted">May 28, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono">EP 3</td>
+                        <td class="px-6 py-4 font-medium text-rev-ink">Nigeria's Debt Trap: IMF, World Bank, and the Road to Austerity</td>
+                        <td class="px-6 py-4 text-rev-muted line-clamp-1">How international finance capital keeps Nigeria in chains.</td>
+                        <td class="px-6 py-4 text-rev-muted">36:45</td>
+                        <td class="px-6 py-4 text-rev-muted">May 14, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono">EP 2</td>
+                        <td class="px-6 py-4 font-medium text-rev-ink">#EndSARS Five Years Later: What We Learned, What We Must Do</td>
+                        <td class="px-6 py-4 text-rev-muted line-clamp-1">Reflections on the 2020 uprising and the tasks ahead.</td>
+                        <td class="px-6 py-4 text-rev-muted">39:08</td>
+                        <td class="px-6 py-4 text-rev-muted">Apr 30, 2026</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Save -->
+        <div class="flex justify-end gap-3">
+            <button class="outline-btn">Cancel</button>
+            <button class="red-btn">Save Podcast</button>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

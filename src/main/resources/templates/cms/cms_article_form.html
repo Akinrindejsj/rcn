@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Edit Article</h1>
+                <p class="mt-1 text-sm text-rev-muted">Editing: <span class="text-rev-ink font-medium">The Tinubu Subsidy Removal: Who Really Paid?</span></p>
+            </div>
+            <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn">← Back to Articles</a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <!-- Main content column -->
+            <div class="space-y-6 lg:col-span-2">
+
+                <!-- Title -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Article title</label>
+                    <input type="text" value="The Tinubu Subsidy Removal: Who Really Paid?" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                </div>
+
+                <!-- Body -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                    <label class="mono-label block">Article body</label>
+                    <textarea rows="16" class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface">When President Bola Tinubu announced the immediate removal of the fuel subsidy on 29 May 2023, the International Monetary Fund issued a statement praising Nigeria's "bold reform." The World Bank followed. Financial markets cheered. But for the 133 million Nigerians already living below the poverty line, the announcement meant something entirely different.
+
+Within 24 hours of the announcement, the price of petrol tripled across Nigeria. Transport costs surged by over 200%. The price of staple foods — rice, beans, garri — climbed by 40–60% within weeks. For a worker earning the minimum wage of ₦30,000 per month, the maths became impossible.
+
+But was this really a "subsidy" — a generous gift from the government to ordinary Nigerians? Marxist economics reveals a different story. The subsidy was never a gift to the poor. It was a mechanism by which the Nigerian state, acting on behalf of the capitalist class, kept the working class just above the starvation line — cheaply — so that labour could continue to be exploited.
+
+The real beneficiaries of the fuel subsidy were not ordinary Nigerians but the oil corporations, the import-dependent bourgeoisie, and the state bureaucracy that skimmed billions from the subsidy regime. The removal has not ended the drain on public resources — it has simply redirected it.
+
+The answer is not to restore the subsidy, which would only patch a broken system. The answer is to nationalise the oil industry under workers' control. Nigeria's oil wealth must serve the Nigerian people — not Shell, not TotalEnergies, not the politicians who auction our common wealth for private gain.</textarea>
+                    <p class="text-xs text-rev-muted">Write the full article text. Use blank lines to separate paragraphs.</p>
+                </div>
+
+                <!-- Excerpt -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Short summary (shown on article cards and search)</label>
+                    <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe. Marxist economics gives us the answer.</textarea>
+                </div>
+            </div>
+
+            <!-- Sidebar column -->
+            <div class="space-y-6">
+
+                <!-- Publish settings -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Publish</h3>
+                    <div>
+                        <label class="mono-label block mb-2">Status</label>
+                        <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            <option>Published</option>
+                            <option>Draft</option>
+                            <option>Scheduled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Publish date</label>
+                        <input type="date" value="2026-06-15" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Author</label>
+                        <input type="text" value="Editorial Collective" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button class="red-btn flex-1">Save</button>
+                        <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn flex-1 text-center">Cancel</a>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Category</label>
+                    <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <option>Economy</option>
+                        <option>Labour</option>
+                        <option>Oil &amp; Gas</option>
+                        <option>Youth</option>
+                        <option>Gender</option>
+                        <option>History</option>
+                        <option>Imperialism</option>
+                        <option>State &amp; Politics</option>
+                        <option>Theory</option>
+                    </select>
+                </div>
+
+                <!-- Featured image -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                    <label class="mono-label block">Featured image</label>
+                    <div class="img-placeholder h-40 w-full rounded">
+                        <span class="ph-label">Current: fuel queue photograph<br/>Click below to replace</span>
+                    </div>
+                    <button class="outline-btn w-full text-center">Replace image</button>
+                    <p class="text-xs text-rev-muted">Recommended: 1200 × 630 px, JPG or PNG.</p>
+                </div>
+
+                <!-- URL slug -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Web address (slug)</label>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-rev-muted">/articles/</span>
+                        <input type="text" value="tinubu-subsidy-removal" class="flex-1 rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Edit Activity Report</h1>
+                <p class="mt-1 text-sm text-rev-muted">Editing: <span class="text-rev-ink font-medium">Ojota bus terminal distribution: 80 papers in one hour</span></p>
+            </div>
+            <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn">← Back to Reports</a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <!-- Main column -->
+            <div class="space-y-6 lg:col-span-2">
+
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Report title</label>
+                    <input type="text" value="Ojota bus terminal distribution: 80 papers in one hour" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                </div>
+
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <label class="mono-label block mb-2">Report details</label>
+                    <textarea rows="10" class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface">We distributed our paper at the Ojota bus terminal. In one hour, 80 copies gone. One danfo driver held up the paper and said "this is the truth nobody says." That moment felt like the beginning of something.</textarea>
+                    <p class="text-xs text-rev-muted mt-2">Describe what happened, where, and what it means for the movement.</p>
+                </div>
+
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                    <label class="mono-label block">Photo</label>
+                    <div class="img-placeholder h-48 w-full rounded">
+                        <span class="ph-label">Street tabling / outreach photo — 800×500 px</span>
+                    </div>
+                    <button class="outline-btn">Replace photo</button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Details</h3>
+                    <div>
+                        <label class="mono-label block mb-2">Location (City)</label>
+                        <input type="text" value="Lagos" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Date</label>
+                        <input type="date" value="2026-06-12" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Type</label>
+                        <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            <option>Street Tabling</option>
+                            <option>Protest</option>
+                            <option>Study Circle</option>
+                            <option>Public Meeting</option>
+                            <option>Campus</option>
+                            <option>Rally</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Author (reporting comrade)</label>
+                        <input type="text" value="Amaka T." class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button class="red-btn flex-1">Save</button>
+                        <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn flex-1 text-center">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCN Dashboard — Revolutionary Communists of Nigeria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rev-red': '#C0182A',
+                        'rev-red-dark': '#8B0E1C',
+                        'rev-red-light': '#F9E8EA',
+                        'rev-black': '#111111',
+                        'rev-ink': '#1E1E1E',
+                        'rev-gold': '#A07800',
+                        'rev-page': '#F7F4F0',
+                        'rev-surface': '#FFFFFF',
+                        'rev-border': '#E0DAD3',
+                        'rev-muted': '#7A726A',
+                        'rev-subtle': '#F0EBE4',
+                    },
+                    fontFamily: {
+                        display: ['Bebas Neue', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F7F4F0; color: #1E1E1E; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E0DAD3; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C0182A; }
+        .sidebar-link { border-left: 3px solid transparent; transition: all 0.15s ease; }
+        .sidebar-link:hover, .sidebar-link.active { border-left-color: #C0182A; background: #F0EBE4; }
+        .metric-card { transition: box-shadow 0.2s ease; }
+        .metric-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .article-row { border-left: 3px solid transparent; transition: all 0.15s ease; }
+        .article-row:hover { border-left-color: #C0182A; background: #F0EBE4; }
+        button.red-btn { background-color: #C0182A; color: white; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; padding: 0.5rem 1rem; transition: background 0.2s; }
+        button.red-btn:hover { background-color: #8B0E1C; }
+        button.outline-btn { border: 1px solid #E0DAD3; color: #1E1E1E; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; padding: 0.5rem 1rem; background: transparent; transition: border-color 0.2s, color 0.2s; }
+        button.outline-btn:hover { border-color: #C0182A; color: #C0182A; }
+        .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: #7A726A; }
+        .status-published { background: #F9E8EA; color: #C0182A; } /* rev-red-light bg, red text */
+        .status-draft { background: #F0EBE4; color: #7A726A; }
+        .status-scheduled { background: #FDF6E3; color: #A07800; }
+        .status-pending { background: #F0EBE4; color: #1E1E1E; }
+        /* Override iconify icon color to match our system */
+        iconify-icon { display: inline-flex; vertical-align: middle; }
+    </style>
+</head>
+<body class="bg-rev-page text-rev-ink antialiased">
+
+<div class="flex h-screen w-full overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="hidden w-64 flex-col border-r border-rev-border bg-rev-surface md:flex">
+        <!-- Logo Area -->
+        <div class="flex h-16 items-center border-b border-rev-border px-6">
+            <div class="flex items-center gap-2">
+                <img src="images/logo-red.png" alt="RCN Logo" class="h-8 w-auto">
+            </div>
+        </div>
+
+        <!-- Nav Links -->
+        <div class="flex-1 overflow-y-auto py-4">
+            <nav class="space-y-1 px-3">
+                <a href="#" class="sidebar-link active group flex items-center gap-3 rounded-md bg-rev-subtle px-3 py-2 text-sm font-medium text-rev-ink border-l-rev-red">
+                    <iconify-icon icon="lucide:layout-dashboard" width="16" height="16" stroke-width="1.5" class="text-rev-red"></iconify-icon>
+                    Overview
+                </a>
+
+                <div class="pt-6">
+                    <p class="mono-label px-3 pb-2">Content</p>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:file-text" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Articles
+                    </a>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:map-pin" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Activity Reports
+                    </a>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:image" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Media Library
+                    </a>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:headphones" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Podcast Episodes
+                    </a>
+                </div>
+
+                <div class="pt-6">
+                    <p class="mono-label px-3 pb-2">People</p>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:users" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Comrades
+                        <span class="ml-auto flex h-5 items-center rounded-full bg-rev-red-light px-2 text-xs font-medium text-rev-red">12</span>
+                    </a>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:user-plus" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Join Requests
+                        <span class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-rev-red text-xs font-medium text-white">3</span>
+                    </a>
+                </div>
+
+                <div class="pt-6">
+                    <p class="mono-label px-3 pb-2">Finance</p>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:banknote" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Donations
+                    </a>
+                    <a href="#" class="sidebar-link group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-rev-muted transition-colors hover:bg-rev-subtle hover:text-rev-ink">
+                        <iconify-icon icon="lucide:bar-chart-2" width="16" height="16" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                        Analytics
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- User Profile -->
+        <div class="border-t border-rev-border p-4">
+            <a href="#" class="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-rev-subtle">
+                <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-rev-red to-rev-red-dark flex items-center justify-center text-white font-bold text-xs">AO</div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="truncate text-sm font-medium text-rev-ink">Amaka Okonkwo</p>
+                    <p class="truncate text-xs text-rev-muted">Editorial Collective</p>
+                </div>
+                <iconify-icon icon="lucide:settings-2" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex flex-1 flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="flex h-16 w-full items-center justify-between border-b border-rev-border bg-rev-surface px-4 md:px-8">
+            <!-- Mobile Menu Trigger -->
+            <div class="flex items-center gap-4 md:hidden">
+                <button class="text-rev-muted hover:text-rev-ink">
+                    <iconify-icon icon="lucide:menu" width="20" height="20" stroke-width="1.5"></iconify-icon>
+                </button>
+                <span class="font-display text-lg uppercase tracking-tight">RCN CMS</span>
+            </div>
+
+            <!-- Breadcrumbs/Title (Desktop) -->
+            <div class="hidden items-center gap-2 text-sm text-rev-muted md:flex">
+                <span class="hover:text-rev-ink cursor-pointer">Dashboard</span>
+                <iconify-icon icon="lucide:chevron-right" width="14" height="14" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                <span class="font-medium text-rev-ink">Overview</span>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4">
+                <!-- Search -->
+                <div class="relative hidden sm:block">
+                    <iconify-icon icon="lucide:search" width="14" height="14" stroke-width="1.5" class="absolute left-3 top-1/2 -translate-y-1/2 text-rev-muted"></iconify-icon>
+                    <input type="text" placeholder="Search articles, reports..." class="h-9 w-64 rounded-md border border-rev-border bg-rev-subtle pl-9 pr-4 text-sm outline-none placeholder:text-rev-muted focus:border-rev-red focus:bg-rev-surface focus:ring-0">
+                    <div class="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+                        <span class="rounded border border-rev-border bg-rev-surface px-1.5 py-0.5 text-[10px] font-medium text-rev-muted">⌘K</span>
+                    </div>
+                </div>
+
+                <button class="relative text-rev-muted transition-colors hover:text-rev-ink">
+                    <iconify-icon icon="lucide:bell" width="18" height="18" stroke-width="1.5"></iconify-icon>
+                    <span class="absolute right-0 top-0 h-2 w-2 rounded-full border border-rev-surface bg-rev-red"></span>
+                </button>
+
+                <button class="red-btn flex items-center gap-2 shadow-sm">
+                    <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                    <span class="hidden sm:inline">New Article</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <div class="flex-1 overflow-y-auto bg-rev-page p-4 md:p-8">
+            <div class="mx-auto max-w-6xl space-y-8">
+
+                <!-- Page Header -->
+                <div class="flex items-end justify-between">
+                    <div>
+                        <h1 class="font-display text-3xl uppercase text-rev-ink">Dashboard</h1>
+                        <p class="mt-1 text-sm text-rev-muted">The pulse of the revolutionary press and organising work.</p>
+                    </div>
+                    <div class="hidden items-center gap-2 sm:flex">
+                        <span class="mono-label">Last synced: 2 mins ago</span>
+                        <button class="rounded-md p-1.5 text-rev-muted hover:bg-rev-subtle hover:text-rev-red">
+                            <iconify-icon icon="lucide:refresh-cw" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <!-- Metric 1: Total Views -->
+                    <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                        <div class="flex items-center justify-between">
+                            <span class="mono-label">Total Views</span>
+                            <iconify-icon icon="lucide:eye" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        </div>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="font-display text-3xl text-rev-ink">45.2k</span>
+                            <span class="flex items-center text-xs font-medium text-rev-red">
+                                    <iconify-icon icon="lucide:arrow-up" width="12" height="12"></iconify-icon>
+                                    12%
+                                </span>
+                        </div>
+                    </div>
+
+                    <!-- Metric 2: Articles Published -->
+                    <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                        <div class="flex items-center justify-between">
+                            <span class="mono-label">Published Articles</span>
+                            <iconify-icon icon="lucide:file-check" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        </div>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="font-display text-3xl text-rev-ink">128</span>
+                            <span class="text-xs font-medium text-rev-muted">+4 this week</span>
+                        </div>
+                    </div>
+
+                    <!-- Metric 3: Monthly Donations -->
+                    <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                        <div class="flex items-center justify-between">
+                            <span class="mono-label">Monthly Donations</span>
+                            <iconify-icon icon="lucide:banknote" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        </div>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="font-display text-3xl text-rev-ink">₦2.8M</span>
+                            <span class="flex items-center text-xs font-medium text-rev-red">
+                                    <iconify-icon icon="lucide:arrow-up" width="12" height="12"></iconify-icon>
+                                    8%
+                                </span>
+                        </div>
+                    </div>
+
+                    <!-- Metric 4: Active Comrades -->
+                    <div class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5">
+                        <div class="flex items-center justify-between">
+                            <span class="mono-label">Active Party Builders</span>
+                            <iconify-icon icon="lucide:users" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
+                        </div>
+                        <div class="mt-2 flex items-baseline gap-2">
+                            <span class="font-display text-3xl text-rev-ink">84</span>
+                            <span class="text-xs font-medium text-rev-muted">+2 this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <!-- Chart Section (Traffic Overview) -->
+                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 lg:col-span-2">
+                        <div class="mb-6 flex items-center justify-between">
+                            <h3 class="font-display text-lg uppercase text-rev-ink">Traffic Overview</h3>
+                            <div class="flex gap-2">
+                                <button class="rounded-md bg-rev-red px-2.5 py-1 text-xs font-medium text-white">30d</button>
+                                <button class="rounded-md px-2.5 py-1 text-xs font-medium text-rev-muted hover:text-rev-red">7d</button>
+                                <button class="rounded-md px-2.5 py-1 text-xs font-medium text-rev-muted hover:text-rev-red">24h</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom SVG Chart (same as reference, but colored with rev colors) -->
+                        <div class="relative h-64 w-full">
+                            <div class="absolute inset-0 flex flex-col justify-between text-xs text-rev-muted">
+                                <div class="border-b border-rev-subtle pb-1">5k</div>
+                                <div class="border-b border-rev-subtle pb-1">4k</div>
+                                <div class="border-b border-rev-subtle pb-1">3k</div>
+                                <div class="border-b border-rev-subtle pb-1">2k</div>
+                                <div class="border-b border-rev-subtle pb-1">1k</div>
+                            </div>
+                            <svg class="absolute inset-x-0 bottom-6 top-0 h-[calc(100%-1.5rem)] w-full overflow-visible" preserveAspectRatio="none">
+                                <path d="M0,180 C50,160 100,190 150,120 C200,50 250,90 300,70 C350,50 400,80 450,100 C500,120 550,60 600,40 C650,20 700,50 750,30 L750,200 L0,200 Z" fill="#C0182A" opacity="0.08"></path>
+                                <path d="M0,180 C50,160 100,190 150,120 C200,50 250,90 300,70 C350,50 400,80 450,100 C500,120 550,60 600,40 C650,20 700,50 750,30" fill="none" stroke="#C0182A" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <div class="absolute bottom-0 flex w-full justify-between text-xs text-rev-muted">
+                                <span>Nov 01</span><span>Nov 05</span><span>Nov 10</span><span>Nov 15</span><span>Nov 20</span><span>Nov 25</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions & Donations Summary -->
+                    <div class="flex flex-col gap-4">
+                        <!-- Quick Draft -->
+                        <div class="rounded-xl border border-rev-border bg-rev-surface p-5">
+                            <h3 class="font-display text-lg uppercase text-rev-ink mb-3">Quick Draft</h3>
+                            <div class="space-y-3">
+                                <input type="text" placeholder="Article Title" class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none placeholder:text-rev-muted focus:border-rev-red focus:bg-rev-surface">
+                                <textarea placeholder="Begin writing..." rows="3" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none placeholder:text-rev-muted focus:border-rev-red focus:bg-rev-surface"></textarea>
+                                <div class="flex justify-between">
+                                    <button class="outline-btn">Save Draft</button>
+                                    <button class="red-btn">Publish</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Donations -->
+                        <div class="rounded-xl border border-rev-border bg-rev-surface p-5">
+                            <h3 class="font-display text-lg uppercase text-rev-ink mb-3">Latest Donations</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="font-medium">Chinedu O.</span>
+                                    <span class="font-mono text-rev-gold">₦25,000</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="font-medium">Anonymous Comrade</span>
+                                    <span class="font-mono text-rev-gold">₦50,000</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="font-medium">Ngozi A.</span>
+                                    <span class="font-mono text-rev-gold">₦10,000</span>
+                                </div>
+                                <a href="#" class="inline-block mt-2 text-xs font-medium text-rev-red hover:underline">View all donations →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Content Table -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+                    <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
+                        <h3 class="font-display text-lg uppercase text-rev-ink">Recent Content</h3>
+                        <a href="#" class="flex items-center gap-1 text-xs font-medium text-rev-muted hover:text-rev-red">
+                            View All
+                            <iconify-icon icon="lucide:arrow-right" width="12" height="12"></iconify-icon>
+                        </a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                            <tr>
+                                <th class="px-6 py-3 font-medium font-mono">Title</th>
+                                <th class="px-6 py-3 font-medium font-mono">Status</th>
+                                <th class="px-6 py-3 font-medium font-mono">Author</th>
+                                <th class="px-6 py-3 font-medium font-mono">Views</th>
+                                <th class="px-6 py-3 font-medium font-mono">Date</th>
+                                <th class="px-6 py-3 font-medium font-mono"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="divide-y divide-rev-border">
+                            <tr class="article-row group hover:bg-rev-subtle/50">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-rev-ink">The Tinubu Subsidy Removal: Who Really Paid?</div>
+                                    <div class="text-xs text-rev-muted">/articles/tinubu-subsidy-removal</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-6 w-6 rounded-full bg-rev-red flex items-center justify-center text-white text-[10px] font-bold">EC</div>
+                                        <span class="text-rev-ink">Editorial Collective</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-rev-muted">12.5k</td>
+                                <td class="px-6 py-4 text-rev-muted">Jun 15, 2026</td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="text-rev-muted hover:text-rev-red"><iconify-icon icon="lucide:more-horizontal" width="16" height="16"></iconify-icon></button>
+                                </td>
+                            </tr>
+                            <tr class="article-row group hover:bg-rev-subtle/50">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-rev-ink">NLC's Betrayal: Why the Trade Union Bureaucracy Cannot Lead</div>
+                                    <div class="text-xs text-rev-muted">/articles/nlc-betrayal</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Draft</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-6 w-6 rounded-full bg-rev-gold flex items-center justify-center text-white text-[10px] font-bold">AT</div>
+                                        <span class="text-rev-ink">Amaka T.</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-rev-muted">-</td>
+                                <td class="px-6 py-4 text-rev-muted">2 hours ago</td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="text-rev-muted hover:text-rev-red"><iconify-icon icon="lucide:more-horizontal" width="16" height="16"></iconify-icon></button>
+                                </td>
+                            </tr>
+                            <tr class="article-row group hover:bg-rev-subtle/50">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-rev-ink">From #EndSARS to Revolution: What the 2020 Uprising Taught Us</div>
+                                    <div class="text-xs text-rev-muted">/articles/endsars-to-revolution</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Scheduled</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-6 w-6 rounded-full bg-rev-ink flex items-center justify-center text-white text-[10px] font-bold">EO</div>
+                                        <span class="text-rev-ink">Emeka O.</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-rev-muted">-</td>
+                                <td class="px-6 py-4 text-rev-muted">Tomorrow, 8:00 AM</td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="text-rev-muted hover:text-rev-red"><iconify-icon icon="lucide:more-horizontal" width="16" height="16"></iconify-icon></button>
+                                </td>
+                            </tr>
+                            <tr class="article-row group hover:bg-rev-subtle/50">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-rev-ink">Women's Oppression and Class Struggle</div>
+                                    <div class="text-xs text-rev-muted">/articles/women-oppression-class</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Published</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-6 w-6 rounded-full bg-rev-red flex items-center justify-center text-white text-[10px] font-bold">BA</div>
+                                        <span class="text-rev-ink">Blessing A.</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-rev-muted">8.2k</td>
+                                <td class="px-6 py-4 text-rev-muted">Jun 10, 2026</td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="text-rev-muted hover:text-rev-red"><iconify-icon icon="lucide:more-horizontal" width="16" height="16"></iconify-icon></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="border-t border-rev-border px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-rev-muted">Page 1 of 12</span>
+                            <div class="flex gap-2">
+                                <button class="rounded-md border border-rev-border px-2 py-1 text-xs font-medium text-rev-muted hover:bg-rev-subtle disabled:opacity-50">Previous</button>
+                                <button class="rounded-md border border-rev-border px-2 py-1 text-xs font-medium text-rev-ink hover:bg-rev-subtle">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Approval Queue</h1>
+                <p class="mt-1 text-sm text-rev-muted">Articles submitted by comrades awaiting editorial review before publication.</p>
+            </div>
+            <span class="rounded-full bg-rev-red-light px-3 py-1 text-xs font-medium text-rev-red">3 awaiting review</span>
+        </div>
+
+        <!-- Queue Table -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Title</th>
+                        <th class="px-6 py-3 font-medium font-mono">Submitted by</th>
+                        <th class="px-6 py-3 font-medium font-mono">Category</th>
+                        <th class="px-6 py-3 font-medium font-mono">Submitted</th>
+                        <th class="px-6 py-3 font-medium font-mono">Type</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">Japa or Revolt? Nigerian Youth and the Choice Before Our Generation</div>
+                            <div class="text-xs text-rev-muted mt-1 line-clamp-1">Millions are fleeing Nigeria for a better life abroad. We understand the impulse — but escape is not the only answer...</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-6 w-6 rounded-full bg-rev-gold flex items-center justify-center text-white text-[10px] font-bold">CI</div>
+                                <span class="text-rev-ink">Chinedu I.</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">Youth</td>
+                        <td class="px-6 py-4 text-rev-muted">1 day ago</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Analysis</span></td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/articles/new}" href="/admin/cms/articles/new" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Review</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Approve</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Reject</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">"The Anger on the Bus Is Something I've Never Seen" — Lagos Report</div>
+                            <div class="text-xs text-rev-muted mt-1 line-clamp-1">We distributed our paper at the Ojota bus terminal. In one hour, 80 copies gone...</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-6 w-6 rounded-full bg-rev-red flex items-center justify-center text-white text-[10px] font-bold">AT</div>
+                                <span class="text-rev-ink">Amaka T.</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">Activity</td>
+                        <td class="px-6 py-4 text-rev-muted">3 days ago</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Frontline Report</span></td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/articles/new}" href="/admin/cms/articles/new" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Review</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Approve</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Reject</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">A Letter on the Recent NLC Strike Call</div>
+                            <div class="text-xs text-rev-muted mt-1 line-clamp-1">I am writing in response to the June 15 analysis of the subsidy removal. The article correctly identifies...</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-6 w-6 rounded-full bg-rev-ink flex items-center justify-center text-white text-[10px] font-bold">UO</div>
+                                <span class="text-rev-ink">Uche O.</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">Labour</td>
+                        <td class="px-6 py-4 text-rev-muted">5 days ago</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Letter</span></td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/articles/new}" href="/admin/cms/articles/new" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Review</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Approve</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Reject</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-t border-rev-border px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-rev-muted">All 3 items shown</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

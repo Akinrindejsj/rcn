@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Users &amp; Admins</h1>
+                <p class="mt-1 text-sm text-rev-muted">People who can log into the CMS and what they are allowed to do.</p>
+            </div>
+            <button class="red-btn flex items-center gap-2">
+                <iconify-icon icon="lucide:user-plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                Invite User
+            </button>
+        </div>
+
+        <!-- Role legend -->
+        <div class="flex flex-wrap gap-4 rounded-xl border border-rev-border bg-rev-surface px-6 py-4">
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-rev-red"></span><span class="text-xs text-rev-muted">Admin — full access, can manage users</span></div>
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-rev-gold"></span><span class="text-xs text-rev-muted">Editor — create, edit, publish articles</span></div>
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-rev-muted"></span><span class="text-xs text-rev-muted">Contributor — write and submit for review</span></div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Name</th>
+                        <th class="px-6 py-3 font-medium font-mono">Email</th>
+                        <th class="px-6 py-3 font-medium font-mono">Role</th>
+                        <th class="px-6 py-3 font-medium font-mono">Last active</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-7 w-7 rounded-full bg-gradient-to-tr from-rev-red to-rev-red-dark flex items-center justify-center text-white text-[10px] font-bold">AO</div>
+                                <span class="font-medium text-rev-ink">Amaka Okonkwo</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">amaka@rcn.ng</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Admin</span></td>
+                        <td class="px-6 py-4 text-rev-muted">Now</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Remove</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-7 w-7 rounded-full bg-rev-gold flex items-center justify-center text-white text-[10px] font-bold">EO</div>
+                                <span class="font-medium text-rev-ink">Emeka Okafor</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">emeka@rcn.ng</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Editor</span></td>
+                        <td class="px-6 py-4 text-rev-muted">2 hours ago</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Remove</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-7 w-7 rounded-full bg-rev-ink flex items-center justify-center text-white text-[10px] font-bold">BA</div>
+                                <span class="font-medium text-rev-ink">Blessing Adeyemi</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">blessing@rcn.ng</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20">Editor</span></td>
+                        <td class="px-6 py-4 text-rev-muted">Yesterday</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Remove</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-7 w-7 rounded-full bg-rev-muted flex items-center justify-center text-white text-[10px] font-bold">CI</div>
+                                <span class="font-medium text-rev-ink">Chinedu Ibe</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">chinedu@rcn.ng</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Contributor</span></td>
+                        <td class="px-6 py-4 text-rev-muted">3 days ago</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Remove</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="h-7 w-7 rounded-full bg-rev-red flex items-center justify-center text-white text-[10px] font-bold">NF</div>
+                                <span class="font-medium text-rev-ink">Ngozi Fashola</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-muted">ngozi@rcn.ng</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-subtle px-2 py-1 text-xs font-medium text-rev-muted ring-1 ring-inset ring-rev-border">Contributor</span></td>
+                        <td class="px-6 py-4 text-rev-muted">1 week ago</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</button>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Remove</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-t border-rev-border px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-rev-muted">5 users</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

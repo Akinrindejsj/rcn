@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Settings</h1>
+                <p class="mt-1 text-sm text-rev-muted">Site-wide details: name, contact, social links, and footer text.</p>
+            </div>
+        </div>
+
+        <!-- General -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <h3 class="font-display text-lg uppercase text-rev-ink">General</h3>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                    <label class="mono-label block mb-2">Site name</label>
+                    <input type="text" value="Revolutionary Communists of Nigeria" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Tagline</label>
+                    <input type="text" value="Nigerian Section of the Revolutionary Communist International" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Contact email</label>
+                    <input type="email" value="contact@rcn.ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">WhatsApp contact</label>
+                    <input type="tel" value="+234 800 000 0000" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Top banner -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Top Banner</h3>
+            <p class="text-xs text-rev-muted">The red bar that appears at the very top of every public page.</p>
+            <div>
+                <label class="mono-label block mb-2">Banner text</label>
+                <input type="text" value="Nigerian Section of the Revolutionary Communist International · Workers of All Countries, Unite!" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+            </div>
+        </div>
+
+        <!-- Social links -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Social Links</h3>
+            <p class="text-xs text-rev-muted">Shown in the footer. Leave a field blank to hide that link.</p>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                    <label class="mono-label block mb-2">X / Twitter URL</label>
+                    <input type="url" value="https://x.com/rcn_ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Instagram URL</label>
+                    <input type="url" value="https://instagram.com/rcn_ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">YouTube URL</label>
+                    <input type="url" value="https://youtube.com/@rcn_ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Telegram URL</label>
+                    <input type="url" value="https://t.me/rcn_ng" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">marxist.com (RCI)</label>
+                    <input type="url" value="https://marxist.com" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Marxist Books shop</label>
+                    <input type="url" value="https://www.marxistbooks.com/" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Footer</h3>
+            <div>
+                <label class="mono-label block mb-2">Footer description</label>
+                <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">Nigerian section of the Revolutionary Communist International. Fighting for a socialist Nigeria, for workers' power, for human liberation.</textarea>
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Copyright line</label>
+                <input type="text" value="© 2026 Revolutionary Communists of Nigeria · Nigerian Section of the RCI" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Closing slogan</label>
+                <input type="text" value="Workers of All Countries, Unite!" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+            </div>
+        </div>
+
+        <!-- Save -->
+        <div class="flex justify-end gap-3">
+            <button class="outline-btn">Cancel</button>
+            <button class="red-btn">Save Settings</button>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

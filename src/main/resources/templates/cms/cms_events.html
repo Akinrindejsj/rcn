@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Activity Reports</h1>
+                <p class="mt-1 text-sm text-rev-muted">On-the-ground reports from RCN cells — protests, tabling, study circles, rallies.</p>
+            </div>
+            <a th:href="@{/admin/cms/events/new}" href="/admin/cms/events/new" class="red-btn flex items-center gap-2">
+                <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                New Report
+            </a>
+        </div>
+
+        <!-- Filter pills -->
+        <div class="flex flex-wrap gap-2">
+            <button class="rounded-md bg-rev-red px-3 py-1.5 text-xs font-medium text-white">All</button>
+            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Protests</button>
+            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Street Tabling</button>
+            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Study Circles</button>
+            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Public Meetings</button>
+            <button class="rounded-md border border-rev-border px-3 py-1.5 text-xs font-medium text-rev-ink hover:border-rev-red">Campus</button>
+        </div>
+
+        <!-- Reports Table -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Title</th>
+                        <th class="px-6 py-3 font-medium font-mono">Location</th>
+                        <th class="px-6 py-3 font-medium font-mono">Type</th>
+                        <th class="px-6 py-3 font-medium font-mono">Date</th>
+                        <th class="px-6 py-3 font-medium font-mono">Author</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">Ojota bus terminal distribution: 80 papers in one hour</div>
+                            <div class="text-xs text-rev-muted line-clamp-1">Workers took every copy; one driver called it "the truth nobody says."</div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-ink">Lagos</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red">Street Tabling</span></td>
+                        <td class="px-6 py-4 text-rev-muted">Jun 1226</td>
+                        <td class="px-6 py-4 text-rev-muted">Amaka T.</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/events/1}" href="/admin/cms/events/1" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">UniAbuja Marxist study group formed</div>
+                            <div class="text-xs text-rev-muted line-clamp-1">Seven students joined after ASUU briefing; now meeting weekly.</div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-ink">Abuja</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold">Study Circle</span></td>
+                        <td class="px-6 py-4 text-rev-muted">May 28, 2026</td>
+                        <td class="px-6 py-4 text-rev-muted">Emeka O.</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/events/2}" href="/admin/cms/events/2" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    <tr class="article-row group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-rev-ink">Oil workers speak out at NUPENG rally</div>
+                            <div class="text-xs text-rev-muted line-clamp-1">Worker denounced gas flaring and poverty amid oil wealth.</div>
+                        </td>
+                        <td class="px-6 py-4 text-rev-ink">Port Harcourt</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red">Rally</span></td>
+                        <td class="px-6 py-4 text-rev-muted">Apr 15, 2026</td>
+                        <td class="px-6 py-4 text-rev-muted">Blessing A.</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/events/3}" href="/admin/cms/events/3" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <button class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-t border-rev-border px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-rev-muted">3 reports</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

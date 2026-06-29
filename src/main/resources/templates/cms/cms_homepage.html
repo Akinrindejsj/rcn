@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Homepage Content</h1>
+                <p class="mt-1 text-sm text-rev-muted">Headline, hero image, ticker, and featured story on the landing page.</p>
+            </div>
+        </div>
+
+        <!-- Hero section -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Hero Section</h3>
+            <div>
+                <label class="mono-label block mb-2">Hero headline</label>
+                <input type="text" value="Workers of Nigeria, Unite." class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Hero subtext</label>
+                <textarea rows="2" class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">Nigeria's oil wealth feeds billionaires while millions go hungry. The naira collapses, fuel costs a fortune, and politicians loot without consequence. This is not mismanagement — it is capitalism working exactly as designed. The RCN says: enough.</textarea>
+            </div>
+            <div>
+                <label class="mono-label block mb-2">Hero image</label>
+                <div class="img-placeholder h-48 w-full rounded">
+                    <span class="ph-label">Homepage hero banner — 1440×600 px<br/>Replace with RCN march / rally photo</span>
+                </div>
+                <button class="outline-btn mt-3">Replace hero image</button>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="mono-label block mb-2">Primary button text</label>
+                    <input type="text" value="Join the Revolution →" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Secondary button text</label>
+                    <input type="text" value="Read Analysis" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticker / marquee -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Scrolling Ticker</h3>
+                <span class="text-xs text-rev-muted">These lines scroll across the top of the homepage.</span>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="mono-label block mb-2">Ticker line 1</label>
+                    <input type="text" value="NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Ticker line 2</label>
+                    <input type="text" value="Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Ticker line 3</label>
+                    <input type="text" value="Nigeria's ruling class has looted over $1 trillion since independence" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Ticker line 4</label>
+                    <input type="text" value="Youth unemployment stands above 53% — the highest in decades" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Ticker line 5</label>
+                    <input type="text" value="The RCN is the Nigerian section of the Revolutionary Communist International" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured article -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Featured Article</h3>
+            <p class="text-xs text-rev-muted">The large story shown prominently on the homepage.</p>
+            <div>
+                <label class="mono-label block mb-2">Featured article</label>
+                <select class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    <option>The Tinubu Subsidy Removal: Who Really Paid?</option>
+                    <option>NLC's Betrayal: Why the Trade Union Bureaucracy Cannot Lead</option>
+                    <option>From #EndSARS to Revolution: What the 2020 Uprising Taught Us</option>
+                    <option>Women's Oppression and Class Struggle</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Stats strip -->
+        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+            <h3 class="font-display text-lg uppercase text-rev-ink">Statistics Strip</h3>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div>
+                    <label class="mono-label block mb-2">Stat 1 — Number</label>
+                    <input type="text" value="133M+" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Stat 1 — Label</label>
+                    <input type="text" value="Nigerians below poverty line" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div class="hidden md:block"></div>
+                <div>
+                    <label class="mono-label block mb-2">Stat 2 — Number</label>
+                    <input type="text" value="53%" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Stat 2 — Label</label>
+                    <input type="text" value="Youth unemployment rate" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div class="hidden md:block"></div>
+                <div>
+                    <label class="mono-label block mb-2">Stat 3 — Number</label>
+                    <input type="text" value="$1T+" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Stat 3 — Label</label>
+                    <input type="text" value="Looted since independence" class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                </div>
+            </div>
+        </div>
+
+        <!-- Save -->
+        <div class="flex justify-end gap-3">
+            <button class="outline-btn">Cancel</button>
+            <button class="red-btn">Save Homepage</button>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

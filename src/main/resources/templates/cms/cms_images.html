@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Image Placeholders</h1>
+                <p class="mt-1 text-sm text-rev-muted">Every image placeholder on the public site. Replace each with a real photograph.</p>
+            </div>
+            <span class="rounded-full bg-rev-red-light px-3 py-1 text-xs font-medium text-rev-red">18 placeholders</span>
+        </div>
+
+        <!-- Placeholder grid -->
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+            <!-- 1 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Homepage hero banner</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Homepage hero banner</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 1440 × 600 px</p>
+                        <p class="text-xs text-rev-muted italic">RCN march / rally photo</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Ticker background</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Homepage featured article hero</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 800 × 450 px</p>
+                        <p class="text-xs text-rev-muted italic">Featured article hero image</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Article thumbnail</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Article thumbnail (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage sidebar · Size: 400 × 200 px</p>
+                        <p class="text-xs text-rev-muted italic">Article thumbnail</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Featured video</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Homepage featured video</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 800 × 450 px</p>
+                        <p class="text-xs text-rev-muted italic">RCN public lecture or rally footage</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Podcast art</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Podcast cover art</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage + Podcast · Size: 600 × 600 px</p>
+                        <p class="text-xs text-rev-muted italic">Podcast Cover Art</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Theory card I</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Theory module cards (×4)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 400 × 250 px</p>
+                        <p class="text-xs text-rev-muted italic">Historical Materialism / Economics / Imperialism / State</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Frontline photo</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Frontline report photos (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 400 × 300 px</p>
+                        <p class="text-xs text-rev-muted italic">Lagos cell / Abuja university / Port Harcourt rally</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">RCN members</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Join section — members group photo</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 500 × 350 px</p>
+                        <p class="text-xs text-rev-muted italic">RCN members group photo</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 9 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">RCI logo</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">International solidarity cards (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Homepage · Size: 400 × 250 px</p>
+                        <p class="text-xs text-rev-muted italic">RCI global / IDOM journal / World School</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">RCN crowd</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">About page — top image</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: About · Size: 1200 × 400 px</p>
+                        <p class="text-xs text-rev-muted italic">RCN crowd/rally photo</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 11 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Nigeria map</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Activity page — Nigeria map</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Activity · Size: 600 × 400 px</p>
+                        <p class="text-xs text-rev-muted italic">Map of Nigeria with activity pins</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 12 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Activity photo</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Activity report photos (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Activity · Size: 400 × 300 px</p>
+                        <p class="text-xs text-rev-muted italic">Lagos / Abuja / Port Harcourt cell activity</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 13 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Article hero</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Single article — hero image</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Article · Size: 1200 × 500 px</p>
+                        <p class="text-xs text-rev-muted italic">Article hero image</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 14 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Related article</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Related article thumbnails (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Article · Size: 400 × 300 px</p>
+                        <p class="text-xs text-rev-muted italic">Oil & Gas / Economy / Labour</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 15 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">News featured</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">News page — featured + article grid (×9)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: News · Size: 400 × 300 px each</p>
+                        <p class="text-xs text-rev-muted italic">One thumbnail per article</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 16 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Printing press</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Donate page — printing press illustration</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Donate · Size: 400 × 300 px</p>
+                        <p class="text-xs text-rev-muted italic">Printing press illustration</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 17 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Member photo</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Join page — member testimonial photos (×3)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Join · Size: 150 × 150 px</p>
+                        <p class="text-xs text-rev-muted italic">Amaka / Emeka / Blessing</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+            <!-- 18 -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-5 flex gap-5">
+                <div class="img-placeholder h-32 w-44 flex-shrink-0 rounded">
+                    <span class="ph-label">Theory module</span>
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <p class="font-medium text-rev-ink">Theory page — module cards (×8)</p>
+                        <p class="text-xs text-rev-muted mt-1">Page: Theory · Size: 300 × 200 px</p>
+                        <p class="text-xs text-rev-muted italic">One image per study module</p>
+                    </div>
+                    <button class="outline-btn self-start mt-3">Replace image</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+</body>
+</html>
