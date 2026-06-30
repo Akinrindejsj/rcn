@@ -3,10 +3,11 @@
 <head>
     <title>News &amp; Analysis — Revolutionary Communists of Nigeria</title>
     <meta name="description" content="Marxist analysis of Nigeria and the world. All articles from the Revolutionary Communists of Nigeria."/>
+    <!-- No external JS required; the script is self‑contained -->
 </head>
 <body>
 <main layout:fragment="content">
-<!-- Hero -->
+    <!-- Hero -->
     <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">The Revolutionary Press</span></div>
@@ -14,16 +15,17 @@
             <p class="text-rev-muted text-lg mt-4 max-w-xl">Marxist analysis of Nigeria and the world. All articles from the Revolutionary Communists of Nigeria.</p>
             <div class="mt-10 relative max-w-2xl">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-rev-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="search" placeholder="Search articles by title, topic, or author..." class="w-full pl-12 pr-4 py-4 bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm outline-none transition-colors">
+                <input type="search" id="js-search-input" placeholder="Search articles by title, topic, or author..." class="w-full pl-12 pr-4 py-4 bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm outline-none transition-colors">
             </div>
         </div>
     </section>
 
     <!-- Featured article (first in list when available) -->
-    <section th:if="${!#lists.isEmpty(articles)}" class="bg-white border-t border-rev-border">
+    <section th:if="${!#lists.isEmpty(articles)}" id="featured-section" class="bg-white border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div th:with="featured=${articles[0]}" class="grid grid-cols-1 lg:grid-cols-5 gap-0 border border-rev-border mt-0">
-                <div class="lg:col-span-3 flex flex-col border-b lg:border-b-0 lg:border-r border-rev-border">
+                <div class="lg:col-span-3 flex flex-col border-b lg:border-b-0 lg:border-r border-rev-border js-article-card"
+                     th:attr="data-search-content=${#strings.toLowerCase(featured.title + ' ' + (featured.category ?: '') + ' ' + (featured.author ?: '') + ' ' + (featured.excerpt ?: ''))}">
                     <div th:if="${featured.featuredImageUrl != null and !featured.featuredImageUrl.isBlank()}" class="h-64 w-full border-b border-rev-border">
                         <img th:src="${featured.featuredImageUrl}" alt="" class="h-64 w-full object-cover"/>
                     </div>
@@ -48,7 +50,9 @@
                         <blockquote class="marx-quote"><p class="font-serif italic text-rev-gold text-lg leading-snug">"The executive of the modern state is but a committee for managing the common affairs of the whole bourgeoisie."</p><footer class="font-mono text-[10px] text-rev-muted mt-3 uppercase tracking-widest">— Marx &amp; Engels, The Communist Manifesto</footer></blockquote>
                     </div>
                     <th:block th:each="a, iter : ${articles}" th:if="${iter.count > 1 and iter.count <= 3}">
-                        <a th:href="@{/article/{id}(id=${a.id})}" href="/article" class="article-card block p-6 group">
+                        <a th:href="@{/article/{id}(id=${a.id})}" href="/article"
+                           class="article-card block p-6 group js-article-card"
+                           th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.author ?: '') + ' ' + (a.excerpt ?: ''))}">
                             <div th:if="${a.featuredImageUrl != null and !a.featuredImageUrl.isBlank()}" class="mb-4 rounded overflow-hidden">
                                 <img th:src="${a.featuredImageUrl}" alt="" class="h-28 w-full object-cover"/>
                             </div>
@@ -75,23 +79,31 @@
                    th:classappend="${cat == selectedCategory} ? 'bg-rev-red text-white' : 'border border-rev-border text-rev-ink hover:border-rev-red hover:text-rev-red'" th:text="${cat}">Category</a>
             </div>
             <div class="flex items-center gap-2">
-                <span class="font-mono text-rev-muted text-[10px]" th:text="${#lists.size(articles)} + ' article' + (${#lists.size(articles)} != 1 ? 's' : '')">0 articles</span>
+                <span id="js-article-count" class="font-mono text-rev-muted text-[10px]" th:text="${#lists.size(articles)} + ' article' + (${#lists.size(articles)} != 1 ? 's' : '')">0 articles</span>
             </div>
         </div>
     </div>
 
     <!-- Article grid -->
-    <section class="py-16 bg-rev-page">
+    <section id="articles-grid-section" class="py-16 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
 
-            <div th:if="${#lists.isEmpty(articles)}" class="text-center text-rev-muted py-12">
+            <!-- Empty state (no articles at all) -->
+            <div th:if="${#lists.isEmpty(articles)}" id="no-articles-message" class="text-center text-rev-muted py-12">
                 No articles have been published yet. Check back soon.
             </div>
 
-            <div th:if="${!#lists.isEmpty(articles)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a th:each="a, iter : ${articles}" th:if="${iter.count > 3 or #lists.size(articles) <= 1}"
+            <!-- Search empty state (hidden by default) -->
+            <div id="search-empty-message" class="text-center text-rev-muted py-12 hidden">
+                No articles match your search.
+            </div>
+
+            <!-- Grid of articles (only those not already in the featured block) -->
+            <div th:if="${!#lists.isEmpty(articles)}" id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
+                <a th:each="a, iter : ${articles}" th:if="${iter.index > 2}"
                    th:href="@{/article/{id}(id=${a.id})}" href="/article"
-                   class="article-card block group bg-white border border-rev-border">
+                   class="article-card block group bg-white border border-rev-border js-article-card"
+                   th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.author ?: '') + ' ' + (a.excerpt ?: ''))}">
                     <div th:if="${a.featuredImageUrl != null and !a.featuredImageUrl.isBlank()}" class="h-44 w-full overflow-hidden">
                         <img th:src="${a.featuredImageUrl}" alt="" class="h-44 w-full object-cover"/>
                     </div>
@@ -104,8 +116,8 @@
                 </a>
             </div>
 
-            <!-- Pagination -->
-            <div th:if="${totalPages > 1}" class="flex justify-center items-center gap-4 mt-14">
+            <!-- Pagination (hidden during search) -->
+            <div th:if="${totalPages > 1}" id="pagination" class="flex justify-center items-center gap-4 mt-14">
                 <a th:if="${currentPage > 0}" th:href="@{/news(page=${currentPage - 1}, category=${selectedCategory})}" class="font-mono text-rev-ink text-xs hover:text-rev-red">← Previous</a>
                 <span th:if="${currentPage == 0}" class="font-mono text-rev-muted text-xs">← Previous</span>
 
@@ -120,5 +132,59 @@
         </div>
     </section>
 </main>
+
+<!-- Inline JavaScript for client‑side search -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('js-search-input');
+        const articleCards = document.querySelectorAll('.js-article-card');
+        const noArticlesMessage = document.getElementById('no-articles-message');
+        const searchEmptyMessage = document.getElementById('search-empty-message');
+        const pagination = document.getElementById('pagination');
+        const articleCountSpan = document.getElementById('js-article-count');
+
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.trim().toLowerCase();
+            let anyVisible = false;
+
+            // Filter article cards (both featured and grid)
+            articleCards.forEach(card => {
+                const content = card.getAttribute('data-search-content') || '';
+                if (query === '' || content.includes(query)) {
+                    card.style.display = '';   // show
+                    anyVisible = true;
+                } else {
+                    card.style.display = 'none'; // hide
+                }
+            });
+
+            // Toggle messages and pagination
+            if (query === '') {
+                // Reset to normal state
+                if (noArticlesMessage) noArticlesMessage.classList.remove('hidden');
+                if (searchEmptyMessage) searchEmptyMessage.classList.add('hidden');
+                if (pagination) pagination.classList.remove('hidden');
+                // Restore original article count (Thymeleaf's server count)
+                // We can leave the count as is, it reflects the page's total.
+            } else {
+                // Searching – hide original empty message, show search-empty if needed
+                if (noArticlesMessage) noArticlesMessage.classList.add('hidden');
+                if (searchEmptyMessage) {
+                    if (!anyVisible) {
+                        searchEmptyMessage.classList.remove('hidden');
+                    } else {
+                        searchEmptyMessage.classList.add('hidden');
+                    }
+                }
+                // Hide pagination because it's irrelevant during client‑side filtering
+                if (pagination) pagination.classList.add('hidden');
+            }
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
