@@ -73,17 +73,33 @@ public class WriteController {
 
             article = articleService.create(article);
 
-            Map<String, Object> variables = new HashMap<>();
-            variables.put("articleId", article.getId());
-            variables.put("articleTitle", article.getTitle());
-            variables.put("submitterEmail", cmd.getEmailAddress());
-            variables.put("approved", false);
-            ProcessInstance process = runtimeService.startProcessInstanceByKey(
-                    "article-approval", variables);
+            // Route the article to the editorial approval queue directly. This is
+            // the source of truth for where editors find submissions, so it must
+            // happen regardless of whether the optional Flowable workflow below
+            // succeeds.
+            article.setStatus(ArticleStatus.PENDING_APPROVAL);
+            articleService.update(article);
 
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Thanks! Your submission has been sent to our editors for review. "
-                            + "Process id: " + process.getId());
+            // Best-effort: kick off the Flowable "article-approval" workflow so
+            // editors get a task in their workflow inbox. A failure here must
+            // NEVER surface to the visitor or block the submission — the article
+            // is already safely in the approval queue above.
+            try {
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("articleId", article.getId());
+                variables.put("articleTitle", article.getTitle());
+                variables.put("submitterEmail", cmd.getEmailAddress());
+                variables.put("approved", false);
+                ProcessInstance process = runtimeService.startProcessInstanceByKey(
+                        "article-approval", variables);
+                redirectAttributes.addFlashAttribute("successMessage",
+                        "Thanks! Your submission has been sent to our editors for review. "
+                                + "Process id: " + process.getId());
+            } catch (Exception flowableEx) {
+                redirectAttributes.addFlashAttribute("successMessage",
+                        "Thanks! Your submission has been sent to our editors for review.");
+            }
+
             return "redirect:/write";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

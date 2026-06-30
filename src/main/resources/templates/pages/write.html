@@ -6,7 +6,7 @@
 </head>
 <body>
 <main layout:fragment="content">
-<section class="py-24 bg-white">
+    <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Contribute</span></div>
             <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase leading-tight">Write for<br/>the Revolution</h1>
@@ -18,17 +18,37 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-rev-border bg-white">
                 <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Analysis</span></div>
+                    <!-- Analysis SVG icon -->
+                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 6H34L40 12V40C40 41.6569 38.6569 43 37 43H8C6.34315 43 5 41.6569 5 40V9C5 7.34315 6.34315 6 8 6Z"/>
+                        <path d="M34 6V12H40"/>
+                        <path d="M15 22L21 28L33 16"/>
+                        <path d="M15 34H25"/>
+                    </svg>
                     <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Analysis</h3>
                     <p class="text-rev-muted text-sm">Marxist analysis of Nigerian politics, economy, and events. 800–2,000 words. Well-researched, theoretically grounded.</p>
                 </div>
                 <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Report</span></div>
+                    <!-- Frontline Reports SVG icon -->
+                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8" y="14" width="32" height="26" rx="3"/>
+                        <path d="M20 8L28 8"/>
+                        <path d="M24 12L24 8"/>
+                        <circle cx="24" cy="27" r="6"/>
+                        <path d="M30 33L35 38"/>
+                    </svg>
                     <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Frontline Reports</h3>
                     <p class="text-rev-muted text-sm">On-the-ground accounts from your workplace, campus, or community. 300–800 words. What's happening where you are?</p>
                 </div>
                 <div class="p-8">
-                    <div class="img-placeholder w-12 h-12 mb-4 rounded"><span class="ph-label">Letter</span></div>
+                    <!-- Letters & Debate SVG icon -->
+                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="10" width="40" height="28" rx="3"/>
+                        <path d="M4 14L24 28L44 14"/>
+                        <path d="M12 24L4 32"/>
+                        <path d="M36 24L44 32"/>
+                        <circle cx="24" cy="22" r="2"/>
+                    </svg>
                     <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Letters & Debate</h3>
                     <p class="text-rev-muted text-sm">Responses to published articles, theoretical debates, or reflections on organising experience. Any length.</p>
                 </div>
@@ -58,22 +78,64 @@
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Category</label>
                         <select th:field="*{category}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors">
                             <option value="">— Choose a category —</option>
-                            <option>Analysis</option>
-                            <option>Frontline Report</option>
-                            <option>Letter & Debate</option>
-                            <option>Other</option>
+                            <option value="analysis">Analysis</option>
+                            <option value="frontline-report">Frontline Report</option>
+                            <option value="letter-debate">Letter & Debate</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Body</label><textarea rows="10" th:field="*{body}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-y"></textarea></div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your Name (as you want it published)</label><input type="text" th:field="*{authorName}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address (for editorial contact, not published)</label><input type="email" th:field="*{emailAddress}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+
+                    <!-- Improved upload container -->
                     <div>
                         <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Attachment (image, max 5 MB)</label>
-                        <input type="file" name="attachment" accept="image/jpeg,image/png,image/webp"
-                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                        <label for="file-upload" class="block cursor-pointer">
+                            <div class="border-2 border-dashed border-rev-border hover:border-rev-red transition-colors rounded-lg p-8 text-center bg-rev-subtle">
+                                <iconify-icon icon="lucide:upload" width="36" height="36" class="text-rev-muted mx-auto mb-3"></iconify-icon>
+                                <p class="text-rev-muted text-sm mb-1">Drag & drop your image here, or <span class="text-rev-red underline font-medium">browse files</span></p>
+                                <p class="text-rev-muted text-xs">JPEG, PNG or WebP • Max 5 MB</p>
+                                <p id="file-name" class="text-rev-ink text-sm mt-2 hidden"></p>
+                            </div>
+                        </label>
+                        <input type="file" id="file-upload" name="attachment" accept="image/jpeg,image/png,image/webp" class="hidden">
                     </div>
-                    <button type="submit" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review →</button>
+                    <script>
+                        document.getElementById('file-upload').addEventListener('change', function(e) {
+                            const fileName = e.target.files[0]?.name;
+                            const display = document.getElementById('file-name');
+                            if (fileName) {
+                                display.textContent = 'Selected: ' + fileName;
+                                display.classList.remove('hidden');
+                            } else {
+                                display.classList.add('hidden');
+                            }
+                        });
+                    </script>
+
+                    <button type="submit" id="writeSubmitBtn" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review →</button>
                 </form>
+                <script>
+                    (function() {
+                        var form = document.querySelector('form[method="post"]');
+                        var btn = document.getElementById('writeSubmitBtn');
+                        if (form && btn) {
+                            form.addEventListener('submit', function() {
+                                if (btn.disabled) return;
+                                var orig = btn.textContent;
+                                btn.textContent = 'Submitting…';
+                                setTimeout(function() { btn.disabled = true; }, 0);
+                                setTimeout(function() {
+                                    if (btn.disabled) {
+                                        btn.disabled = false;
+                                        btn.textContent = orig;
+                                    }
+                                }, 8000);
+                            });
+                        }
+                    })();
+                </script>
             </div>
             <aside class="space-y-8">
                 <div class="bg-rev-page p-6 border border-rev-border">

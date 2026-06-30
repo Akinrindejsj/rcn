@@ -184,7 +184,9 @@
                            th:class="${#strings.startsWith(currentUrl, '/admin/cms/approval') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
                             <iconify-icon icon="lucide:clipboard-check" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
                             Approval Queue
-                            <span class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-rev-red text-xs font-medium text-white">3</span>
+                            <span th:if="${pendingApprovalCount > 0}"
+                                  class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-rev-red text-xs font-medium text-white"
+                                  th:text="${pendingApprovalCount}">0</span>
                         </a>
                         <a th:href="@{/admin/cms/homepage}" href="/admin/cms/homepage"
                            th:class="${#strings.startsWith(currentUrl, '/admin/cms/homepage') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">

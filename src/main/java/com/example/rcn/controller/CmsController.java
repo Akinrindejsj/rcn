@@ -160,6 +160,40 @@ public class CmsController {
     }
 
     // ---------------------------------------------------------------------
+    // Approval queue (pending submissions)
+    // ---------------------------------------------------------------------
+
+    @GetMapping("/approval")
+    public String approvalQueue(Model model) {
+        model.addAttribute("pendingArticles", articleService.findByStatus(ArticleStatus.PENDING_APPROVAL));
+        return "cms/cms_article_approval";
+    }
+
+    @PostMapping("/approval/{id}/publish")
+    public String publishPendingArticle(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            articleService.publish(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Article approved and published.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Could not publish article: " + e.getMessage());
+        }
+        return "redirect:/admin/cms/approval";
+    }
+
+    @PostMapping("/approval/{id}/reject")
+    public String rejectPendingArticle(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            articleService.reject(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Article rejected.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Could not reject article: " + e.getMessage());
+        }
+        return "redirect:/admin/cms/approval";
+    }
+
+    // ---------------------------------------------------------------------
     // Articles
     // ---------------------------------------------------------------------
 
