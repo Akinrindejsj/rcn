@@ -1,7 +1,9 @@
 package com.example.rcn.config;
 
+import com.example.rcn.model.Activity;
 import com.example.rcn.model.Faq;
 import com.example.rcn.model.TeamMember;
+import com.example.rcn.repository.ActivityRepository;
 import com.example.rcn.repository.FaqRepository;
 import com.example.rcn.repository.TeamMemberRepository;
 import org.slf4j.Logger;
@@ -23,11 +25,14 @@ public class DataSeeder {
 
     private final TeamMemberRepository teamMemberRepository;
     private final FaqRepository faqRepository;
+    private final ActivityRepository activityRepository;
 
     public DataSeeder(TeamMemberRepository teamMemberRepository,
-                      FaqRepository faqRepository) {
+                      FaqRepository faqRepository,
+                      ActivityRepository activityRepository) {
         this.teamMemberRepository = teamMemberRepository;
         this.faqRepository = faqRepository;
+        this.activityRepository = activityRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -35,6 +40,7 @@ public class DataSeeder {
     public void seed() {
         seedProgrammePoints();
         seedFaqs();
+        seedActivities();
     }
 
     private void seedProgrammePoints() {
@@ -77,6 +83,37 @@ public class DataSeeder {
             f.setAnswer(faqs[i][1]);
             f.setSortOrder(i + 1);
             faqRepository.save(f);
+        }
+    }
+
+    private void seedActivities() {
+        if (activityRepository.count() > 0) {
+            return;
+        }
+        log.info("Seeding default activity reports …");
+        Object[][] reports = {
+                {"80 Papers Gone in One Hour at Ojota", "Lagos", "Street Tabling", "Amaka T.",
+                        "2026-06-12", "Workers took every copy; one danfo driver called it \"the truth nobody says.\""},
+                {"UniAbuja Marxist Study Group Formed", "Abuja", "Study Circle", "Emeka O.",
+                        "2026-05-21", "Seven students joined after our ASUU briefing; now meeting every Thursday."},
+                {"Oil Workers Speak Out at NUPENG Rally", "Port Harcourt", "Rally", "Blessing A.",
+                        "2026-04-18", "A worker denounced gas flaring and poverty amid the Delta's oil wealth. The crowd roared."},
+                {"First RCN Cell Launches in the North", "Kano", "Campus", "Yusuf I.",
+                        "2026-04-09", "Bayero University students founded Kano's first cell after a screening of \"From #EndSARS to Revolution.\""},
+                {"\"Why Communism?\" Draws 60 to Town Hall", "Ibadan", "Public Meeting", "Funmi A.",
+                        "2026-03-28", "Our biggest public meeting yet — standing room only by the final question."},
+                {"Comrades March Against Fuel Price Hikes", "Enugu", "Protest", "Chidi N.",
+                        "2026-02-14", "RCN banners led the chant as transport workers joined the route through the city centre."},
+        };
+        for (Object[] r : reports) {
+            Activity a = new Activity();
+            a.setTitle((String) r[0]);
+            a.setLocation((String) r[1]);
+            a.setType((String) r[2]);
+            a.setAuthorName((String) r[3]);
+            a.setActivityDate(java.time.LocalDate.parse((String) r[4]));
+            a.setBody((String) r[5]);
+            activityRepository.save(a);
         }
     }
 }

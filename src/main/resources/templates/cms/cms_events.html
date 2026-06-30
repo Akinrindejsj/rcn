@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
 <body>
-<main layout:fragment="content" th:with="pageTitle='Events'">
+<main layout:fragment="content" th:with="pageTitle='Activity Page'">
     <div class="mx-auto max-w-6xl space-y-8">
 
         <!-- Page Header -->
         <div class="flex items-end justify-between">
             <div>
-                <h1 class="font-display text-3xl uppercase text-rev-ink">Activity Reports</h1>
-                <p class="mt-1 text-sm text-rev-muted">On-the-ground reports from RCN cells — protests, tabling, study circles, rallies.</p>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Activity Page</h1>
+                <p class="mt-1 text-sm text-rev-muted">Everything on the visitor Activity page — hero, stats, map, reports, and footer — in one place.</p>
             </div>
-            <a th:href="@{/admin/cms/events/new}" href="/admin/cms/events/new" class="red-btn flex items-center gap-2">
-                <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
-                New Report
-            </a>
+            <a th:href="@{/activity}" target="_blank" class="outline-btn no-underline">View Live Page →</a>
         </div>
 
         <!-- Flash banners -->
@@ -28,59 +25,325 @@
             <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
         </div>
 
-        <!-- Empty state -->
-        <div th:if="${#lists.isEmpty(activities)}"
-             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
-            <iconify-icon icon="lucide:globe" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
-            <p class="mt-4 text-rev-muted">No activity reports yet. Click "New Report" to add the first one.</p>
-        </div>
+        <form id="activityPageForm" th:action="@{/admin/cms/events/save}" method="post" enctype="multipart/form-data" th:object="${activitySettings}" data-spinner>
 
-        <!-- Reports Table -->
-        <div th:if="${!#lists.isEmpty(activities)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
-                    <tr>
-                        <th class="px-6 py-3 font-medium font-mono">Title</th>
-                        <th class="px-6 py-3 font-medium font-mono">Location</th>
-                        <th class="px-6 py-3 font-medium font-mono">Type</th>
-                        <th class="px-6 py-3 font-medium font-mono">Date</th>
-                        <th class="px-6 py-3 font-medium font-mono">Author</th>
-                        <th class="px-6 py-3 font-medium font-mono"></th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-rev-border">
-                    <tr th:each="a : ${activities}" class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink" th:text="${a.title}">Title</div>
-                            <div class="text-xs text-rev-muted line-clamp-1" th:if="${a.body}" th:text="${a.body}">Body</div>
-                        </td>
-                        <td class="px-6 py-4 text-rev-ink" th:text="${a.location} ?: '—'">Location</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red"
-                                  th:text="${a.type} ?: 'Report'">Type</span>
-                        </td>
-                        <td class="px-6 py-4 text-rev-muted" th:text="${a.activityDate != null ? #temporals.format(a.activityDate, 'MMM d, yyyy') : '—'}">Date</td>
-                        <td class="px-6 py-4 text-rev-muted" th:text="${a.authorName} ?: '—'">Author</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/admin/cms/events/{id}/edit(id=${a.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                            <form method="post" th:action="@{/admin/cms/events/{id}/delete(id=${a.id})}" class="inline"
-                                  onsubmit="return confirm('Delete this report? This cannot be undone.')">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="border-t border-rev-border px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs text-rev-muted" th:text="${#lists.size(activities)} + ' reports'">0 reports</span>
+            <!-- ════════════════════════════════════════════
+                 SECTION 1 — PAGE HERO
+            ════════════════════════════════════════════ -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="h-8 w-1 bg-rev-red"></div>
+                    <h3 class="font-display text-xl uppercase text-rev-ink">Page Hero</h3>
+                    <span class="mono-label ml-auto">The top banner visitors see first.</span>
+                </div>
+
+                <!-- Backdrop image -->
+                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5">
+                    <img th:if="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0}"
+                         th:src="${activitySettings.backdropImageUrl}" alt="Hero backdrop"
+                         class="w-full h-48 object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-placeholder h-48 w-full"
+                         th:classappend="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0 ? ' hidden' : ''}"
+                         style="background:#2a2a2a;">
+                        <span class="ph-label" style="color:rgba(255,255,255,0.4);">Upload a hero backdrop — wide action photo, ~1920×1000px, max 5 MB</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 mb-6">
+                    <label for="backdrop-upload" class="red-btn cursor-pointer flex items-center gap-2">
+                        <iconify-icon icon="lucide:upload" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        Choose Backdrop
+                    </label>
+                    <button type="button" id="backdrop-remove"
+                            th:if="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0}"
+                            class="outline-btn flex items-center gap-2">
+                        <iconify-icon icon="lucide:x" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        Remove
+                    </button>
+                    <span id="backdrop-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
+                </div>
+                <input type="file" id="backdrop-upload" name="backdrop" accept="image/jpeg,image/png,image/webp" class="hidden">
+                <input type="hidden" name="backdropRemoved" id="backdrop-removed" value="false">
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="mono-label block mb-2">Page title <span class="text-rev-red">*</span> <span class="normal-case tracking-normal text-rev-muted">(browser tab)</span></label>
+                        <input type="text" th:field="*{pageTitle}" placeholder="Activity"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Kicker <span class="normal-case tracking-normal text-rev-muted">(small eyebrow above headline)</span></label>
+                        <input type="text" th:field="*{kicker}" placeholder="From the Frontlines"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="mono-label block mb-2">Headline <span class="text-rev-red">*</span></label>
+                    <input type="text" th:field="*{headline}" placeholder="We Are Already Organising."
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-lg font-medium outline-none focus:border-rev-red">
+                </div>
+                <div class="mt-4">
+                    <label class="mono-label block mb-2">Intro text</label>
+                    <textarea rows="3" th:field="*{introText}" placeholder="Short paragraph under the headline."
+                              class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm leading-relaxed outline-none focus:border-rev-red"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 mt-4">
+                    <div>
+                        <label class="mono-label block mb-2">Main button text</label>
+                        <input type="text" th:field="*{cta1Text}" placeholder="See the Reports ↓"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Main button link</label>
+                        <input type="text" th:field="*{cta1Url}" placeholder="#reports"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 mt-4">
+                    <div>
+                        <label class="mono-label block mb-2">Secondary button text <span class="normal-case tracking-normal text-rev-muted">(optional)</span></label>
+                        <input type="text" th:field="*{cta2Text}" placeholder="Join a Cell Near You →"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Secondary button link</label>
+                        <input type="text" th:field="*{cta2Url}" placeholder="/join"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- ════════════════════════════════════════════
+                 SECTION 2 — STAT STRIP
+            ════════════════════════════════════════════ -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="h-8 w-1 bg-rev-red"></div>
+                    <h3 class="font-display text-xl uppercase text-rev-ink">Stat Strip</h3>
+                    <span class="mono-label ml-auto">Three headline numbers under the hero.</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div>
+                        <label class="mono-label block mb-2">Stat 1 — Number</label>
+                        <input type="text" th:field="*{stat1Number}" placeholder="40+"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-2xl font-display outline-none focus:border-rev-red">
+                        <label class="mono-label block mb-2 mt-3">Stat 1 — Label</label>
+                        <input type="text" th:field="*{stat1Label}" placeholder="Active cells nationwide"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Stat 2 — Number</label>
+                        <input type="text" th:field="*{stat2Number}" placeholder="120+"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-2xl font-display outline-none focus:border-rev-red">
+                        <label class="mono-label block mb-2 mt-3">Stat 2 — Label</label>
+                        <input type="text" th:field="*{stat2Label}" placeholder="Frontline reports filed"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Stat 3 — Number</label>
+                        <input type="text" th:field="*{stat3Number}" placeholder="9"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-2xl font-display outline-none focus:border-rev-red">
+                        <label class="mono-label block mb-2 mt-3">Stat 3 — Label</label>
+                        <input type="text" th:field="*{stat3Label}" placeholder="Major cities organising"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════════
+                 SECTION 3 — MAP SECTION
+            ════════════════════════════════════════════ -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="h-8 w-1 bg-rev-red"></div>
+                    <h3 class="font-display text-xl uppercase text-rev-ink">Map Section</h3>
+                    <span class="mono-label ml-auto">Text + map image above the reports.</span>
+                </div>
+
+                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5">
+                    <img th:if="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0}"
+                         th:src="${activitySettings.mapImageUrl}" alt="Map graphic"
+                         class="w-full h-48 object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-placeholder h-48 w-full"
+                         th:classappend="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0 ? ' hidden' : ''}">
+                        <span class="ph-label">Upload a map graphic of Nigeria with cell pins</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 mb-6">
+                    <label for="map-upload" class="red-btn cursor-pointer flex items-center gap-2">
+                        <iconify-icon icon="lucide:upload" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        Choose Map Image
+                    </label>
+                    <button type="button" id="map-remove"
+                            th:if="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0}"
+                            class="outline-btn flex items-center gap-2">
+                        <iconify-icon icon="lucide:x" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        Remove
+                    </button>
+                    <span id="map-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
+                </div>
+                <input type="file" id="map-upload" name="map" accept="image/jpeg,image/png,image/webp" class="hidden">
+                <input type="hidden" name="mapRemoved" id="map-removed" value="false">
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="mono-label block mb-2">Map heading</label>
+                        <input type="text" th:field="*{mapHeading}" placeholder="Wherever Workers Are, We're Building."
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-lg font-medium outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Map body text</label>
+                        <textarea rows="2" th:field="*{mapBodyText}" placeholder="A short sentence or two about the cells' reach."
+                                  class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm leading-relaxed outline-none focus:border-rev-red"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════════
+                 SECTION 4 — REPORTS
+            ════════════════════════════════════════════ -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="h-8 w-1 bg-rev-red"></div>
+                    <h3 class="font-display text-xl uppercase text-rev-ink">Reports</h3>
+                    <span class="mono-label ml-auto">Activity reports shown as photo-backed cards.</span>
+                    <a th:href="@{/admin/cms/events/new}" class="red-btn ml-2 flex items-center gap-2 no-underline">
+                        <iconify-icon icon="lucide:plus" width="14" height="14" stroke-width="1.5"></iconify-icon>
+                        New Report
+                    </a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(activities)}" class="border border-dashed border-rev-border rounded-lg p-10 text-center">
+                    <iconify-icon icon="lucide:globe" width="36" height="36" stroke-width="1" class="text-rev-muted"></iconify-icon>
+                    <p class="mt-3 text-rev-muted text-sm">No reports yet. Click <span class="text-rev-red font-medium">New Report</span> to add the first one.</p>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(activities)}" class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                        <tr>
+                            <th class="px-5 py-3 font-medium font-mono">Title</th>
+                            <th class="px-5 py-3 font-medium font-mono">Location</th>
+                            <th class="px-5 py-3 font-medium font-mono">Type</th>
+                            <th class="px-5 py-3 font-medium font-mono">Date</th>
+                            <th class="px-5 py-3 font-medium font-mono">Author</th>
+                            <th class="px-5 py-3 font-medium font-mono"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-rev-border">
+                        <tr th:each="a : ${activities}" class="article-row group hover:bg-rev-subtle/50">
+                            <td class="px-5 py-4">
+                                <div class="font-medium text-rev-ink" th:text="${a.title}">Title</div>
+                                <div class="text-xs text-rev-muted mt-1 line-clamp-1" th:if="${a.body}" th:text="${a.body}">Body</div>
+                            </td>
+                            <td class="px-5 py-4 text-rev-ink" th:text="${a.location} ?: '—'">Location</td>
+                            <td class="px-5 py-4">
+                                <span class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red"
+                                      th:text="${a.type} ?: 'Report'">Type</span>
+                            </td>
+                            <td class="px-5 py-4 text-rev-muted" th:text="${a.activityDate != null ? #temporals.format(a.activityDate, 'MMM d, yyyy') : '—'}">Date</td>
+                            <td class="px-5 py-4 text-rev-muted" th:text="${a.authorName} ?: '—'">Author</td>
+                            <td class="px-5 py-4 text-right whitespace-nowrap">
+                                <a th:href="@{/admin/cms/events/${a.id}/edit}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                                <form method="post" th:action="@{/admin/cms/events/${a.id}/delete}" class="inline"
+                                      onsubmit="return confirm('Delete this report? This cannot be undone.')">
+                                    <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════════
+                 SECTION 5 — FOOTER CTA
+            ════════════════════════════════════════════ -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="h-8 w-1 bg-rev-red"></div>
+                    <h3 class="font-display text-xl uppercase text-rev-ink">Footer CTA</h3>
+                    <span class="mono-label ml-auto">The red join banner at the bottom of the page.</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="mono-label block mb-2">Footer heading</label>
+                        <input type="text" th:field="*{footerHeading}" placeholder="Your City Needs a Cell."
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-lg font-medium outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Footer body text</label>
+                        <textarea rows="2" th:field="*{footerBodyText}" placeholder="The short paragraph under the heading."
+                                  class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm leading-relaxed outline-none focus:border-rev-red"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="mono-label block mb-2">Button text</label>
+                            <input type="text" th:field="*{footerCtaText}" placeholder="Join the RCN →"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                        <div>
+                            <label class="mono-label block mb-2">Button link</label>
+                            <input type="text" th:field="*{footerCtaUrl}" placeholder="/join"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════════
+                 FORM ACTIONS
+            ════════════════════════════════════════════ -->
+            <div class="flex items-center justify-end gap-3">
+                <a th:href="@{/admin/cms/events}" class="outline-btn no-underline">Cancel</a>
+                <button type="submit" class="red-btn flex items-center gap-2 px-8">
+                    <iconify-icon icon="lucide:save" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                    Save Activity Page
+                </button>
+            </div>
+
+        </form>
 
     </div>
+
+    <!-- Backdrop / map upload preview + remove handling -->
+    <script>
+        (function () {
+            function wireUpload(inputId, nameId, removeBtnId, removedId) {
+                var input = document.getElementById(inputId);
+                var name = document.getElementById(nameId);
+                var removeBtn = removeBtnId ? document.getElementById(removeBtnId) : null;
+                var removed = document.getElementById(removedId);
+                if (!input) return;
+
+                input.addEventListener('change', function (e) {
+                    var fileName = e.target.files[0] && e.target.files[0].name;
+                    if (name) {
+                        name.textContent = fileName ? 'Selected: ' + fileName : '';
+                    }
+                    if (removed) removed.value = 'false';
+                });
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function () {
+                        input.value = '';
+                        if (name) name.textContent = '';
+                        if (removed) removed.value = 'true';
+                        // Hide the live preview so the placeholder shows again
+                        var preview = input.closest('.rounded-lg') &&
+                            input.closest('.rounded-lg').querySelector('img');
+                        if (preview) preview.style.display = 'none';
+                    });
+                }
+            }
+
+            wireUpload('backdrop-upload', 'backdrop-name', 'backdrop-remove', 'backdrop-removed');
+            wireUpload('map-upload', 'map-name', 'map-remove', 'map-removed');
+        })();
+    </script>
 </main>
 </body>
 </html>

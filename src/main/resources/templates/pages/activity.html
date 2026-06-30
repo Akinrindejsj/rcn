@@ -1,66 +1,205 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <title>Activity — Revolutionary Communists of Nigeria</title>
-    <meta name="description" content="On-the-ground reports from RCN cells across Nigeria. Protests, tabling, study circles, and more."/>
+    <title th:text="${activitySettings.pageTitle != null && activitySettings.pageTitle.length() > 0} ? ${activitySettings.pageTitle} + ' — Revolutionary Communists of Nigeria' : 'Activity — Revolutionary Communists of Nigeria'">Activity — Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="On-the-ground reports from RCN cells across Nigeria. Protests, tabling, study circles, && more."/>
 </head>
 <body>
 <main layout:fragment="content">
-<section class="py-24 bg-rev-page">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">From the Frontlines</span></div>
-            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase">On the Ground</h1>
-            <p class="text-rev-muted text-lg mt-4 max-w-xl">The RCN is active in Lagos, Abuja, Port Harcourt, Kano, and beyond.</p>
-            <div class="img-placeholder h-48 w-full mt-10 rounded max-w-lg"><svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="10" r="8"/><path d="M12 2v4M12 16v4M2 10h4M20 10h4"/><circle cx="12" cy="10" r="2" fill="#C0182A"/></svg><span class="ph-label">Map of Nigeria with activity pins</span></div>
+
+    <!-- ════════════════════════════════════════════
+         HERO — photo backdrop, full bleed
+    ════════════════════════════════════════════ -->
+    <section class="relative overflow-hidden">
+
+        <!-- Backdrop image (real or placeholder) -->
+        <div th:if="${activitySettings.backdropImageUrl != null && activitySettings.backdropImageUrl.length() > 0}"
+             class="absolute inset-0 w-full h-full">
+            <img th:src="${activitySettings.backdropImageUrl}" alt="" class="w-full h-full object-cover"
+                 onerror="this.parentElement.className='img-placeholder absolute inset-0 w-full h-full'; this.style.display='none';">
         </div>
-    </section>
+        <div th:unless="${activitySettings.backdropImageUrl != null && activitySettings.backdropImageUrl.length() > 0}"
+             class="img-placeholder absolute inset-0 w-full h-full" style="background:#2a2a2a;">
+            <span class="ph-label" style="color:rgba(255,255,255,0.4);">Hero backdrop photo — RCN rally / street action, wide shot, 1920×1000px</span>
+        </div>
 
-    <section class="py-10 bg-white border-t border-rev-border">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex flex-wrap gap-2 mb-10">
-                <button class="bg-rev-red text-white font-mono text-xs uppercase tracking-widest px-4 py-2">All</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Protests</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Street Tabling</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Study Circles</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Public Meetings</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-4 py-2 hover:border-rev-red">Campus</button>
+        <!-- Dark gradient for legibility -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
+        <div class="absolute inset-0 dot-bg opacity-20"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 pt-28 pb-20">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px w-10 bg-rev-red"></div>
+                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]" th:utext="${activitySettings.kicker} ?: 'From the Frontlines'">From the Frontlines</span>
             </div>
 
-            <div th:if="${#lists.isEmpty(activities)}" class="text-center text-rev-muted py-12">
-                No activity reports yet. Check back soon — or write the first one.
+            <h1 class="font-display text-6xl md:text-8xl text-white uppercase leading-[0.92] mb-6" th:utext="${activitySettings.headline} ?: 'We Are Already Organising.'">We Are Already<br/>Organising.</h1>
+
+            <p class="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed mb-10" th:utext="${activitySettings.introText} ?: ''">This isn't theory on a page.</p>
+
+            <div class="flex flex-wrap gap-4">
+                <a th:href="${activitySettings.cta1Url} ?: '#reports'"
+                   class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors"
+                   th:text="${activitySettings.cta1Text} ?: 'See the Reports ↓'">See the Reports ↓</a>
+                <!-- FIXED: entire condition inside one ${...} -->
+                <a th:if="${activitySettings.cta2Url != null && activitySettings.cta2Url.length() > 0}"
+                   th:href="${activitySettings.cta2Url}"
+                   class="border border-white/40 hover:border-rev-red text-white font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors"
+                   th:text="${activitySettings.cta2Text} ?: ''">Join a Cell Near You →</a>
             </div>
 
-            <div th:if="${!#lists.isEmpty(activities)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div th:each="a : ${activities}" class="article-card bg-white border border-rev-border p-6">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="font-mono text-rev-muted text-[10px] uppercase">
-                            <span th:text="${a.location} ?: '—'">Location</span>
-                            <span th:if="${a.activityDate}" th:text="' · ' + ${#temporals.format(a.activityDate, 'MMM d, yyyy')}">Date</span>
-                        </span>
-                        <!-- Status dot: red for upcoming, gold for ongoing, muted for past -->
-                        <span th:if="${a.eventStatus?.name() == 'UPCOMING'}" class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span>
-                        <span th:if="${a.eventStatus?.name() == 'ONGOING'}" class="w-2 h-2 bg-rev-gold rounded-full animate-pulse"></span>
-                        <span th:if="${a.eventStatus?.name() == 'PAST'}" class="w-2 h-2 bg-rev-muted rounded-full"></span>
-                        <span th:if="${a.eventStatus == null}"></span>
-                    </div>
-
-                    <!-- Type badge -->
-                    <span th:if="${a.type == 'Street Tabling'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Street Tabling</span>
-                    <span th:if="${a.type == 'Study Circle'}" class="bg-rev-gold text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Study Circle</span>
-                    <span th:if="${a.type == 'Protest'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Protest</span>
-                    <span th:if="${a.type == 'Rally'}" class="bg-rev-red text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Rally</span>
-                    <span th:if="${a.type == 'Public Meeting'}" class="bg-rev-ink text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Public Meeting</span>
-                    <span th:if="${a.type == 'Campus'}" class="bg-rev-ink text-white font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block">Campus</span>
-                    <span th:if="${a.type != null and a.type != 'Street Tabling' and a.type != 'Study Circle' and a.type != 'Protest' and a.type != 'Rally' and a.type != 'Public Meeting' and a.type != 'Campus'}"
-                          class="bg-rev-subtle text-rev-muted font-mono text-[9px] uppercase px-2 py-0.5 mb-2 inline-block" th:text="${a.type}">Type</span>
-
-                    <h4 class="font-body font-bold text-rev-ink text-sm mb-2" th:text="${a.title}">Title</h4>
-                    <p class="text-rev-muted text-xs mb-3" th:text="${a.body} ?: '—'">Body</p>
-                    <p th:if="${a.authorName}" class="font-mono text-rev-muted text-[10px]" th:text="'— ' + ${a.authorName}">— Author</p>
+            <!-- Stat strip -->
+            <div class="flex flex-wrap gap-10 mt-14 pt-8 border-t border-white/15">
+                <div>
+                    <p class="font-display text-4xl text-rev-red" th:text="${activitySettings.stat1Number} ?: '0'">40+</p>
+                    <p class="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1" th:text="${activitySettings.stat1Label} ?: ''">Active cells nationwide</p>
+                </div>
+                <div>
+                    <p class="font-display text-4xl text-white" th:text="${activitySettings.stat2Number} ?: '0'">120+</p>
+                    <p class="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1" th:text="${activitySettings.stat2Label} ?: ''">Frontline reports filed</p>
+                </div>
+                <div>
+                    <p class="font-display text-4xl text-rev-gold" th:text="${activitySettings.stat3Number} ?: '0'">9</p>
+                    <p class="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1" th:text="${activitySettings.stat3Label} ?: ''">Major cities organising</p>
                 </div>
             </div>
         </div>
     </section>
+
+
+    <!-- ════════════════════════════════════════════
+         MAP STRIP
+    ════════════════════════════════════════════ -->
+    <section class="py-16 bg-white border-b border-rev-border">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
+                <div class="lg:col-span-1">
+                    <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em] block mb-3">Nationwide</span>
+                    <h2 class="font-display text-4xl text-rev-ink uppercase mb-4 leading-tight" th:utext="${activitySettings.mapHeading} ?: ''">Wherever Workers Are, We're Building.</h2>
+                    <p class="text-rev-muted text-sm leading-relaxed" th:utext="${activitySettings.mapBodyText} ?: ''">From danfo terminals in Lagos to oil rigs in the Delta.</p>
+                </div>
+                <div class="lg:col-span-2">
+                    <div th:if="${activitySettings.mapImageUrl != null && activitySettings.mapImageUrl.length() > 0}"
+                         class="rounded overflow-hidden border border-rev-border">
+                        <img th:src="${activitySettings.mapImageUrl}" alt="Map of Nigeria showing RCN cell locations"
+                             class="w-full h-64 object-cover"
+                             onerror="this.parentElement.className='img-placeholder h-64 w-full rounded';">
+                    </div>
+                    <div th:unless="${activitySettings.mapImageUrl != null && activitySettings.mapImageUrl.length() > 0}"
+                         class="img-placeholder h-64 w-full rounded">
+                        <span class="ph-label">Map of Nigeria with cell location pins — Lagos · Abuja · Port Harcourt · Kano · Ibadan · Enugu · Kaduna · Benin City · Calabar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         FILTERS + REPORTS GRID
+    ════════════════════════════════════════════ -->
+    <section id="reports" class="py-20 bg-rev-page">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+
+            <div class="flex items-end justify-between flex-wrap gap-6 mb-10">
+                <div>
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="h-px w-10 bg-rev-red"></div>
+                        <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Field Reports</span>
+                    </div>
+                    <h2 class="font-display text-5xl text-rev-ink uppercase">Latest Activity</h2>
+                </div>
+                <a href="/write" class="red-link font-mono text-[11px] uppercase tracking-widest">Submit Your Own Report →</a>
+            </div>
+
+            <!-- Empty state -->
+            <div th:if="${#lists.isEmpty(activities)}"
+                 class="rounded-xl border border-dashed border-rev-border bg-white p-16 text-center">
+                <iconify-icon icon="lucide:globe" width="48" height="48" stroke-width="1" class="text-rev-muted mx-auto"></iconify-icon>
+                <p class="mt-4 text-rev-muted">No reports have been published yet. Check back soon.</p>
+            </div>
+
+            <!-- Photo-backed report cards -->
+            <div th:if="${!#lists.isEmpty(activities)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a th:each="a : ${activities}" href="#" class="report-card group relative h-96 overflow-hidden block">
+                    <!-- Real photo when present -->
+                    <div th:if="${a.imageUrl != null && a.imageUrl.length() > 0}"
+                         class="absolute inset-0 w-full h-full">
+                        <img th:src="${a.imageUrl}" alt="" class="w-full h-full object-cover"
+                             onerror="this.parentElement.className='img-placeholder absolute inset-0 w-full h-full'; this.style.display='none';">
+                    </div>
+                    <!-- Placeholder otherwise -->
+                    <div th:unless="${a.imageUrl != null && a.imageUrl.length() > 0}"
+                         class="img-placeholder absolute inset-0 w-full h-full" style="background:#2a2a2a;">
+                        <!-- FIXED: inline ternary now correctly inside a single ${...} -->
+                        <span class="ph-label" style="color:rgba(255,255,255,0.4);" th:text="${a.location != null ? 'Photo: ' + a.location : 'Report photo'}">Report photo</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent group-hover:from-rev-red/90 transition-colors duration-300"></div>
+
+                    <div class="relative z-10 h-full flex flex-col justify-between p-6">
+                        <div class="flex justify-between items-start">
+                            <span class="font-mono text-[9px] uppercase px-2 py-1 tracking-widest"
+                                  th:text="${a.type} ?: 'Report'"
+                                  th:classappend="${#strings.equals(a.type, 'Street Tabling') or #strings.equals(a.type, 'Protest') ? ' bg-rev-red text-white' : (#strings.equals(a.type, 'Study Circle') or #strings.equals(a.type, 'Public Meeting') ? ' bg-rev-gold text-white' : ' bg-rev-ink text-white')}">Type</span>
+                            <span class="w-2 h-2 bg-rev-red rounded-full animate-pulse mt-1.5"></span>
+                        </div>
+                        <div>
+                            <span class="font-mono text-white/60 text-[10px] uppercase tracking-widest block mb-2">
+                                <span th:text="${a.location} ?: '—'">Location</span> ·
+                                <span th:text="${a.activityDate != null ? #temporals.format(a.activityDate, 'MMM yyyy') : ''}">Date</span>
+                            </span>
+                            <h4 class="font-display text-2xl text-white leading-tight mb-3" th:text="${a.title}">Title</h4>
+                            <p class="text-white/70 text-xs leading-relaxed mb-3"
+                               th:text="${a.body != null ? #strings.abbreviate(a.body, 110) : ''}">Excerpt</p>
+                            <p class="font-mono text-white/50 text-[10px]" th:if="${a.authorName}">— <span th:text="${a.authorName}">Author</span></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════
+         JOIN CTA — conversion close
+    ════════════════════════════════════════════ -->
+    <section class="relative py-24 overflow-hidden">
+        <div class="img-placeholder absolute inset-0 w-full h-full" style="background:#1a1212;">
+            <span class="ph-label" style="color:rgba(255,255,255,0.3);">Background: crowd or raised-fists photo — full bleed, dark mood</span>
+        </div>
+        <div class="absolute inset-0 bg-rev-red/85"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-4 md:px-8 text-center">
+            <h2 class="font-display text-5xl md:text-7xl text-white uppercase leading-tight mb-6" th:utext="${activitySettings.footerHeading} ?: ''">
+                Your City Needs a Cell.<br/>Be the First to Build It.
+            </h2>
+            <p class="text-white/85 text-lg max-w-xl mx-auto mb-10 leading-relaxed" th:utext="${activitySettings.footerBodyText} ?: ''">
+                Every cell on this page started with one person who decided to stop waiting. That person could be you.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <!-- FIXED: entire condition inside one ${...} -->
+                <a th:if="${activitySettings.footerCtaUrl != null && activitySettings.footerCtaUrl.length() > 0}"
+                   th:href="${activitySettings.footerCtaUrl}"
+                   class="bg-white hover:bg-rev-off-white text-rev-red font-mono font-bold text-sm uppercase tracking-widest px-10 py-4 transition-colors"
+                   th:text="${activitySettings.footerCtaText} ?: 'Join the RCN →'">Join the RCN →</a>
+                <a href="/write" class="border border-white/50 hover:border-white text-white font-mono text-sm uppercase tracking-widest px-10 py-4 transition-colors">
+                    Submit a Report
+                </a>
+            </div>
+        </div>
+    </section>
+
 </main>
+
+<style>
+    /* Card-specific hover lift, scoped to this page */
+    .report-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .report-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+</style>
+
 </body>
 </html>

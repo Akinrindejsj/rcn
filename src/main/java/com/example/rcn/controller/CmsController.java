@@ -13,6 +13,7 @@ import com.example.rcn.dto.TeamMemberDto;
 import com.example.rcn.exception.CloudinaryUploadException;
 import com.example.rcn.model.*;
 import com.example.rcn.service.AboutPageContentService;
+import com.example.rcn.service.ActivityPageContentService;
 import com.example.rcn.service.ArticleService;
 import com.example.rcn.service.CloudinaryService;
 import com.example.rcn.service.ContributionTierService;
@@ -33,11 +34,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -58,6 +57,7 @@ public class CmsController {
     private final TeamMemberService teamMemberService;
     private final FaqService faqService;
     private final AboutPageContentService aboutPageContentService;
+    private final ActivityPageContentService activityPageContentService;
     private final DonationPageContentService donationPageContentService;
     private final ContributionTierService contributionTierService;
     private final PaymentDetailsService paymentDetailsService;
@@ -72,6 +72,7 @@ public class CmsController {
                          TeamMemberService teamMemberService,
                          FaqService faqService,
                          AboutPageContentService aboutPageContentService,
+                         ActivityPageContentService activityPageContentService,
                          DonationPageContentService donationPageContentService,
                          ContributionTierService contributionTierService,
                          PaymentDetailsService paymentDetailsService,
@@ -85,6 +86,7 @@ public class CmsController {
         this.teamMemberService = teamMemberService;
         this.faqService = faqService;
         this.aboutPageContentService = aboutPageContentService;
+        this.activityPageContentService = activityPageContentService;
         this.donationPageContentService = donationPageContentService;
         this.contributionTierService = contributionTierService;
         this.paymentDetailsService = paymentDetailsService;
@@ -409,10 +411,122 @@ public class CmsController {
     // Activity / events
     // ---------------------------------------------------------------------
 
+    /**
+     * Activity Page CMS. Renders one editor that controls both the page-level
+     * copy/settings (hero, stats, map, footer CTA) and the list of report cards.
+     * Settings come from the singleton {@link ActivityPageContent}; reports are
+     * the live {@link Activity} rows.
+     */
     @GetMapping("/events")
     public String events(Model model) {
+        if (!model.containsAttribute("activitySettings")) {
+            model.addAttribute("activitySettings", activityPageContentService.getSingleton());
+        }
         model.addAttribute("activities", activityService.findAll());
         return "cms/cms_events";
+    }
+
+    /** Persists the Activity-page settings (hero / stats / map / footer CTA). */
+    @PostMapping("/events/save")
+    public String saveActivityPageSettings(@ModelAttribute("activitySettings") ActivityPageContent activitySettings,
+                                           @RequestParam(value = "backdrop", required = false) MultipartFile backdrop,
+                                           @RequestParam(value = "backdropRemoved", required = false, defaultValue = "false") boolean backdropRemoved,
+                                           @RequestParam(value = "map", required = false) MultipartFile map,
+                                           @RequestParam(value = "mapRemoved", required = false, defaultValue = "false") boolean mapRemoved,
+                                           RedirectAttributes redirectAttributes) {
+        try {
+            ActivityPageContent entity = activityPageContentService.getSingleton();
+
+            if (activitySettings.getPageTitle() != null) {
+                entity.setPageTitle(activitySettings.getPageTitle().trim());
+            }
+            if (activitySettings.getKicker() != null) {
+                entity.setKicker(activitySettings.getKicker().trim());
+            }
+            if (activitySettings.getHeadline() != null) {
+                entity.setHeadline(activitySettings.getHeadline().trim());
+            }
+            if (activitySettings.getIntroText() != null) {
+                entity.setIntroText(activitySettings.getIntroText().trim());
+            }
+            if (activitySettings.getCta1Text() != null) {
+                entity.setCta1Text(activitySettings.getCta1Text().trim());
+            }
+            if (activitySettings.getCta1Url() != null) {
+                entity.setCta1Url(activitySettings.getCta1Url().trim());
+            }
+            if (activitySettings.getCta2Text() != null) {
+                entity.setCta2Text(activitySettings.getCta2Text().trim());
+            }
+            if (activitySettings.getCta2Url() != null) {
+                entity.setCta2Url(activitySettings.getCta2Url().trim());
+            }
+            if (activitySettings.getStat1Number() != null) {
+                entity.setStat1Number(activitySettings.getStat1Number().trim());
+            }
+            if (activitySettings.getStat1Label() != null) {
+                entity.setStat1Label(activitySettings.getStat1Label().trim());
+            }
+            if (activitySettings.getStat2Number() != null) {
+                entity.setStat2Number(activitySettings.getStat2Number().trim());
+            }
+            if (activitySettings.getStat2Label() != null) {
+                entity.setStat2Label(activitySettings.getStat2Label().trim());
+            }
+            if (activitySettings.getStat3Number() != null) {
+                entity.setStat3Number(activitySettings.getStat3Number().trim());
+            }
+            if (activitySettings.getStat3Label() != null) {
+                entity.setStat3Label(activitySettings.getStat3Label().trim());
+            }
+            if (activitySettings.getMapHeading() != null) {
+                entity.setMapHeading(activitySettings.getMapHeading().trim());
+            }
+            if (activitySettings.getMapBodyText() != null) {
+                entity.setMapBodyText(activitySettings.getMapBodyText().trim());
+            }
+            if (activitySettings.getFooterHeading() != null) {
+                entity.setFooterHeading(activitySettings.getFooterHeading().trim());
+            }
+            if (activitySettings.getFooterBodyText() != null) {
+                entity.setFooterBodyText(activitySettings.getFooterBodyText().trim());
+            }
+            if (activitySettings.getFooterCtaText() != null) {
+                entity.setFooterCtaText(activitySettings.getFooterCtaText().trim());
+            }
+            if (activitySettings.getFooterCtaUrl() != null) {
+                entity.setFooterCtaUrl(activitySettings.getFooterCtaUrl().trim());
+            }
+
+            // Hero backdrop image
+            if (backdrop != null && !backdrop.isEmpty()) {
+                entity.setBackdropImageUrl(cloudinaryService.uploadImage(backdrop, "rcn/activity"));
+            } else if (backdropRemoved) {
+                entity.setBackdropImageUrl("");
+            }
+
+            // Map image
+            if (map != null && !map.isEmpty()) {
+                entity.setMapImageUrl(cloudinaryService.uploadImage(map, "rcn/activity"));
+            } else if (mapRemoved) {
+                entity.setMapImageUrl("");
+            }
+
+            activityPageContentService.save(entity);
+            redirectAttributes.addFlashAttribute("successMessage", "Activity page saved.");
+            return "redirect:/admin/cms/events";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/cms/events";
+        } catch (CloudinaryUploadException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Image upload failed: " + e.getMessage());
+            return "redirect:/admin/cms/events";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong on our end. Please try again. "
+                            + "If the problem continues, contact your site administrator.");
+            return "redirect:/admin/cms/events";
+        }
     }
 
     @GetMapping("/events/new")
