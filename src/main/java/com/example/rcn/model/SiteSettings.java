@@ -57,6 +57,9 @@ public class SiteSettings {
     @Column(name = "footer_description", columnDefinition = "TEXT")
     private String footerDescription;
 
+    @Column(name = "footer_image_url", length = 1024)
+    private String footerImageUrl;
+
     @Column(name = "copyright_line")
     private String copyrightLine;
 
@@ -196,6 +199,14 @@ public class SiteSettings {
 
     public void setFooterDescription(String footerDescription) {
         this.footerDescription = footerDescription;
+    }
+
+    public String getFooterImageUrl() {
+        return footerImageUrl;
+    }
+
+    public void setFooterImageUrl(String footerImageUrl) {
+        this.footerImageUrl = footerImageUrl;
     }
 
     public String getCopyrightLine() {

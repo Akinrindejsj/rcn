@@ -15,6 +15,7 @@ public class SiteSettingsDto {
     private String marxistUrl;
     private String booksUrl;
     private String footerDescription;
+    private String footerImageUrl;
     private String copyrightLine;
     private String closingSlogan;
 
@@ -120,6 +121,14 @@ public class SiteSettingsDto {
 
     public void setFooterDescription(String footerDescription) {
         this.footerDescription = footerDescription;
+    }
+
+    public String getFooterImageUrl() {
+        return footerImageUrl;
+    }
+
+    public void setFooterImageUrl(String footerImageUrl) {
+        this.footerImageUrl = footerImageUrl;
     }
 
     public String getCopyrightLine() {

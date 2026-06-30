@@ -1111,7 +1111,9 @@ public class CmsController {
     }
 
     @PostMapping("/settings")
-    public String saveSettings(@ModelAttribute SiteSettingsDto dto, RedirectAttributes redirectAttributes) {
+    public String saveSettings(@ModelAttribute SiteSettingsDto dto,
+                               @RequestParam(value = "footerImage", required = false) MultipartFile footerImage,
+                               RedirectAttributes redirectAttributes) {
         try {
             SiteSettings entity = siteSettingsService.getSingleton();
             if (dto.getSiteName() != null) {
@@ -1150,6 +1152,9 @@ public class CmsController {
             if (dto.getFooterDescription() != null) {
                 entity.setFooterDescription(dto.getFooterDescription().trim());
             }
+            if (footerImage != null && !footerImage.isEmpty()) {
+                entity.setFooterImageUrl(cloudinaryService.uploadImage(footerImage, "rcn/settings"));
+            }
             if (dto.getCopyrightLine() != null) {
                 entity.setCopyrightLine(dto.getCopyrightLine().trim());
             }
@@ -1161,6 +1166,9 @@ public class CmsController {
             return "redirect:/admin/cms/settings";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/cms/settings";
+        } catch (CloudinaryUploadException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Footer image upload failed: " + e.getMessage());
             return "redirect:/admin/cms/settings";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage",

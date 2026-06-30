@@ -226,7 +226,6 @@
             </div>
         </form>
     </div>
-</main>
 
 <script>
     const form = document.getElementById('homepageForm');
@@ -277,8 +276,20 @@
         });
     });
 
+    function syncAllSelections() {
+        document.querySelectorAll('input[type="hidden"][name]').forEach(function (input) {
+            const boxes = document.querySelectorAll('input[data-selection="' + input.name + '"]');
+            if (!boxes.length) return;
+            const ids = Array.from(boxes)
+                .filter(function (box) { return box.checked; })
+                .map(function (box) { return box.value; });
+            writeIds(input, ids);
+        });
+    }
+
     if (form && saveBtn) {
         form.addEventListener('submit', function () {
+            syncAllSelections();
             if (saveBtn.disabled) return;
             saveBtn.disabled = true;
             saveBtn.dataset.originalText = saveBtn.textContent;
@@ -286,5 +297,6 @@
         });
     }
 </script>
+</main>
 </body>
 </html>

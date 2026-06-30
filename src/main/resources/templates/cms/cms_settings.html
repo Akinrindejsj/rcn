@@ -24,7 +24,7 @@
             <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
         </div>
 
-        <form th:action="@{/admin/cms/settings}" method="post" th:object="${settings}">
+        <form th:action="@{/admin/cms/settings}" method="post" enctype="multipart/form-data" th:object="${settings}">
             <!-- General -->
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
                 <h3 class="font-display text-lg uppercase text-rev-ink">General</h3>
@@ -108,6 +108,21 @@
                     <label class="mono-label block mb-2">Footer description</label>
                     <textarea rows="2" th:field="*{footerDescription}" placeholder="About the organisation…"
                               class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                </div>
+                <div>
+                    <label class="mono-label block mb-2">Footer image</label>
+                    <p class="mb-3 text-xs text-rev-muted">RCN newspaper front page shown in the public footer. JPG, PNG, or WebP.</p>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${settings.footerImageUrl != null and !settings.footerImageUrl.isBlank()}"
+                             th:src="${settings.footerImageUrl}"
+                             alt="Current footer newspaper front page"
+                             class="h-48 w-full object-cover">
+                        <div th:if="${settings.footerImageUrl == null or settings.footerImageUrl.isBlank()}" class="img-placeholder h-48 w-full">
+                            <span class="ph-label">RCN newspaper front page</span>
+                        </div>
+                    </div>
+                    <input type="file" name="footerImage" accept="image/jpeg,image/png,image/webp"
+                           class="mt-3 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Copyright line</label>

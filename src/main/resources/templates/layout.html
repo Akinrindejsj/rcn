@@ -179,7 +179,13 @@
             <div class="max-w-xs">
                 <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="RCN Logo" class="h-14 w-auto mb-5">
                 <p class="text-white/40 text-xs leading-relaxed mb-6" th:text="${settings.footerDescription} ?: ''">Footer description.</p>
-                <div class="img-placeholder h-24 w-full rounded" style="background:#2a2a2a;"><span class="ph-label text-white/30">RCN newspaper front page</span></div>
+                <img th:if="${settings.footerImageUrl != null and !settings.footerImageUrl.isBlank()}"
+                     th:src="${settings.footerImageUrl}"
+                     alt="RCN newspaper front page"
+                     class="h-32 w-full rounded object-cover border border-white/10">
+                <div th:if="${settings.footerImageUrl == null or settings.footerImageUrl.isBlank()}"
+                     class="img-placeholder h-24 w-full rounded"
+                     style="background:#2a2a2a;"><span class="ph-label text-white/30">RCN newspaper front page</span></div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-x-14 gap-y-8 text-xs">
                 <div class="space-y-3">
