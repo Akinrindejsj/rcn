@@ -65,4 +65,32 @@ public class CloudinaryService {
     public String uploadImage(MultipartFile file) throws CloudinaryUploadException {
         return uploadImage(file, defaultFolder);
     }
+
+    public String uploadVideo(MultipartFile file, String folder) throws CloudinaryUploadException {
+        if (file == null || file.isEmpty()) {
+            throw new CloudinaryUploadException("No video file was provided.");
+        }
+        try {
+            Map<String, Object> uploadOptions = ObjectUtils.asMap(
+                    "folder", folder,
+                    "resource_type", "video"
+            );
+            Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(), uploadOptions);
+            String url = (String) result.get("secure_url");
+            if (url == null || url.isBlank()) {
+                throw new CloudinaryUploadException(
+                        "Cloudinary returned no URL. Please try again or use a different file.");
+            }
+            return url;
+        } catch (CloudinaryUploadException e) {
+            throw e;
+        } catch (java.io.IOException e) {
+            throw new CloudinaryUploadException(
+                    "Could not read the video file. Please try again or use a different file.", e);
+        } catch (Exception e) {
+            throw new CloudinaryUploadException(
+                    "Video upload failed: " + e.getMessage()
+                            + ". Please try again or use a different file.", e);
+        }
+    }
 }

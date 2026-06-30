@@ -6,25 +6,19 @@
 <body>
 <main layout:fragment="content" th:with="pageTitle='Homepage'">
     <div class="mx-auto max-w-6xl space-y-8">
-
-        <!-- Page Header -->
-        <div class="flex items-end justify-between">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
                 <h1 class="font-display text-3xl uppercase text-rev-ink">Homepage Content</h1>
-                <p class="mt-1 text-sm text-rev-muted">Headline, hero image, ticker, and featured story on the landing page.</p>
+                <p class="mt-1 text-sm text-rev-muted">Control the homepage hero, selected content sections, ticker, and build-party photo.</p>
             </div>
+            <a th:href="@{/dashboard}" target="_blank" class="outline-btn no-underline">Preview Homepage</a>
         </div>
 
-        <!-- Success banner (auto-dismiss after 4 seconds) -->
-        <div th:if="${successMessage}"
-             id="successBanner"
+        <div th:if="${successMessage}" id="successBanner"
              class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
             <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${successMessage}">Homepage updated successfully.</p>
-            </div>
-            <button onclick="document.getElementById('successBanner').remove()"
-                    class="text-white/80 hover:text-white transition-colors flex-shrink-0">
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Homepage updated successfully.</p>
+            <button type="button" onclick="document.getElementById('successBanner').remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
                 <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
             </button>
         </div>
@@ -35,410 +29,262 @@
             }, 4000);
         </script>
 
-        <!-- Error banner -->
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+        <div th:if="${errorMessage}" class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
             <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${errorMessage}">Something went wrong.</p>
-            </div>
-            <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+            <button type="button" onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
                 <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
             </button>
         </div>
 
-        <!-- Form -->
         <form id="homepageForm"
               method="post"
               th:action="@{/admin/cms/homepage}"
               enctype="multipart/form-data"
-              th:object="${content}">
+              th:object="${content}"
+              class="space-y-8">
 
-            <!-- Hero section -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Hero Section</h3>
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                    <h2 class="font-display text-lg uppercase text-rev-ink">Hero Section</h2>
+                    <span class="text-xs text-rev-muted">Video loops silently behind the hero copy.</span>
+                </div>
                 <div>
                     <label class="mono-label block mb-2">Hero headline</label>
-                    <input type="text" th:field="*{heroHeadline}"
+                    <input type="text" th:field="*{heroHeadline}" required
                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Hero subtext</label>
-                    <textarea rows="3" th:field="*{heroSubtext}"
+                    <textarea rows="3" th:field="*{heroSubtext}" required
                               class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
                 </div>
                 <div>
-                    <label class="mono-label block mb-2">Hero image</label>
+                    <label class="mono-label block mb-2">Hero background video</label>
                     <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
-                             th:src="${content.heroImage}"
-                             alt="Current hero image"
-                             class="w-full h-48 object-cover"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder h-48 w-full"
-                             th:classappend="${content.heroImage != null and !content.heroImage.isBlank() ? ' hidden' : ''}">
-                            <span class="ph-label">Homepage hero banner — 1440×600 px, max 5 MB, jpg/png/webp</span>
+                        <video th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
+                               th:src="${content.heroImage}"
+                               class="h-52 w-full object-cover"
+                               muted loop playsinline controls></video>
+                        <div th:if="${content.heroImage == null or content.heroImage.isBlank()}" class="vid-placeholder h-52 w-full">
+                            <div class="vid-play-btn"></div>
+                            <span class="vid-label">Hero video - MP4, WebM, or MOV, max 50 MB</span>
                         </div>
                     </div>
-                    <p class="mt-2 text-xs text-rev-muted">Hero background image — recommended 1440×600 px, max 5 MB, jpg/png/webp. Uploading a new image replaces the current one.</p>
-                    <input type="file" name="heroImage" accept="image/jpeg,image/png,image/webp"
+                    <p class="mt-2 text-xs text-rev-muted">Use short rally, meeting, or organising footage. Uploading a new video replaces the current one.</p>
+                    <input type="file" name="heroImage" accept="video/mp4,video/webm,video/quicktime"
                            class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="mono-label block mb-2">Primary button text</label>
-                        <input type="text" th:field="*{heroPrimaryButtonText}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+                        <input type="text" th:field="*{heroPrimaryButtonText}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
                     </div>
                     <div>
                         <label class="mono-label block mb-2">Primary button URL</label>
-                        <input type="text" th:field="*{heroPrimaryButtonUrl}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+                        <input type="text" th:field="*{heroPrimaryButtonUrl}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
                     </div>
                     <div>
                         <label class="mono-label block mb-2">Secondary button text</label>
-                        <input type="text" th:field="*{heroSecondaryButtonText}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+                        <input type="text" th:field="*{heroSecondaryButtonText}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
                     </div>
                     <div>
                         <label class="mono-label block mb-2">Secondary button URL</label>
-                        <input type="text" th:field="*{heroSecondaryButtonUrl}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+                        <input type="text" th:field="*{heroSecondaryButtonUrl}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Ticker / marquee -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">Scrolling Ticker</h3>
-                    <span class="text-xs text-rev-muted">These lines scroll across the top of the homepage.</span>
-                </div>
-                <div class="space-y-3">
-                    <div>
-                        <label class="mono-label block mb-2">Ticker line 1</label>
-                        <input type="text" th:field="*{tickerLine1}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Ticker line 2</label>
-                        <input type="text" th:field="*{tickerLine2}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Ticker line 3</label>
-                        <input type="text" th:field="*{tickerLine3}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Ticker line 4</label>
-                        <input type="text" th:field="*{tickerLine4}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Ticker line 5</label>
-                        <input type="text" th:field="*{tickerLine5}"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Featured article -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Featured Article</h3>
-                <p class="text-xs text-rev-muted">The large story shown prominently on the homepage.</p>
-                <div>
-                    <label class="mono-label block mb-2">Featured article title</label>
-                    <input type="text" th:field="*{featuredArticleTitle}"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <h2 class="font-display text-lg uppercase text-rev-ink">Scrolling Ticker</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <input type="text" th:field="*{tickerLine1}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Ticker line 1">
+                    <input type="text" th:field="*{tickerLine2}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Ticker line 2">
+                    <input type="text" th:field="*{tickerLine3}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Ticker line 3">
+                    <input type="text" th:field="*{tickerLine4}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Ticker line 4">
+                    <input type="text" th:field="*{tickerLine5}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Ticker line 5">
                 </div>
                 <div>
-                    <label class="mono-label block mb-2">Featured article body</label>
-                    <textarea rows="4" th:field="*{featuredArticleBody}"
-                              class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                    <label class="mono-label block mb-2">Optional ticker background image</label>
+                    <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}" th:src="${content.tickerBackgroundImageUrl}" alt="Current ticker background" class="mb-3 h-28 w-full rounded-md border border-rev-border object-cover">
+                    <input type="file" name="tickerBackgroundImage" accept="image/jpeg,image/png,image/webp"
+                           class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="mono-label block mb-2">Featured article date / category</label>
-                        <input type="text" th:field="*{featuredArticleDate}" placeholder="Economy · June 2026"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                    <div>
-                        <label class="mono-label block mb-2">Featured article URL</label>
-                        <input type="text" th:field="*{featuredArticleUrl}" placeholder="/article"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                    </div>
-                </div>
-            </div>
+            </section>
 
-            <!-- Stats strip -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Statistics Strip</h3>
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <h2 class="font-display text-lg uppercase text-rev-ink">Statistics Strip</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="space-y-3">
                         <p class="mono-label">Stat 1</p>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Number</label>
-                            <input type="text" th:field="*{stat1Number}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Label</label>
-                            <input type="text" th:field="*{stat1Label}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
+                        <input type="text" th:field="*{stat1Number}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Number">
+                        <input type="text" th:field="*{stat1Label}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Label">
                     </div>
                     <div class="space-y-3">
                         <p class="mono-label">Stat 2</p>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Number</label>
-                            <input type="text" th:field="*{stat2Number}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Label</label>
-                            <input type="text" th:field="*{stat2Label}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
+                        <input type="text" th:field="*{stat2Number}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Number">
+                        <input type="text" th:field="*{stat2Label}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Label">
                     </div>
                     <div class="space-y-3">
                         <p class="mono-label">Stat 3</p>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Number</label>
-                            <input type="text" th:field="*{stat3Number}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
-                        <div>
-                            <label class="text-xs text-rev-muted block mb-1">Label</label>
-                            <input type="text" th:field="*{stat3Label}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        </div>
+                        <input type="text" th:field="*{stat3Number}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Number">
+                        <input type="text" th:field="*{stat3Label}" required class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface" placeholder="Label">
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Ticker background image -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <h3 class="font-display text-lg uppercase text-rev-ink">Ticker Background Image</h3>
-                <p class="text-xs text-rev-muted">Optional background image behind the scrolling ticker bar.</p>
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                    <h2 class="font-display text-lg uppercase text-rev-ink">News &amp; Analysis</h2>
+                    <span class="text-xs text-rev-muted">Choose up to 6 existing published articles.</span>
+                </div>
+                <input type="hidden" th:field="*{homepageArticleIds}">
+                <div th:if="${#lists.isEmpty(articles)}" class="rounded-md border border-dashed border-rev-border bg-rev-subtle p-4 text-sm text-rev-muted">
+                    No published articles are available yet. Publish articles first, then return here to select them.
+                </div>
+                <div th:if="${!#lists.isEmpty(articles)}" class="space-y-3">
+                    <p class="text-xs text-rev-muted"><span data-counter-for="homepageArticleIds">0</span> of 6 selected. If none are selected, this section is hidden on the homepage.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                        <label th:each="a : ${articles}" class="selection-card flex items-start gap-3 rounded-md border border-rev-border bg-rev-subtle px-3 py-3 text-sm cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${a.id}" data-selection="homepageArticleIds" data-max="6" class="mt-1 accent-rev-red">
+                            <span class="min-w-0">
+                                <span class="block truncate font-medium text-rev-ink" th:text="${a.title}">Article title</span>
+                                <span class="mt-1 block truncate text-xs text-rev-muted" th:text="${a.category ?: 'Analysis'}">Analysis</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                    <h2 class="font-display text-lg uppercase text-rev-ink">Podcast Section</h2>
+                    <span class="text-xs text-rev-muted">Choose up to 4 existing podcast episodes.</span>
+                </div>
+                <input type="hidden" th:field="*{homepagePodcastIds}">
+                <div th:if="${#lists.isEmpty(podcasts)}" class="rounded-md border border-dashed border-rev-border bg-rev-subtle p-4 text-sm text-rev-muted">
+                    No podcast episodes are available yet. Create episodes first, then return here to select them.
+                </div>
+                <div th:if="${!#lists.isEmpty(podcasts)}" class="space-y-3">
+                    <p class="text-xs text-rev-muted"><span data-counter-for="homepagePodcastIds">0</span> of 4 selected. If none are selected, this section is hidden on the homepage.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                        <label th:each="p : ${podcasts}" class="selection-card flex items-start gap-3 rounded-md border border-rev-border bg-rev-subtle px-3 py-3 text-sm cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${p.id}" data-selection="homepagePodcastIds" data-max="4" class="mt-1 accent-rev-red">
+                            <span class="min-w-0">
+                                <span class="block truncate font-medium text-rev-ink" th:text="${p.title}">Podcast title</span>
+                                <span class="mt-1 block truncate text-xs text-rev-muted" th:text="${p.episodeNumber ?: 'Episode'}">Episode</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                    <h2 class="font-display text-lg uppercase text-rev-ink">On the Ground Section</h2>
+                    <span class="text-xs text-rev-muted">Choose up to 3 existing activities.</span>
+                </div>
+                <input type="hidden" th:field="*{homepageActivityIds}">
+                <div th:if="${#lists.isEmpty(activities)}" class="rounded-md border border-dashed border-rev-border bg-rev-subtle p-4 text-sm text-rev-muted">
+                    No activities are available yet. Create activities first, then return here to select them.
+                </div>
+                <div th:if="${!#lists.isEmpty(activities)}" class="space-y-3">
+                    <p class="text-xs text-rev-muted"><span data-counter-for="homepageActivityIds">0</span> of 3 selected. If none are selected, this section is hidden on the homepage.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                        <label th:each="ac : ${activities}" class="selection-card flex items-start gap-3 rounded-md border border-rev-border bg-rev-subtle px-3 py-3 text-sm cursor-pointer hover:border-rev-red">
+                            <input type="checkbox" th:value="${ac.id}" data-selection="homepageActivityIds" data-max="3" class="mt-1 accent-rev-red">
+                            <span class="min-w-0">
+                                <span class="block truncate font-medium text-rev-ink" th:text="${ac.title}">Activity title</span>
+                                <span class="mt-1 block truncate text-xs text-rev-muted" th:text="${ac.location ?: 'RCN activity'}">Location</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <h2 class="font-display text-lg uppercase text-rev-ink">Build the Party</h2>
+                <p class="text-xs text-rev-muted">Upload one group photo for the homepage build-party section.</p>
                 <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                    <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}"
-                         th:src="${content.tickerBackgroundImageUrl}"
-                         alt="Current ticker background"
-                         class="w-full h-32 object-cover"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="img-placeholder h-32 w-full"
-                         th:classappend="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank() ? ' hidden' : ''}">
-                        <span class="ph-label">Ticker background — 1920×200 px, max 5 MB, jpg/png/webp</span>
+                    <img th:if="${content.buildPartyImageUrl != null and !content.buildPartyImageUrl.isBlank()}"
+                         th:src="${content.buildPartyImageUrl}"
+                         alt="Current build-party group photo"
+                         class="w-full h-48 object-cover">
+                    <div th:if="${content.buildPartyImageUrl == null or content.buildPartyImageUrl.isBlank()}" class="img-placeholder h-48 w-full">
+                        <span class="ph-label">Group photo - JPG, PNG, or WebP, max 5 MB</span>
                     </div>
                 </div>
-                <input type="file" name="tickerBackgroundImage" accept="image/jpeg,image/png,image/webp"
+                <input type="file" name="buildPartyImage" accept="image/jpeg,image/png,image/webp"
                        class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
-            </div>
+            </section>
 
-            <!-- Homepage article selection -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">Featured Article (from the library)</h3>
-                    <span class="text-xs text-rev-muted">Choose up to 1 article</span>
+            <div class="sticky bottom-0 z-10 -mx-4 border-t border-rev-border bg-rev-page/95 px-4 py-4 backdrop-blur md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0">
+                <div class="flex justify-end gap-3">
+                    <a th:href="@{/admin/cms/homepage}" class="outline-btn no-underline">Cancel</a>
+                    <button type="submit" id="saveBtn" class="red-btn">Save Homepage</button>
                 </div>
-                <p class="text-xs text-rev-muted">Optionally pick the article shown large on the homepage. The free-text fields below are used when no article is chosen.</p>
-                <div>
-                    <label class="mono-label block mb-2">Featured article</label>
-                    <select th:field="*{featuredArticleId}"
-                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
-                        <option value="">— None (use the free-text fields below) —</option>
-                        <option th:each="a : ${articles}" th:value="${a.id}" th:text="${a.title}">Article title</option>
-                    </select>
-                </div>
-                <!-- Featured article image -->
-                <div>
-                    <label class="mono-label block mb-2">Featured article image</label>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${content.featuredArticleImageUrl != null and !content.featuredArticleImageUrl.isBlank()}"
-                             th:src="${content.featuredArticleImageUrl}"
-                             alt="Current featured article image"
-                             class="w-full h-40 object-cover"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder h-40 w-full"
-                             th:classappend="${content.featuredArticleImageUrl != null and !content.featuredArticleImageUrl.isBlank() ? ' hidden' : ''}">
-                            <span class="ph-label">Featured article image — 800×500 px, max 5 MB, jpg/png/webp</span>
-                        </div>
-                    </div>
-                    <input type="file" name="featuredArticleImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
-                </div>
-
-                <div>
-                    <label class="mono-label block mb-2">Additional articles (up to 6)</label>
-                    <p class="text-xs text-rev-muted mb-2">Choose up to 6 articles (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepageArticleIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 6 reached — untick one to choose another.</span></p>
-                    <input type="text" th:field="*{homepageArticleIds}" placeholder="e.g. 1,2,3"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
-                    <div class="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
-                        <label th:each="a : ${articles}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
-                            <input type="checkbox" th:value="${a.id}" class="featured-article-checkbox accent-rev-red">
-                            <span class="truncate" th:text="${a.title}">Article title</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Homepage podcast selection -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">Podcast Section</h3>
-                    <span class="text-xs text-rev-muted">Choose up to 4 podcasts</span>
-                </div>
-                <!-- Podcast section image -->
-                <div>
-                    <label class="mono-label block mb-2">Podcast section image</label>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${content.podcastSectionImageUrl != null and !content.podcastSectionImageUrl.isBlank()}"
-                             th:src="${content.podcastSectionImageUrl}"
-                             alt="Current podcast section image"
-                             class="w-full h-40 object-cover"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder h-40 w-full"
-                             th:classappend="${content.podcastSectionImageUrl != null and !content.podcastSectionImageUrl.isBlank() ? ' hidden' : ''}">
-                            <span class="ph-label">Podcast section image — 800×500 px, max 5 MB, jpg/png/webp</span>
-                        </div>
-                    </div>
-                    <input type="file" name="podcastSectionImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
-                </div>
-                <div>
-                    <label class="mono-label block mb-2">Podcasts to show</label>
-                    <p class="text-xs text-rev-muted mb-2">Choose up to 4 podcasts (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepagePodcastIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 4 reached — untick one to choose another.</span></p>
-                    <input type="text" th:field="*{homepagePodcastIds}" placeholder="e.g. 1,2,3,4"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
-                    <div class="mt-3 grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                        <label th:each="p : ${podcasts}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
-                            <input type="checkbox" th:value="${p.id}" class="podcast-checkbox accent-rev-red">
-                            <span class="truncate"><span class="font-mono text-rev-muted" th:text="${p.episodeNumber}">Ep 1</span> — <span th:text="${p.title}">Title</span></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Homepage activity selection -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-display text-lg uppercase text-rev-ink">On the Ground Section</h3>
-                    <span class="text-xs text-rev-muted">Choose up to 3 activities</span>
-                </div>
-                <!-- Activity section image -->
-                <div>
-                    <label class="mono-label block mb-2">Activity section image</label>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${content.activitySectionImageUrl != null and !content.activitySectionImageUrl.isBlank()}"
-                             th:src="${content.activitySectionImageUrl}"
-                             alt="Current activity section image"
-                             class="w-full h-40 object-cover"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-placeholder h-40 w-full"
-                             th:classappend="${content.activitySectionImageUrl != null and !content.activitySectionImageUrl.isBlank() ? ' hidden' : ''}">
-                            <span class="ph-label">Activity section image — 800×500 px, max 5 MB, jpg/png/webp</span>
-                        </div>
-                    </div>
-                    <input type="file" name="activitySectionImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
-                </div>
-                <div>
-                    <label class="mono-label block mb-2">Activities to show</label>
-                    <p class="text-xs text-rev-muted mb-2">Choose up to 3 activities (<span class="selection-counter" th:text="${#strings.arraySplit(content.homepageActivityIds, ',').length}">0</span> selected). <span class="limit-note text-rev-muted">Maximum 3 reached — untick one to choose another.</span></p>
-                    <input type="text" th:field="*{homepageActivityIds}" placeholder="e.g. 1,2,3"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface font-mono">
-                    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                        <label th:each="ac : ${activities}" class="flex items-center gap-2 rounded border border-rev-border bg-rev-subtle px-3 py-2 text-xs cursor-pointer hover:border-rev-red">
-                            <input type="checkbox" th:value="${ac.id}" class="activity-checkbox accent-rev-red">
-                            <span class="truncate" th:text="${ac.title}">Activity title</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex justify-end gap-3">
-                <a th:href="@{/admin/cms/homepage}" class="outline-btn no-underline">Cancel</a>
-                <button type="submit" id="saveBtn" class="red-btn">Save Homepage</button>
             </div>
         </form>
     </div>
 </main>
 
 <script>
-    // Loading state on submit: disable button + change text.
     const form = document.getElementById('homepageForm');
     const saveBtn = document.getElementById('saveBtn');
+
+    function idsFrom(input) {
+        return input.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    }
+
+    function writeIds(input, ids) {
+        input.value = ids.join(',');
+        document.querySelectorAll('[data-counter-for="' + input.name + '"]').forEach(function (counter) {
+            counter.textContent = ids.length;
+        });
+    }
+
+    function flashLimit(input, max) {
+        const counter = document.querySelector('[data-counter-for="' + input.name + '"]');
+        if (!counter) return;
+        counter.textContent = max + ' max';
+        counter.classList.add('text-rev-red', 'font-semibold');
+        setTimeout(function () {
+            counter.classList.remove('text-rev-red', 'font-semibold');
+            counter.textContent = idsFrom(input).length;
+        }, 1400);
+    }
+
+    document.querySelectorAll('input[data-selection]').forEach(function (box) {
+        const input = document.querySelector('input[name="' + box.dataset.selection + '"]');
+        if (!input) return;
+        const max = parseInt(box.dataset.max, 10);
+        box.checked = idsFrom(input).includes(box.value);
+        writeIds(input, idsFrom(input));
+
+        box.addEventListener('change', function () {
+            let ids = idsFrom(input);
+            if (box.checked) {
+                if (ids.length >= max && !ids.includes(box.value)) {
+                    box.checked = false;
+                    flashLimit(input, max);
+                    return;
+                }
+                if (!ids.includes(box.value)) ids.push(box.value);
+            } else {
+                ids = ids.filter(function (id) { return id !== box.value; });
+            }
+            writeIds(input, ids);
+        });
+    });
+
     if (form && saveBtn) {
         form.addEventListener('submit', function () {
             if (saveBtn.disabled) return;
             saveBtn.disabled = true;
             saveBtn.dataset.originalText = saveBtn.textContent;
-            saveBtn.textContent = 'Saving…';
+            saveBtn.textContent = 'Saving...';
         });
     }
-
-    // Selection limits + syncing checkboxes into the CSV text fields.
-    // idValidators: pick the checkbox class, the CSV input name, and the max.
-    function wireSelection(checkboxClass, csvInputName, max) {
-        const checkboxes = document.querySelectorAll('.' + checkboxClass);
-        const csvInput = document.querySelector('input[name="' + csvInputName + '"]');
-        if (!checkboxes.length || !csvInput) return;
-
-        function readIds() {
-            return csvInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
-        }
-
-        function writeIds(ids) {
-            csvInput.value = ids.join(',');
-            // Update any counter siblings that show "X selected".
-            const parent = csvInput.closest('div');
-            if (parent) {
-                parent.querySelectorAll('.selection-counter').forEach(el => {
-                    el.textContent = ids.length;
-                });
-            }
-        }
-
-        // Reflect existing CSV into checkbox state on load.
-        const existing = readIds();
-        checkboxes.forEach(cb => {
-            cb.checked = existing.includes(cb.value);
-        });
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', function () {
-                let ids = readIds();
-                if (this.checked) {
-                    if (ids.length >= max) {
-                        // Reject the over-limit tick — keep the oldest max selections.
-                        this.checked = false;
-                        const note = csvInput.closest('div')?.querySelector('.limit-note');
-                        if (note) {
-                            note.classList.remove('text-rev-muted');
-                            note.classList.add('text-rev-red');
-                            setTimeout(() => {
-                                note.classList.add('text-rev-muted');
-                                note.classList.remove('text-rev-red');
-                            }, 1500);
-                        }
-                        return;
-                    }
-                    if (!ids.includes(this.value)) {
-                        ids.push(this.value);
-                    }
-                } else {
-                    ids = ids.filter(id => id !== this.value);
-                }
-                writeIds(ids);
-            });
-        });
-    }
-
-    wireSelection('featured-article-checkbox', 'homepageArticleIds', 6);
-    wireSelection('podcast-checkbox', 'homepagePodcastIds', 4);
-    wireSelection('activity-checkbox', 'homepageActivityIds', 3);
 </script>
 </body>
 </html>

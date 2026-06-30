@@ -10,16 +10,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class HomepageContentService {
 
     private static final long MAX_IMAGE_BYTES = 5L * 1024 * 1024; // 5 MB
+    private static final long MAX_VIDEO_BYTES = 50L * 1024 * 1024; // 50 MB
     private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
             "image/jpeg",
             "image/png",
             "image/webp"
+    );
+    private static final Set<String> ALLOWED_VIDEO_TYPES = Set.of(
+            "video/mp4",
+            "video/webm",
+            "video/quicktime"
     );
 
     private final HomepageContentRepository repository;
@@ -124,18 +131,18 @@ public class HomepageContentService {
             entity.setStat3Label(dto.getStat3Label().trim());
         }
 
-        // ---- Selection fields: store the submitted id CSV verbatim. ----
+        // ---- Selection fields: sanitize and enforce homepage limits. ----
         if (dto.getFeaturedArticleId() != null) {
             entity.setFeaturedArticleId(parseNullableLong(dto.getFeaturedArticleId()));
         }
         if (dto.getHomepageArticleIds() != null) {
-            entity.setHomepageArticleIds(dto.getHomepageArticleIds().trim());
+            entity.setHomepageArticleIds(cleanIdCsv(dto.getHomepageArticleIds(), 6, "articles"));
         }
         if (dto.getHomepagePodcastIds() != null) {
-            entity.setHomepagePodcastIds(dto.getHomepagePodcastIds().trim());
+            entity.setHomepagePodcastIds(cleanIdCsv(dto.getHomepagePodcastIds(), 4, "podcasts"));
         }
         if (dto.getHomepageActivityIds() != null) {
-            entity.setHomepageActivityIds(dto.getHomepageActivityIds().trim());
+            entity.setHomepageActivityIds(cleanIdCsv(dto.getHomepageActivityIds(), 3, "activities"));
         }
 
         // ---- Validation: reject any currently-set field that has been blanked out. ----
@@ -143,13 +150,15 @@ public class HomepageContentService {
 
         // ---- Image fields: upload any newly provided file to Cloudinary. ----
         if (images != null) {
-            uploadIfPresent(images, "heroImage", "rcn/homepage", entity::setHeroImage);
+            uploadVideoIfPresent(images, "heroImage", "rcn/homepage", entity::setHeroImage);
             uploadIfPresent(images, "featuredArticleImage", "rcn/homepage",
                     entity::setFeaturedArticleImageUrl);
             uploadIfPresent(images, "podcastSectionImage", "rcn/homepage",
                     entity::setPodcastSectionImageUrl);
             uploadIfPresent(images, "activitySectionImage", "rcn/homepage",
                     entity::setActivitySectionImageUrl);
+            uploadIfPresent(images, "buildPartyImage", "rcn/homepage",
+                    entity::setBuildPartyImageUrl);
             uploadIfPresent(images, "tickerBackgroundImage", "rcn/homepage",
                     entity::setTickerBackgroundImageUrl);
         }
@@ -168,11 +177,43 @@ public class HomepageContentService {
         }
     }
 
+    private void uploadVideoIfPresent(Map<String, MultipartFile> images, String key,
+                                      String folder,
+                                      java.util.function.Consumer<String> setter) throws CloudinaryUploadException {
+        MultipartFile file = images.get(key);
+        if (file != null && !file.isEmpty()) {
+            validateVideo(file);
+            String url = cloudinaryService.uploadVideo(file, folder);
+            setter.accept(url);
+        }
+    }
+
     private static Long parseNullableLong(String s) {
         if (s == null || s.isBlank()) {
             return null;
         }
         return Long.parseLong(s.trim());
+    }
+
+    private static String cleanIdCsv(String csv, int max, String label) {
+        if (csv == null || csv.isBlank()) {
+            return "";
+        }
+        java.util.List<Long> ids;
+        try {
+            ids = java.util.Arrays.stream(csv.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Long::parseLong)
+                    .distinct()
+                    .toList();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Please select valid " + label + " from the list.");
+        }
+        if (ids.size() > max) {
+            throw new IllegalArgumentException("You can select at most " + max + " " + label + ".");
+        }
+        return ids.stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 
     private static boolean notBlank(String s) {
@@ -252,6 +293,18 @@ public class HomepageContentService {
         if (contentType == null || !ALLOWED_IMAGE_TYPES.contains(contentType)) {
             throw new IllegalArgumentException(
                     "Only JPG, PNG, and WebP images are allowed. Please choose a different file.");
+        }
+    }
+
+    private void validateVideo(MultipartFile file) {
+        if (file.getSize() > MAX_VIDEO_BYTES) {
+            throw new IllegalArgumentException(
+                    "Video file is too large (max 50 MB). Please choose a smaller video.");
+        }
+        String contentType = file.getContentType();
+        if (contentType == null || !ALLOWED_VIDEO_TYPES.contains(contentType)) {
+            throw new IllegalArgumentException(
+                    "Only MP4, WebM, and MOV videos are allowed. Please choose a different file.");
         }
     }
 }

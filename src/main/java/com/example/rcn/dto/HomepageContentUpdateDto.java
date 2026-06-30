@@ -39,6 +39,7 @@ public class HomepageContentUpdateDto {
     private String featuredArticleImageUrl;
     private String podcastSectionImageUrl;
     private String activitySectionImageUrl;
+    private String buildPartyImageUrl;
     private String tickerBackgroundImageUrl;
 
     // Stats
@@ -271,6 +272,14 @@ public class HomepageContentUpdateDto {
 
     public void setActivitySectionImageUrl(String activitySectionImageUrl) {
         this.activitySectionImageUrl = activitySectionImageUrl;
+    }
+
+    public String getBuildPartyImageUrl() {
+        return buildPartyImageUrl;
+    }
+
+    public void setBuildPartyImageUrl(String buildPartyImageUrl) {
+        this.buildPartyImageUrl = buildPartyImageUrl;
     }
 
     public String getTickerBackgroundImageUrl() {

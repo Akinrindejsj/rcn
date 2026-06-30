@@ -29,7 +29,7 @@ public class HomepageContent {
     @Column(name = "hero_subtext", columnDefinition = "TEXT")
     private String heroSubtext;
 
-    /** Cloudinary secure_url for the hero background image. */
+    /** Cloudinary secure_url for the hero background video. */
     @Column(name = "hero_image", length = 1024)
     private String heroImage;
 
@@ -100,6 +100,9 @@ public class HomepageContent {
 
     @Column(name = "activity_section_image_url", length = 1024)
     private String activitySectionImageUrl = "";
+
+    @Column(name = "build_party_image_url", length = 1024)
+    private String buildPartyImageUrl = "";
 
     @Column(name = "ticker_background_image_url", length = 1024)
     private String tickerBackgroundImageUrl = "";
@@ -182,6 +185,7 @@ public class HomepageContent {
         c.featuredArticleImageUrl = "";
         c.podcastSectionImageUrl = "";
         c.activitySectionImageUrl = "";
+        c.buildPartyImageUrl = "";
         c.tickerBackgroundImageUrl = "";
 
         // Stats
@@ -437,6 +441,14 @@ public class HomepageContent {
 
     public void setActivitySectionImageUrl(String activitySectionImageUrl) {
         this.activitySectionImageUrl = activitySectionImageUrl;
+    }
+
+    public String getBuildPartyImageUrl() {
+        return buildPartyImageUrl;
+    }
+
+    public void setBuildPartyImageUrl(String buildPartyImageUrl) {
+        this.buildPartyImageUrl = buildPartyImageUrl;
     }
 
     public String getTickerBackgroundImageUrl() {

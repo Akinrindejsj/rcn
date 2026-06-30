@@ -1,78 +1,86 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <title>Revolutionary Communists of Nigeria — In Defence of Marxism</title>
-    <meta name="description" content="The Revolutionary Communists of Nigeria — Nigerian section of the Revolutionary Communist International. Fighting for workers, against capitalism, for a socialist Nigeria."/>
+    <title>Revolutionary Communists of Nigeria - In Defence of Marxism</title>
+    <meta name="description" content="The Revolutionary Communists of Nigeria, Nigerian section of the Revolutionary Communist International. Fighting for workers, against capitalism, for a socialist Nigeria."/>
 </head>
 <body>
 <main layout:fragment="content">
-<!-- HERO -->
-<section class="relative min-h-[92vh] flex flex-col overflow-hidden bg-white">
-    <div class="absolute inset-0 lg:left-1/2 lg:right-0 top-0 bottom-0 z-0">
-        <div class="w-full h-full">
-            <img th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
-                 th:src="${content.heroImage}"
-                 alt="Hero"
-                 class="w-full h-full object-cover"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="img-placeholder w-full h-full"
+    <!-- HERO -->
+    <section class="relative min-h-[92vh] flex flex-col overflow-hidden bg-rev-ink">
+        <div class="absolute inset-0 z-0">
+            <video th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
+                   th:src="${content.heroImage}"
+                   class="h-full w-full object-cover"
+                   autoplay muted loop playsinline preload="metadata"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></video>
+            <img th:src="@{/images/revolutionary-party.jpg}"
+                 alt=""
+                 class="h-full w-full object-cover"
                  th:classappend="${content.heroImage != null and !content.heroImage.isBlank() ? ' hidden' : ''}">
-                <svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                <span class="ph-label">Hero Image<br/>Replace with RCN march / rally photo</span>
+            <div class="absolute inset-0 bg-black/55"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center flex-1 py-24 lg:py-32">
+            <div class="max-w-3xl rounded-sm border border-white/15 bg-black/35 p-6 md:p-10 backdrop-blur-[2px] shadow-2xl">
+                <div class="fade-up-1 flex items-center gap-3 mb-8">
+                    <div class="sweep-in h-px w-10 bg-rev-red"></div>
+                    <span class="font-mono text-white/80 text-[11px] uppercase tracking-[0.3em]">Nigerian Section · Revolutionary Communist International</span>
+                </div>
+                <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-white mb-4"
+                    style="font-size: clamp(3.25rem, 9vw, 7rem);"
+                    th:text="${content.heroHeadline}">Workers of Nigeria, Unite.</h1>
+                <p class="fade-up-3 font-serif italic text-rev-gold text-xl md:text-2xl mt-6 leading-snug max-w-lg">
+                    "The history of all hitherto existing society is the history of class struggles."
+                </p>
+                <p class="fade-up-3 font-mono text-white/55 text-[11px] mt-2 tracking-widest">- Marx &amp; Engels, The Communist Manifesto</p>
+                <p class="fade-up-4 text-white/85 text-base md:text-lg max-w-2xl mt-8 leading-relaxed"
+                   th:text="${content.heroSubtext}">
+                    Nigeria's oil wealth feeds billionaires while millions go hungry.
+                </p>
+                <div class="fade-in-late flex flex-wrap gap-4 mt-10">
+                    <a th:href="${content.heroPrimaryButtonUrl}" href="/join"
+                       class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors"
+                       th:text="${content.heroPrimaryButtonText}">Join the Revolution</a>
+                    <a th:href="${content.heroSecondaryButtonUrl}" href="/news"
+                       class="border border-white/40 hover:border-rev-red text-white font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:text-rev-red bg-black/20"
+                       th:text="${content.heroSecondaryButtonText}">Read Analysis</a>
+                </div>
+                <div class="fade-in-late mt-14 flex flex-wrap gap-10 border-t border-white/15 pt-8">
+                    <div>
+                        <p class="font-display text-4xl text-rev-red" th:text="${content.stat1Number}">133M+</p>
+                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat1Label}">Nigerians below poverty line</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-4xl text-white" th:text="${content.stat2Number}">53%</p>
+                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat2Label}">Youth unemployment rate</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-4xl text-rev-gold" th:text="${content.stat3Number}">$1T+</p>
+                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat3Label}">Looted since independence</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent lg:via-white/20 lg:to-transparent"></div>
-    </div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center flex-1 py-20 lg:py-28">
-        <div class="max-w-2xl">
-            <div class="fade-up-1 flex items-center gap-3 mb-8">
-                <div class="sweep-in h-px w-10 bg-rev-red"></div>
-                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Nigerian Section · Revolutionary Communist International</span>
-            </div>
-            <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-rev-ink mb-4" style="font-size: clamp(3.5rem, 10vw, 7rem);"
-                th:text="${content.heroHeadline}">
-                Workers<br/><span class="text-rev-red">of Nigeria,</span><br/>Unite.
-            </h1>
-            <p class="fade-up-3 font-serif italic text-rev-gold text-xl md:text-2xl mt-6 leading-snug max-w-lg">
-                "The history of all hitherto existing society is the history of class struggles."
-            </p>
-            <p class="fade-up-3 font-mono text-rev-muted text-[11px] mt-2 tracking-widest">— Marx &amp; Engels, The Communist Manifesto</p>
-            <p class="fade-up-4 text-rev-muted text-base md:text-lg max-w-xl mt-8 leading-relaxed"
-               th:text="${content.heroSubtext}">
-                Nigeria's oil wealth feeds billionaires while millions go hungry. The naira collapses, fuel costs a fortune, and politicians loot without consequence. This is not mismanagement — it is capitalism working exactly as designed. The RCN says: enough.
-            </p>
-            <div class="fade-in-late flex flex-wrap gap-4 mt-10">
-                <a th:href="${content.heroPrimaryButtonUrl}" href="/join" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors"
-                   th:text="${content.heroPrimaryButtonText}">Join the Revolution →</a>
-                <a th:href="${content.heroSecondaryButtonUrl}" href="/news" class="border border-rev-border hover:border-rev-red text-rev-ink font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:text-rev-red"
-                   th:text="${content.heroSecondaryButtonText}">Read Analysis</a>
-            </div>
-            <div class="fade-in-late mt-16 flex flex-wrap gap-10 border-t border-rev-border pt-8">
-                <div><p class="font-display text-4xl text-rev-red" th:text="${content.stat1Number}">133M+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat1Label}">Nigerians below poverty line</p></div>
-                <div><p class="font-display text-4xl text-rev-ink" th:text="${content.stat2Number}">53%</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat2Label}">Youth unemployment rate</p></div>
-                <div><p class="font-display text-4xl text-rev-gold" th:text="${content.stat3Number}">$1T+</p><p class="font-mono text-[10px] text-rev-muted uppercase tracking-widest mt-1" th:text="${content.stat3Label}">Looted since independence</p></div>
-            </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="relative bg-rev-red py-3 overflow-hidden">
+        <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}"
+             th:src="${content.tickerBackgroundImageUrl}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-25">
+        <div class="relative marquee-track font-mono text-white text-[11px] uppercase tracking-widest whitespace-nowrap select-none">
+            <span class="px-12">* <th:block th:text="${content.tickerLine1}">Workers of Nigeria, unite</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine2}">Build revolutionary organisation</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine3}">For socialism and workers power</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine4}">Against austerity and capitalist rule</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine5}">Nigerian section of the RCI</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine1}">Workers of Nigeria, unite</th:block></span>
+            <span class="px-12">* <th:block th:text="${content.tickerLine2}">Build revolutionary organisation</th:block></span>
         </div>
     </div>
-</section>
 
-<!-- TICKER -->
-<div class="bg-rev-red py-3 overflow-hidden">
-    <div class="marquee-track font-mono text-white text-[11px] uppercase tracking-widest whitespace-nowrap select-none">
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine1}">NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine2}">Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine3}">Nigeria's ruling class has looted over $1 trillion since independence</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine4}">Youth unemployment stands above 53% — the highest in decades</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine5}">The RCN is the Nigerian section of the Revolutionary Communist International</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine1}">NLC general strikes have been betrayed — the trade union bureaucracy must be held accountable</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine2}">Only a workers' government can end ASUU strikes, fuel scarcity, and poverty wages</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine3}">Nigeria's ruling class has looted over $1 trillion since independence</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine4}">Youth unemployment stands above 53% — the highest in decades</th:block></span>
-        <span class="px-12">⬤ <th:block th:text="${content.tickerLine5}">The RCN is the Nigerian section of the Revolutionary Communist International</th:block></span>
-    </div>
-</div>
-
-<!-- WHY COMMUNISM -->
+    <!-- WHY COMMUNISM -->
     <section id="about" class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-4">
@@ -82,311 +90,230 @@
             <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase mb-14">Why Marxism?</h2>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-rev-border bg-white">
                 <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
-                    <svg class="w-14 h-14 mb-6 text-rev-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 8v8M8 12h8"/>
-                    </svg>
                     <div class="font-display text-5xl text-rev-red mb-5">01</div>
                     <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">The System Is the Problem</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Nigeria has vast oil wealth, fertile land, and 200 million people. Yet the majority live in poverty. This is not bad leadership — it is capitalism. The profit motive guarantees wealth flows upward to the owning class. No election can fix a broken system. We need to change the system itself.</p>
+                    <p class="text-rev-muted text-sm leading-relaxed">Nigeria has vast oil wealth, fertile land, and millions of workers. Yet the majority live in poverty because capitalism moves wealth upward to the owning class.</p>
                 </div>
                 <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
-                    <svg class="w-14 h-14 mb-6 text-rev-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
                     <div class="font-display text-5xl text-rev-red mb-5">02</div>
                     <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Workers Hold the Power</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Who produces Nigeria's oil? Workers. Who builds Lagos? Workers. Who keeps hospitals, schools, and farms running? Workers. When workers act together — in unions, strikes, and organised political movements — they can shut down the entire economy. That power, organised, transforms society.</p>
+                    <p class="text-rev-muted text-sm leading-relaxed">Workers produce society's wealth and keep the economy running. Organised together, they have the power to transform society from the ground up.</p>
                 </div>
                 <div class="p-8 md:p-10 hover:bg-rev-subtle transition-colors">
-                    <svg class="w-14 h-14 mb-6 text-rev-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                    </svg>
                     <div class="font-display text-5xl text-rev-red mb-5">03</div>
                     <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Marxism Is the Tool</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Marxism is not a dogma — it is a scientific method for understanding how society works and how to change it. It explains why colonialism impoverished Africa, why austerity always falls on the poor, and why every capitalist politician from PDP to APC ends up serving the same ruling class.</p>
+                    <p class="text-rev-muted text-sm leading-relaxed">Marxism explains class society, colonialism, austerity, crisis, and the state. It is a guide to understanding the world in order to change it.</p>
                 </div>
             </div>
         </div>
     </section>
 
-<hr class="section-rule" />
+    <hr class="section-rule" />
 
-<!-- NEWS & ANALYSIS -->
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
-        <div class="flex items-center justify-between flex-wrap gap-4 mb-14">
-            <div class="flex items-center gap-4">
-                <div class="h-px w-10 bg-rev-red"></div>
-                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">News & Analysis</span>
+    <!-- NEWS & ANALYSIS -->
+    <section th:if="${!#lists.isEmpty(homepageArticles)}" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between flex-wrap gap-4 mb-14">
+                <div class="flex items-center gap-4">
+                    <div class="h-px w-10 bg-rev-red"></div>
+                    <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">News &amp; Analysis</span>
+                </div>
+                <a th:href="@{/news}" href="/news" class="red-link font-mono text-[11px] uppercase tracking-widest">All Articles</a>
             </div>
-            <a th:href="@{/news}" href="/news" class="red-link font-mono text-[11px] uppercase tracking-widest">All Articles →</a>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-0 border border-rev-border mb-0">
-            <div class="lg:col-span-3 flex flex-col border-b lg:border-b-0 lg:border-r border-rev-border">
-                <div class="img-placeholder h-64 w-full border-b border-rev-border"><span class="ph-label">Featured article hero image</span></div>
-                <div class="p-8 md:p-10 flex flex-col flex-1 justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1">Featured</span>
-                            <span class="font-mono text-rev-muted text-[11px]" th:text="${content.featuredArticleDate}">Economy · June 2026</span>
+
+            <div class="grid grid-cols-1 gap-6"
+                 th:classappend="${#lists.size(homepageArticles) == 1 ? ' lg:grid-cols-1' : ' lg:grid-cols-3'}">
+                <a th:each="article, iter : ${homepageArticles}"
+                   th:href="@{/article/{id}(id=${article.id})}"
+                   class="article-card group block overflow-hidden border border-rev-border bg-white"
+                   th:classappend="${iter.index == 0 and #lists.size(homepageArticles) > 1 ? ' lg:col-span-2 lg:row-span-2' : ''}">
+                    <div class="bg-rev-subtle">
+                        <img th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}"
+                             th:src="${article.featuredImageUrl}" alt="" class="h-64 w-full object-cover"
+                             th:classappend="${iter.index == 0 ? ' lg:h-96' : ''}">
+                        <div th:if="${article.featuredImageUrl == null or article.featuredImageUrl.isBlank()}"
+                             class="img-placeholder h-64 w-full" th:classappend="${iter.index == 0 ? ' lg:h-96' : ''}">
+                            <span class="ph-label">Article image</span>
                         </div>
-                        <h2 class="font-display text-4xl md:text-5xl text-rev-ink uppercase leading-tight mb-5"
-                            th:text="${content.featuredArticleTitle}">The Tinubu Subsidy Removal: Who Really Paid?</h2>
-                        <p class="text-rev-muted text-sm leading-relaxed mb-6"
-                           th:text="${content.featuredArticleBody}">
-                            When President Tinubu announced the removal of fuel subsidies, the IMF applauded. Ordinary Nigerians experienced it as catastrophe — transport costs tripled overnight, food prices surged, and millions already living on the edge were pushed off it. But who was the subsidy really for? Marxist economics gives us the answer.
-                        </p>
                     </div>
-                    <a th:href="${content.featuredArticleUrl}" href="/article" class="red-link font-mono text-[12px] uppercase tracking-widest inline-flex items-center gap-2">Read Full Analysis →</a>
-                </div>
-            </div>
-            <div class="lg:col-span-2 flex flex-col divide-y divide-rev-border">
-                <div class="p-8 bg-rev-subtle">
-                    <blockquote class="marx-quote">
-                        <p class="font-serif italic text-rev-gold text-lg leading-snug">"The executive of the modern state is but a committee for managing the common affairs of the whole bourgeoisie."</p>
-                        <footer class="font-mono text-[10px] text-rev-muted mt-3 uppercase tracking-widest">— Marx &amp; Engels, The Communist Manifesto</footer>
-                    </blockquote>
-                </div>
-                <a th:href="@{/article}" href="/article" class="article-card block p-6 group">
-                    <div class="img-placeholder h-28 w-full mb-4 rounded"><span class="ph-label">Article thumbnail</span></div>
-                    <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Labour · May 2026</span>
-                    <h4 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-1 leading-snug text-sm">NLC's Betrayal: Why the Trade Union Bureaucracy Cannot Lead the Working Class</h4>
-                </a>
-                <a th:href="@{/article}" href="/article" class="article-card block p-6 group">
-                    <div class="img-placeholder h-28 w-full mb-4 rounded"><span class="ph-label">Article thumbnail</span></div>
-                    <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">History · March 2026</span>
-                    <h4 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-1 leading-snug text-sm">From #EndSARS to Revolution: What the 2020 Uprising Taught Us</h4>
+                    <div class="p-6 md:p-8">
+                        <div class="mb-4 flex flex-wrap items-center gap-3">
+                            <span th:if="${iter.index == 0}" class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1">Featured</span>
+                            <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest" th:text="${article.category ?: 'Analysis'}">Analysis</span>
+                        </div>
+                        <h3 class="font-display uppercase text-rev-ink group-hover:text-rev-red transition-colors leading-tight"
+                            th:classappend="${iter.index == 0 ? ' text-4xl md:text-5xl' : ' text-2xl'}"
+                            th:text="${article.title}">Article title</h3>
+                        <p th:if="${article.excerpt != null and !article.excerpt.isBlank()}"
+                           class="mt-4 text-sm leading-relaxed text-rev-muted"
+                           th:text="${article.excerpt}">Article excerpt</p>
+                    </div>
                 </a>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-r border-b border-rev-border">
-            <a th:href="@{/article}" href="/article" class="article-card block group border-b md:border-b-0 md:border-r border-rev-border">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Oil & Gas article</span></div>
-                <div class="p-6">
-                    <span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Oil &amp; Gas</span>
-                    <h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Nigeria's Oil Belongs to Nigerians: The Case for Nationalisation</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed">Shell, TotalEnergies, and Chevron extract billions from the Niger Delta each year. The Delta burns while they profit. Nationalisation under workers' control is the only answer.</p>
-                </div>
-            </a>
-            <a th:href="@{/article}" href="/article" class="article-card block group border-b md:border-b-0 md:border-r border-rev-border">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Youth article</span></div>
-                <div class="p-6">
-                    <span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Youth</span>
-                    <h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Japa or Revolt? Nigerian Youth and the Choice Before Our Generation</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed">Millions are fleeing Nigeria for a better life abroad. We understand the impulse — but escape is not the only answer. Who will stay and fight?</p>
-                </div>
-            </a>
-            <a th:href="@{/article}" href="/article" class="article-card block group">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Gender / Labour article</span></div>
-                <div class="p-6">
-                    <span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Gender</span>
-                    <h3 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors mt-2 mb-3 text-base leading-snug">Women's Oppression and Class Struggle: Why Feminism Must Be Socialist</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed">Nigerian women face a double burden — exploitation as workers and oppression as women. Only a movement confronting both can liberate them.</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- VIDEO -->
-<section id="video" class="py-24 bg-rev-ink dot-bg">
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
-        <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Watch &amp; Listen</span></div>
-        <h2 class="font-display text-5xl md:text-6xl text-white uppercase mb-14">Videos &amp; Podcast</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div class="lg:row-span-2">
-                <div class="vid-placeholder h-80 lg:h-full w-full rounded-sm" style="min-height:340px;"><div class="vid-play-btn"></div><span class="vid-label">Featured Video<br/>Replace with: RCN public lecture or rally footage</span></div>
-                <div class="bg-white/5 px-5 py-4 border border-white/5">
-                    <span class="font-mono text-rev-red text-[10px] uppercase tracking-widest">Featured · June 2026</span>
-                    <h3 class="font-body font-semibold text-white mt-1 text-base leading-snug">Why Nigerian Workers Need Communism — Public Lecture, Lagos</h3>
+    <!-- PODCAST -->
+    <section th:if="${!#lists.isEmpty(homepagePodcasts)}" id="video" class="py-24 bg-rev-ink dot-bg">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between flex-wrap gap-4 mb-14">
+                <div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="h-px w-10 bg-rev-red"></div>
+                        <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Watch &amp; Listen</span>
+                    </div>
+                    <h2 class="font-display text-5xl md:text-6xl text-white uppercase">Podcast</h2>
                 </div>
+                <a th:href="@{/podcast}" href="/podcast" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors">All Episodes</a>
             </div>
-            <div>
-                <div class="vid-placeholder h-44 w-full rounded-sm"><div class="vid-play-btn" style="width:44px;height:44px;"></div><span class="vid-label">Podcast episode</span></div>
-                <div class="bg-white/5 px-4 py-3 border border-white/5"><span class="font-mono text-white/30 text-[10px] uppercase tracking-widest">Podcast · May 2026</span><h4 class="font-body font-semibold text-white text-sm mt-1 leading-snug">ASUU, NLC, and the Limits of Trade Unionism</h4></div>
-            </div>
-            <div>
-                <div class="vid-placeholder h-44 w-full rounded-sm"><div class="vid-play-btn" style="width:44px;height:44px;"></div><span class="vid-label">Street interview footage</span></div>
-                <div class="bg-white/5 px-4 py-3 border border-white/5"><span class="font-mono text-white/30 text-[10px] uppercase tracking-widest">Frontlines · April 2026</span><h4 class="font-body font-semibold text-white text-sm mt-1 leading-snug">"Why I Joined the RCN" — Members Speak</h4></div>
+            <div class="grid grid-cols-1 gap-6" th:classappend="${#lists.size(homepagePodcasts) == 1 ? ' lg:grid-cols-1' : ' lg:grid-cols-4'}">
+                <a th:each="podcast, iter : ${homepagePodcasts}"
+                   th:href="@{/podcast}"
+                   class="group block border border-white/10 bg-white/5"
+                   th:classappend="${iter.index == 0 and #lists.size(homepagePodcasts) > 1 ? ' lg:col-span-2 lg:row-span-2' : ''}">
+                    <img th:if="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank()}"
+                         th:src="${podcast.coverImageUrl}" alt="" class="h-56 w-full object-cover" th:classappend="${iter.index == 0 ? ' lg:h-80' : ''}">
+                    <div th:if="${podcast.coverImageUrl == null or podcast.coverImageUrl.isBlank()}" class="vid-placeholder h-56 w-full" th:classappend="${iter.index == 0 ? ' lg:h-80' : ''}">
+                        <div class="vid-play-btn"></div>
+                        <span class="vid-label">Podcast episode</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="font-mono text-white/40 text-[10px] uppercase tracking-widest" th:text="${podcast.episodeNumber ?: 'Episode'}">Episode</span>
+                        <h3 class="mt-2 font-body font-semibold text-white group-hover:text-rev-red transition-colors leading-snug" th:text="${podcast.title}">Podcast title</h3>
+                        <p th:if="${podcast.description != null and !podcast.description.isBlank()}" class="mt-3 text-xs leading-relaxed text-white/55" th:text="${podcast.description}">Description</p>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border border-white/10 px-6 py-5 mt-2 bg-white/5">
-            <div class="flex items-center gap-4">
-                <div class="img-placeholder w-14 h-14 flex-shrink-0 rounded" style="background:#2a2a2a;"><span class="ph-label text-white/30">Podcast art</span></div>
-                <div><p class="font-display text-white text-xl uppercase">The Nigerian Communist Podcast</p><p class="font-mono text-white/40 text-[10px] uppercase tracking-widest">Available on Spotify · Apple Podcasts · YouTube</p></div>
-            </div>
-            <a th:href="@{/podcast}" href="/podcast" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-[11px] uppercase tracking-widest px-6 py-3 transition-colors whitespace-nowrap">Listen Now →</a>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- THEORY -->
-<section id="theory" class="py-24 bg-rev-page">
+    <!-- THEORY -->
+    <section id="theory" class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center justify-between flex-wrap gap-4 mb-14">
                 <div class="flex items-center gap-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Study Marxism</span></div>
-                <a th:href="@{/theory}" href="/theory" class="red-link font-mono text-[11px] uppercase tracking-widest">Full Reading List →</a>
+                <a th:href="@{/theory}" href="/theory" class="red-link font-mono text-[11px] uppercase tracking-widest">Full Reading List</a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="theory-card bg-white border border-rev-border p-7 flex flex-col">
-                    <!-- I. Historical Materialism – image of old books / history -->
                     <img th:src="@{/images/historicalMaterialism.jpg}" alt="Historical books and documents" class="w-full h-32 rounded object-cover mb-6">
                     <div class="font-display text-rev-red text-4xl mb-3">I.</div>
                     <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">What Is Historical Materialism?</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed flex-1">The foundation of Marxist science — how material conditions shape history, politics, and ideas. Start here.</p>
-                    <a href="https://marxist.com/historical-materialism.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin →</a>
+                    <p class="text-rev-muted text-xs leading-relaxed flex-1">The foundation of Marxist science: how material conditions shape history, politics, and ideas.</p>
+                    <a href="https://marxist.com/historical-materialism.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin</a>
                 </div>
                 <div class="theory-card bg-white border border-rev-border p-7 flex flex-col">
-                    <!-- II. Marxist Economics – image of factory / industry / charts -->
-                    <img th:src="@{/images/marxistEconomy.jpg}" alt="Industrial factory with smoke" class="w-full h-32 rounded object-cover mb-6">
+                    <img th:src="@{/images/marxistEconomy.jpg}" alt="Industrial factory" class="w-full h-32 rounded object-cover mb-6">
                     <div class="font-display text-rev-red text-4xl mb-3">II.</div>
-                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">Marxist Economics: How Capitalism Really Works</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed flex-1">Surplus value, exploitation, crisis — why poverty and inequality are built into capitalism's DNA.</p>
-                    <a href="https://marxist.com/economic-theory.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin →</a>
+                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">Marxist Economics</h3>
+                    <p class="text-rev-muted text-xs leading-relaxed flex-1">Surplus value, exploitation, crisis, and why inequality is built into capitalism.</p>
+                    <a href="https://marxist.com/economic-theory.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin</a>
                 </div>
                 <div class="theory-card bg-white border border-rev-border p-7 flex flex-col">
-                    <!-- III. Imperialism and Africa – image of globe / colonial map -->
-                    <img th:src="@{/images/imperialism.jpg}" alt="Vintage globe focusing on Africa" class="w-full h-32 rounded object-cover mb-6">
+                    <img th:src="@{/images/imperialism.jpg}" alt="Vintage globe" class="w-full h-32 rounded object-cover mb-6">
                     <div class="font-display text-rev-red text-4xl mb-3">III.</div>
-                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">Imperialism and Africa: Lenin's Essential Analysis</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed flex-1">Why Africa was colonised and why it remains economically dominated today. Lenin on imperialism as capitalism's highest stage.</p>
-                    <a href="https://marxist.com/imperialism.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin →</a>
+                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">Imperialism and Africa</h3>
+                    <p class="text-rev-muted text-xs leading-relaxed flex-1">Why Africa was colonised and why it remains economically dominated today.</p>
+                    <a href="https://marxist.com/imperialism.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin</a>
                 </div>
                 <div class="theory-card bg-white border border-rev-border p-7 flex flex-col">
-                    <!-- IV. The State and Revolution – image of government building / police / protest -->
-                    <img th:src="@{/images/the-state-and-revolution.jpg}" alt="Capitol building or state institution" class="w-full h-32 rounded object-cover mb-6">
+                    <img th:src="@{/images/the-state-and-revolution.jpg}" alt="State institution" class="w-full h-32 rounded object-cover mb-6">
                     <div class="font-display text-rev-red text-4xl mb-3">IV.</div>
-                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">The State: Not a Neutral Referee</h3>
-                    <p class="text-rev-muted text-xs leading-relaxed flex-1">The Nigerian state — police, army, courts — exists to protect property and capitalist rule. Reform vs. revolution.</p>
-                    <a href="https://marxist.com/the-state.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin →</a>
+                    <h3 class="font-body font-bold text-rev-ink text-sm mb-2 leading-snug">The State</h3>
+                    <p class="text-rev-muted text-xs leading-relaxed flex-1">The state is not neutral. It protects property, class rule, and the capitalist order.</p>
+                    <a href="https://marxist.com/the-state.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest mt-5 inline-block">Begin</a>
                 </div>
-            </div>
-            <div class="mt-20 text-center max-w-3xl mx-auto">
-                <div class="font-display text-[6rem] text-rev-red/15 leading-none select-none">"</div>
-                <blockquote class="font-serif italic text-rev-ink text-2xl md:text-3xl leading-relaxed -mt-8">The philosophers have only interpreted the world, in various ways. The point, however, is to change it.</blockquote>
-                <footer class="font-mono text-rev-muted text-[11px] uppercase tracking-widest mt-6">— Karl Marx, Theses on Feuerbach, 1845</footer>
             </div>
         </div>
     </section>
 
-<hr class="section-rule" />
+    <hr class="section-rule" />
 
-<!-- FRONTLINES -->
-<section id="frontlines" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
-        <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">From the Frontlines</span></div>
-        <div class="flex items-end justify-between mb-14 flex-wrap gap-4">
-            <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase">On the Ground</h2>
-            <a th:href="@{/write}" href="/write" class="red-link font-mono text-[11px] uppercase tracking-widest">Submit a Report →</a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border border-rev-border">
-            <div class="article-card border-b lg:border-b-0 md:border-r border-rev-border">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Lagos cell activity photo</span></div>
-                <div class="p-7">
-                    <div class="flex items-center justify-between mb-5"><span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Lagos · June 2026</span><span class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span></div>
-                    <h4 class="font-body font-bold text-rev-ink text-sm leading-snug mb-3">"Workers Are Waking Up — The Anger on the Bus Is Something I've Never Seen Before"</h4>
-                    <p class="text-rev-muted text-xs leading-relaxed mb-4">We distributed our paper at the Ojota bus terminal. In one hour, 80 copies gone. One danfo driver held up the paper and said "this is the truth nobody says." That moment felt like the beginning of something.</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Amaka T, RCN Lagos Cell</p>
-                </div>
+    <!-- FRONTLINES -->
+    <section th:if="${!#lists.isEmpty(homepageActivities)}" id="frontlines" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">From the Frontlines</span></div>
+            <div class="flex items-end justify-between mb-14 flex-wrap gap-4">
+                <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase">On the Ground</h2>
+                <a th:href="@{/activity}" href="/activity" class="red-link font-mono text-[11px] uppercase tracking-widest">All Activity</a>
             </div>
-            <div class="article-card border-b lg:border-b-0 lg:border-r border-rev-border">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Abuja university event photo</span></div>
-                <div class="p-7">
-                    <div class="flex items-center justify-between mb-5"><span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Abuja · May 2026</span><span class="w-2 h-2 bg-rev-gold rounded-full animate-pulse"></span></div>
-                    <h4 class="font-body font-bold text-rev-ink text-sm leading-snug mb-3">University of Abuja Students Form Marxist Study Group After ASUU Briefing</h4>
-                    <p class="text-rev-muted text-xs leading-relaxed mb-4">After we spoke at the SU forum about why ASUU strikes keep repeating, twelve students stayed back. By the end of the discussion, seven asked to join the RCN. We now meet every Thursday.</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Emeka O, RCN Abuja Cell</p>
-                </div>
-            </div>
-            <div class="article-card">
-                <div class="img-placeholder h-44 w-full"><span class="ph-label">Port Harcourt rally photo</span></div>
-                <div class="p-7">
-                    <div class="flex items-center justify-between mb-5"><span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Port Harcourt · April 2026</span><span class="w-2 h-2 bg-rev-red rounded-full animate-pulse"></span></div>
-                    <h4 class="font-body font-bold text-rev-ink text-sm leading-snug mb-3">Oil Workers Ask: "Why Does the Niger Delta Burn While We Can't Afford Fuel?"</h4>
-                    <p class="text-rev-muted text-xs leading-relaxed mb-4">At the NUPENG rally, an oil worker grabbed the microphone and said what everyone was thinking: the multinationals take everything and leave us gas flares and cancer. The crowd went wild.</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Blessing A, RCN Rivers Cell</p>
-                </div>
-            </div>
-        </div>
-        <div class="mt-8">
-            <p class="font-mono text-rev-muted text-[10px] uppercase tracking-widest mb-3">Photo Gallery — Replace with RCN event photos</p>
-            <div class="grid grid-cols-4 md:grid-cols-6 gap-2">
-                <div class="img-placeholder h-20 rounded"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-                <div class="img-placeholder h-20 rounded"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-                <div class="img-placeholder h-20 rounded"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-                <div class="img-placeholder h-20 rounded"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-                <div class="img-placeholder h-20 rounded hidden md:flex"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-                <div class="img-placeholder h-20 rounded hidden md:flex"><span class="ph-label" style="font-size:9px;">Photo</span></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- JOIN -->
-<section id="join" class="relative py-28 bg-rev-red overflow-hidden">
-    <div class="absolute inset-0 opacity-10"><div class="img-placeholder w-full h-full" style="background:transparent;"><span class="ph-label text-white/50">Background crowd photo</span></div></div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <div>
-                <div class="flex items-center gap-3 mb-8"><div class="h-px w-8 bg-white/40"></div><span class="font-mono text-white/70 text-[11px] uppercase tracking-[0.3em]">Build the Party</span></div>
-                <h2 class="font-display text-7xl md:text-8xl text-white uppercase leading-tight mb-8">Are You<br/>a Communist?</h2>
-                <p class="text-white/80 text-lg leading-relaxed mb-8 max-w-lg">If you believe workers deserve the full fruits of their labour — if you're angry at what Nigeria has become and believe it can be changed — you belong with us.</p>
-                <div class="img-placeholder h-48 w-full rounded mb-8" style="background:rgba(0,0,0,0.2);"><span class="ph-label text-white/50">RCN members group photo</span></div>
-                <div class="space-y-5">
-                    <div class="flex items-start gap-4"><span class="text-white font-display text-2xl mt-0.5 flex-shrink-0">→</span><div><p class="font-body font-semibold text-white">Active Party Builder</p><p class="text-white/60 text-sm">Organise a cell in your workplace, campus, or neighbourhood.</p></div></div>
-                    <div class="flex items-start gap-4"><span class="text-white font-display text-2xl mt-0.5 flex-shrink-0">→</span><div><p class="font-body font-semibold text-white">Sustaining Member</p><p class="text-white/60 text-sm">Support the RCN financially and receive our newspaper.</p></div></div>
-                </div>
-            </div>
-            <div class="bg-white p-8 md:p-10 shadow-2xl">
-                <h3 class="font-display text-3xl text-rev-ink uppercase mb-8">Get in Touch</h3>
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">First Name</label><input type="text" placeholder="Chukwuemeka" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                        <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Last Name</label><input type="text" placeholder="Okonkwo" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+            <div class="grid grid-cols-1 gap-6" th:classappend="${#lists.size(homepageActivities) == 1 ? ' lg:grid-cols-1' : ' md:grid-cols-2 lg:grid-cols-3'}">
+                <article th:each="activity : ${homepageActivities}" class="article-card border border-rev-border bg-white">
+                    <img th:if="${activity.imageUrl != null and !activity.imageUrl.isBlank()}" th:src="${activity.imageUrl}" alt="" class="h-52 w-full object-cover">
+                    <div th:if="${activity.imageUrl == null or activity.imageUrl.isBlank()}" class="img-placeholder h-52 w-full"><span class="ph-label">Activity image</span></div>
+                    <div class="p-7">
+                        <div class="flex items-center justify-between mb-5">
+                            <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest" th:text="${activity.location ?: 'RCN Activity'}">Lagos</span>
+                            <span class="w-2 h-2 bg-rev-red rounded-full"></span>
+                        </div>
+                        <h4 class="font-body font-bold text-rev-ink text-base leading-snug mb-3" th:text="${activity.title}">Activity title</h4>
+                        <p th:if="${activity.body != null and !activity.body.isBlank()}" class="text-rev-muted text-xs leading-relaxed mb-4" th:text="${activity.body}">Activity summary</p>
+                        <p th:if="${activity.authorName != null and !activity.authorName.isBlank()}" class="font-mono text-rev-muted text-[10px]" th:text="${activity.authorName}">RCN Cell</p>
                     </div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address</label><input type="email" placeholder="you@example.com" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Phone / WhatsApp</label><input type="tel" placeholder="+234 800 000 0000" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">City / State</label><input type="text" placeholder="Lagos, Lagos State" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Membership Type</label><select class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"><option>Active Party Builder</option><option>Sustaining Member</option><option>I want to speak to a comrade first</option></select></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">How did you find us?</label><select class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"><option>Social media</option><option>Friend / comrade</option><option>Protest or rally</option><option>marxist.com</option><option>Internet search</option><option>Our newspaper</option><option>Other</option></select></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Anything else?</label><textarea rows="3" placeholder="Union member? Student? Previous organising experience?" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-none"></textarea></div>
-                    <button class="w-full bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest py-4 transition-colors mt-2">Join the Revolutionary Communists of Nigeria →</button>
-                    <p class="font-mono text-rev-muted text-[10px] text-center leading-relaxed">A comrade will contact you via WhatsApp or email within 48 hours.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- JOIN -->
+    <section id="join" class="relative py-28 bg-rev-red overflow-hidden">
+        <img th:if="${content.buildPartyImageUrl != null and !content.buildPartyImageUrl.isBlank()}"
+             th:src="${content.buildPartyImageUrl}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-20">
+        <div class="absolute inset-0 bg-rev-red/90"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div>
+                    <div class="flex items-center gap-3 mb-8"><div class="h-px w-8 bg-white/40"></div><span class="font-mono text-white/70 text-[11px] uppercase tracking-[0.3em]">Build the Party</span></div>
+                    <h2 class="font-display text-7xl md:text-8xl text-white uppercase leading-tight mb-8">Are You<br/>a Communist?</h2>
+                    <p class="text-white/85 text-lg leading-relaxed mb-8 max-w-lg">If you believe workers deserve the full fruits of their labour, if you are angry at what Nigeria has become and believe it can be changed, you belong with us.</p>
+                    <div class="overflow-hidden border border-white/20 bg-black/10">
+                        <img th:if="${content.buildPartyImageUrl != null and !content.buildPartyImageUrl.isBlank()}"
+                             th:src="${content.buildPartyImageUrl}" alt="RCN members group photo" class="h-64 w-full object-cover">
+                        <div th:if="${content.buildPartyImageUrl == null or content.buildPartyImageUrl.isBlank()}" class="img-placeholder h-64 w-full" style="background:rgba(0,0,0,0.2);">
+                            <span class="ph-label text-white/50">RCN members group photo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 md:p-10 shadow-2xl">
+                    <h3 class="font-display text-3xl text-rev-ink uppercase mb-8">Get in Touch</h3>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">First Name</label><input type="text" placeholder="First name" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                            <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Last Name</label><input type="text" placeholder="Last name" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                        </div>
+                        <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address</label><input type="email" placeholder="you@example.com" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                        <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Phone / WhatsApp</label><input type="tel" placeholder="+234 800 000 0000" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                        <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">City / State</label><input type="text" placeholder="Lagos, Lagos State" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                        <button class="w-full bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest py-4 transition-colors mt-2">Join the Revolutionary Communists of Nigeria</button>
+                        <p class="font-mono text-rev-muted text-[10px] text-center leading-relaxed">A comrade will contact you via WhatsApp or email within 48 hours.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- INTERNATIONAL SOLIDARITY -->
-<section class="py-20 bg-rev-page border-t border-rev-border">
+    <!-- INTERNATIONAL SOLIDARITY -->
+    <section class="py-20 bg-rev-page border-t border-rev-border">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-12"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">International Solidarity</span></div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-rev-border bg-white">
                 <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <!-- Replaced placeholder with image: global solidarity / crowd -->
                     <img th:src="@{/images/revolutionary-communist-international.jpg}" alt="RCI global solidarity event" class="w-full h-28 rounded object-cover mb-6">
                     <span class="font-display text-rev-red text-2xl block mb-3">RCI Global</span>
-                    <p class="text-rev-muted text-sm leading-relaxed mb-4">The RCN is a proud section of the Revolutionary Communist International — a worldwide organisation of Marxists fighting for socialism on every continent.</p>
-                    <a href="https://marxist.com" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">marxist.com →</a>
+                    <p class="text-rev-muted text-sm leading-relaxed mb-4">The RCN is a proud section of the Revolutionary Communist International, a worldwide organisation of Marxists fighting for socialism.</p>
+                    <a href="https://marxist.com" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">marxist.com</a>
                 </div>
                 <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <!-- Replaced placeholder with image: journal / book -->
                     <img th:src="@{/images/in-defence-for-maxism.jpg}" alt="In Defence of Marxism journal cover" class="w-full h-28 rounded object-cover mb-6">
                     <span class="font-display text-rev-gold text-2xl block mb-3">In Defence of Marxism</span>
-                    <p class="text-rev-muted text-sm leading-relaxed mb-4">Our international theoretical journal — thousands of articles covering Marxist theory, history, economics, and world events. Essential reading for every communist.</p>
-                    <a href="https://marxist.com" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">Read the Journal →</a>
+                    <p class="text-rev-muted text-sm leading-relaxed mb-4">Our international theoretical journal covers Marxist theory, history, economics, and world events.</p>
+                    <a href="https://marxist.com" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">Read the Journal</a>
                 </div>
                 <div class="p-8">
-                    <!-- Replaced placeholder with image: group of delegates / conference -->
-                    <img th:src="@{/images/world-school-event.jpg}" alt="World School of Communism 2026 delegates" class="w-full h-28 rounded object-cover mb-6">
-                    <span class="font-display text-rev-ink text-2xl block mb-3">World School 2026</span>
-                    <p class="text-rev-muted text-sm leading-relaxed mb-4">Every year, thousands of communists from across the globe meet for the World School of Communism. This year: 2–7 August. Nigerian delegates welcome.</p>
-                    <a href="https://marxist.com/world-school-of-communism-2026-sign-up-now.htm" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">Sign Up →</a>
+                    <img th:src="@{/images/world-school-event.jpg}" alt="World School of Communism delegates" class="w-full h-28 rounded object-cover mb-6">
+                    <span class="font-display text-rev-ink text-2xl block mb-3">World School</span>
+                    <p class="text-rev-muted text-sm leading-relaxed mb-4">Every year, communists from across the globe meet for the World School of Communism. Nigerian delegates welcome.</p>
+                    <a href="https://marxist.com" target="_blank" class="red-link font-mono text-[11px] uppercase tracking-widest">Learn More</a>
                 </div>
             </div>
         </div>
