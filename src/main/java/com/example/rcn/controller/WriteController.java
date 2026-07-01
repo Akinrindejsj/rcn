@@ -1,9 +1,13 @@
 package com.example.rcn.controller;
 
 import com.example.rcn.dto.WriteArticleCmd;
+import com.example.rcn.exception.CloudinaryUploadException;
+import com.example.rcn.model.Activity;
+import com.example.rcn.model.ActivityStatus;
 import com.example.rcn.model.Article;
 import com.example.rcn.model.ArticleStatus;
 import com.example.rcn.model.ArticleType;
+import com.example.rcn.service.ActivityService;
 import com.example.rcn.service.ArticleService;
 import com.example.rcn.service.CloudinaryService;
 import com.example.rcn.service.MediaService;
@@ -25,15 +29,18 @@ import java.util.Map;
 public class WriteController {
 
     private final ArticleService articleService;
+    private final ActivityService activityService;
     private final CloudinaryService cloudinaryService;
     private final MediaService mediaService;
     private final RuntimeService runtimeService;
 
     public WriteController(ArticleService articleService,
+                           ActivityService activityService,
                            CloudinaryService cloudinaryService,
                            MediaService mediaService,
                            RuntimeService runtimeService) {
         this.articleService = articleService;
+        this.activityService = activityService;
         this.cloudinaryService = cloudinaryService;
         this.mediaService = mediaService;
         this.runtimeService = runtimeService;
@@ -48,8 +55,8 @@ public class WriteController {
     }
 
     /**
-     * Accepts a visitor submission, persists it as a draft, then kicks off the
-     * Flowable "article-approval" process so editors can review it.
+     * Accepts a visitor submission (article or activity), persists it as a draft,
+     * then routes it to the appropriate approval queue.
      */
     @PostMapping
     public String submit(@ModelAttribute("cmd") WriteArticleCmd cmd,
@@ -57,47 +64,13 @@ public class WriteController {
         try {
             validate(cmd);
 
-            Article article = new Article();
-            article.setTitle(cmd.getTitle().trim());
-            article.setBody(cmd.getBody().trim());
-            article.setCategory(cmd.getCategory());
-            article.setAuthorName(cmd.getAuthorName() == null ? "Anonymous Comrade" : cmd.getAuthorName().trim());
-            article.setArticleType(parseType(cmd.getCategory()));
-            article.setStatus(ArticleStatus.DRAFT);
-
-            if (cmd.getAttachment() != null && !cmd.getAttachment().isEmpty()) {
-                String url = cloudinaryService.uploadImage(cmd.getAttachment(), "rcn/submissions");
-                article.setFeaturedImageUrl(url);
-                mediaService.upload(cmd.getAttachment(), "rcn/submissions", article.getAuthorName());
-            }
-
-            article = articleService.create(article);
-
-            // Route the article to the editorial approval queue directly. This is
-            // the source of truth for where editors find submissions, so it must
-            // happen regardless of whether the optional Flowable workflow below
-            // succeeds.
-            article.setStatus(ArticleStatus.PENDING_APPROVAL);
-            articleService.update(article);
-
-            // Best-effort: kick off the Flowable "article-approval" workflow so
-            // editors get a task in their workflow inbox. A failure here must
-            // NEVER surface to the visitor or block the submission — the article
-            // is already safely in the approval queue above.
-            try {
-                Map<String, Object> variables = new HashMap<>();
-                variables.put("articleId", article.getId());
-                variables.put("articleTitle", article.getTitle());
-                variables.put("submitterEmail", cmd.getEmailAddress());
-                variables.put("approved", false);
-                ProcessInstance process = runtimeService.startProcessInstanceByKey(
-                        "article-approval", variables);
-                redirectAttributes.addFlashAttribute("successMessage",
-                        "Thanks! Your submission has been sent to our editors for review. "
-                                + "Process id: " + process.getId());
-            } catch (Exception flowableEx) {
-                redirectAttributes.addFlashAttribute("successMessage",
-                        "Thanks! Your submission has been sent to our editors for review.");
+            // Check submission type and route accordingly
+            if ("activity".equalsIgnoreCase(cmd.getSubmissionType())) {
+                // Route to activity queue
+                handleActivitySubmission(cmd, redirectAttributes);
+            } else {
+                // Route to article queue (default)
+                handleArticleSubmission(cmd, redirectAttributes);
             }
 
             return "redirect:/write";
@@ -112,6 +85,81 @@ public class WriteController {
             redirectAttributes.addFlashAttribute("cmd", cmd);
             return "redirect:/write";
         }
+    }
+
+    /**
+     * Handles article submissions: creates an Article, sets PENDING_APPROVAL status,
+     * and kicks off the Flowable article-approval workflow.
+     */
+    private void handleArticleSubmission(WriteArticleCmd cmd, RedirectAttributes redirectAttributes) throws CloudinaryUploadException {
+        Article article = new Article();
+        article.setTitle(cmd.getTitle().trim());
+        article.setBody(cmd.getBody().trim());
+        article.setCategory(cmd.getCategory());
+        article.setAuthorName(cmd.getAuthorName() == null ? "Anonymous Comrade" : cmd.getAuthorName().trim());
+        article.setArticleType(parseArticleType(cmd.getCategory()));
+        article.setStatus(ArticleStatus.DRAFT);
+
+        if (cmd.getAttachment() != null && !cmd.getAttachment().isEmpty()) {
+            String url = cloudinaryService.uploadImage(cmd.getAttachment(), "rcn/submissions");
+            article.setFeaturedImageUrl(url);
+            mediaService.upload(cmd.getAttachment(), "rcn/submissions", article.getAuthorName());
+        }
+
+        article = articleService.create(article);
+
+        // Route the article to the editorial approval queue
+        article.setStatus(ArticleStatus.PENDING_APPROVAL);
+        articleService.update(article);
+
+        // Best-effort: kick off the Flowable "article-approval" workflow
+        try {
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("articleId", article.getId());
+            variables.put("articleTitle", article.getTitle());
+            variables.put("submitterEmail", cmd.getEmailAddress());
+            variables.put("approved", false);
+            ProcessInstance process = runtimeService.startProcessInstanceByKey(
+                    "article-approval", variables);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Thanks! Your article has been sent to our editors for review. "
+                            + "Process id: " + process.getId());
+        } catch (Exception flowableEx) {
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Thanks! Your article has been sent to our editors for review.");
+        }
+    }
+
+    /**
+     * Handles activity submissions: creates an Activity, sets PENDING_APPROVAL status,
+     * and saves it for CMS admin review.
+     */
+    private void handleActivitySubmission(WriteArticleCmd cmd, RedirectAttributes redirectAttributes) throws CloudinaryUploadException {
+        Activity activity = new Activity();
+        activity.setTitle(cmd.getTitle().trim());
+        activity.setBody(cmd.getBody().trim());
+        activity.setLocation(cmd.getActivityLocation());
+        activity.setType(cmd.getActivityType());
+        activity.setAuthorName(cmd.getAuthorName() == null ? "Anonymous Comrade" : cmd.getAuthorName().trim());
+        activity.setApprovalStatus(ActivityStatus.DRAFT);
+
+        if (cmd.getAttachment() != null && !cmd.getAttachment().isEmpty()) {
+            String url = cloudinaryService.uploadImage(cmd.getAttachment(), "rcn/submissions");
+            activity.setImageUrl(url);
+            mediaService.upload(cmd.getAttachment(), "rcn/submissions", activity.getAuthorName());
+        }
+
+        activity = activityService.create(activity);
+
+        // Route the activity to the CMS approval queue
+        activity.setApprovalStatus(ActivityStatus.PENDING_APPROVAL);
+        activityService.update(activity);
+
+        // Activities are reviewed in the CMS by admin staff
+        // The submission is now in the database and visible in the CMS panel
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Thanks! Your activity report has been submitted for review. "
+                        + "The RCN team will review it and feature it soon.");
     }
 
     private void validate(WriteArticleCmd cmd) {
@@ -131,7 +179,7 @@ public class WriteController {
         }
     }
 
-    private static ArticleType parseType(String category) {
+    private static ArticleType parseArticleType(String category) {
         if (category == null) {
             return ArticleType.OTHER;
         }

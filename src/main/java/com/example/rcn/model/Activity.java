@@ -44,6 +44,10 @@ public class Activity {
     @Column(name = "event_status")
     private EventStatus eventStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status")
+    private ActivityStatus approvalStatus;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -136,6 +140,14 @@ public class Activity {
 
     public void setEventStatus(EventStatus eventStatus) {
         this.eventStatus = eventStatus;
+    }
+
+    public ActivityStatus getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(ActivityStatus approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     public LocalDateTime getCreatedAt() {
