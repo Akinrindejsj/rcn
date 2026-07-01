@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${member.id} ? 'Edit Member Voice' : 'New Member Voice'">Member Voice</title>
+</head>
+<body>
+<main layout:fragment="content" th:with="pageTitle=${member.id} ? 'Edit Member Voice' : 'New Member Voice'">
+    <div class="mx-auto max-w-6xl space-y-6">
+
+        <div class="page-header">
+            <h1 th:text="${member.id} ? 'Edit Member Voice' : 'New Member Voice'">New Member Voice</h1>
+            <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="back-link">Back to Member Voices</a>
+        </div>
+
+        <div th:if="${successMessage}" class="flash-message flash-success">
+            <span class="flash-icon">✓</span>
+            <span th:text="${successMessage}">Saved successfully.</span>
+        </div>
+        <div th:if="${errorMessage}" class="flash-message flash-error">
+            <span class="flash-icon">✕</span>
+            <span th:text="${errorMessage}">An error occurred.</span>
+        </div>
+
+        <form th:action="${member.id} ? @{/admin/cms/members/{id}/edit(id=${member.id})} : @{/admin/cms/members/new}"
+              method="post" th:object="${member}" class="layout-grid">
+
+            <div class="form-card space-y-5">
+                <div>
+                    <label class="form-label" for="authorName">Author name</label>
+                    <input type="text" id="authorName" th:field="*{authorName}" placeholder="e.g. Amaka T"
+                           class="form-input" />
+                </div>
+
+                <div>
+                    <label class="form-label" for="quote">Quote</label>
+                    <textarea id="quote" th:field="*{quote}" rows="4" placeholder="Short quote to appear on the Join page"
+                              class="form-textarea"></textarea>
+                </div>
+
+                <div>
+                    <label class="form-label" for="location">Location</label>
+                    <input type="text" id="location" th:field="*{location}" placeholder="e.g. Lagos" class="form-input" />
+                </div>
+
+                <div>
+                    <label class="form-label" for="sortOrder">Sort order</label>
+                    <input type="number" id="sortOrder" th:field="*{sortOrder}" placeholder="Optional – lower numbers appear first"
+                           class="form-input" />
+                    <p class="form-hint">If left blank, the voice will be added at the end.</p>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h3>Save Changes</h3>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</main>
+</body>
+</html>
+

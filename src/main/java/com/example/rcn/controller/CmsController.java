@@ -25,6 +25,7 @@ import com.example.rcn.service.PaymentDetailsService;
 import com.example.rcn.service.PodcastService;
 import com.example.rcn.service.SiteSettingsService;
 import com.example.rcn.service.TeamMemberService;
+import com.example.rcn.service.MembersVoiceService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class CmsController {
     private final ArticleService articleService;
     private final PodcastService podcastService;
     private final TeamMemberService teamMemberService;
+    private final MembersVoiceService membersVoiceService;
     private final FaqService faqService;
     private final AboutPageContentService aboutPageContentService;
     private final ActivityPageContentService activityPageContentService;
@@ -69,7 +71,8 @@ public class CmsController {
     public CmsController(HomepageContentService homepageContentService,
                          ArticleService articleService,
                          PodcastService podcastService,
-                         TeamMemberService teamMemberService,
+                          TeamMemberService teamMemberService,
+                          MembersVoiceService membersVoiceService,
                          FaqService faqService,
                          AboutPageContentService aboutPageContentService,
                          ActivityPageContentService activityPageContentService,
@@ -84,6 +87,7 @@ public class CmsController {
         this.articleService = articleService;
         this.podcastService = podcastService;
         this.teamMemberService = teamMemberService;
+        this.membersVoiceService = membersVoiceService;
         this.faqService = faqService;
         this.aboutPageContentService = aboutPageContentService;
         this.activityPageContentService = activityPageContentService;
@@ -947,6 +951,133 @@ public class CmsController {
     }
 
     // ---------------------------------------------------------------------
+    // Member Voices (join page)
+    // ---------------------------------------------------------------------
+
+    @GetMapping("/members")
+    public String members(Model model) {
+        model.addAttribute("members", membersVoiceService.findAll());
+        return "cms/cms_members";
+    }
+
+    @GetMapping("/members/new")
+    public String newMember(Model model) {
+        if (!model.containsAttribute("member")) {
+            model.addAttribute("member", new com.example.rcn.model.MembersVoice());
+        }
+        return "cms/cms_members_form";
+    }
+
+    @PostMapping("/members/new")
+    public Object createMember(@ModelAttribute("member") com.example.rcn.model.MembersVoice member,
+                               RedirectAttributes redirectAttributes,
+                               HttpServletRequest request) {
+        try {
+            validateMemberVoice(member);
+            membersVoiceService.create(member);
+            if (isXhr(request)) {
+                return jsonOk(member);
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Member voice added.");
+            return "redirect:/admin/cms/members";
+        } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/cms/members/new";
+        } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. ");
+            }
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong on our end. Please try again. ");
+            return "redirect:/admin/cms/members/new";
+        }
+    }
+
+    @GetMapping("/members/{id}/edit")
+    public String editMember(@PathVariable("id") Long id, Model model) {
+        com.example.rcn.model.MembersVoice member = membersVoiceService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Member voice not found (id=" + id + ")"));
+        model.addAttribute("member", member);
+        return "cms/cms_members_form";
+    }
+
+    @PostMapping("/members/{id}/edit")
+    public Object updateMember(@PathVariable("id") Long id,
+                               @ModelAttribute("member") com.example.rcn.model.MembersVoice member,
+                               RedirectAttributes redirectAttributes,
+                               HttpServletRequest request) {
+        try {
+            validateMemberVoice(member);
+            com.example.rcn.model.MembersVoice existing = membersVoiceService.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Member voice not found (id=" + id + ")"));
+            // copy fields
+            existing.setAuthorName(member.getAuthorName());
+            existing.setLocation(member.getLocation());
+            existing.setQuote(member.getQuote());
+            existing.setSortOrder(member.getSortOrder());
+            existing.setImageUrl(member.getImageUrl());
+            membersVoiceService.update(existing);
+            if (isXhr(request)) {
+                return jsonOk(existing);
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Member voice updated.");
+            return "redirect:/admin/cms/members";
+        } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/cms/members/" + id + "/edit";
+        } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again. ");
+            }
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong on our end. Please try again. ");
+            return "redirect:/admin/cms/members/" + id + "/edit";
+        }
+    }
+
+    @PostMapping("/members/{id}/delete")
+    public Object deleteMember(@PathVariable("id") Long id,
+                               RedirectAttributes redirectAttributes,
+                               HttpServletRequest request) {
+        try {
+            membersVoiceService.delete(id);
+            if (isXhr(request)) {
+                Map<String, Object> body = new LinkedHashMap<>();
+                body.put("success", true);
+                return ResponseEntity.ok(body);
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Member voice deleted.");
+        } catch (IllegalArgumentException e) {
+            if (isXhr(request)) {
+                return jsonError(e.getMessage());
+            }
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            if (isXhr(request)) {
+                return jsonError("Something went wrong on our end. Please try again.");
+            }
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong on our end. Please try again. ");
+        }
+        return "redirect:/admin/cms/members";
+    }
+
+    private void validateMemberVoice(com.example.rcn.model.MembersVoice dto) {
+        if (dto.getAuthorName() == null || dto.getAuthorName().isBlank()) {
+            throw new IllegalArgumentException("Please enter the member's name.");
+        }
+        if (dto.getQuote() == null || dto.getQuote().isBlank()) {
+            throw new IllegalArgumentException("Please enter the member's quote.");
+        }
+    }
+
+    // ---------------------------------------------------------------------
     // Donations
     // ---------------------------------------------------------------------
 
@@ -1257,6 +1388,13 @@ public class CmsController {
             body.put("question", faq.getQuestion());
             body.put("answer", faq.getAnswer());
             body.put("sortOrder", faq.getSortOrder());
+        } else if (entity instanceof com.example.rcn.model.MembersVoice mv) {
+            body.put("id", mv.getId());
+            body.put("authorName", mv.getAuthorName());
+            body.put("location", mv.getLocation());
+            body.put("quote", mv.getQuote());
+            body.put("sortOrder", mv.getSortOrder());
+            body.put("initials", mv.getInitials());
         }
         return ResponseEntity.ok(body);
     }

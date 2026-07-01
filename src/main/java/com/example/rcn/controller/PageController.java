@@ -8,6 +8,7 @@ import com.example.rcn.model.Podcast;
 import com.example.rcn.service.ActivityService;
 import com.example.rcn.service.ArticleService;
 import com.example.rcn.service.HomepageContentService;
+import com.example.rcn.service.MembersVoiceService;
 import com.example.rcn.service.PodcastService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,15 +24,18 @@ public class PageController {
     private final ArticleService articleService;
     private final PodcastService podcastService;
     private final ActivityService activityService;
+    private final MembersVoiceService membersVoiceService;
 
     public PageController(HomepageContentService homepageContentService,
                           ArticleService articleService,
                           PodcastService podcastService,
-                          ActivityService activityService) {
+                          ActivityService activityService,
+                          MembersVoiceService membersVoiceService) {
         this.homepageContentService = homepageContentService;
         this.articleService = articleService;
         this.podcastService = podcastService;
         this.activityService = activityService;
+        this.membersVoiceService = membersVoiceService;
     }
 
     @GetMapping({"/", "/dashboard"})
@@ -88,7 +92,8 @@ public class PageController {
     }
 
     @GetMapping("/join")
-    public String join() {
+    public String join(Model model) {
+        model.addAttribute("members", membersVoiceService.findAll());
         return "pages/join";
     }
 

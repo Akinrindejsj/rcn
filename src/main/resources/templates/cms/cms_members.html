@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
+<body>
+<main layout:fragment="content" th:with="pageTitle='Member Voices'">
+    <div class="mx-auto max-w-6xl space-y-8">
+
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink">Member Voices</h1>
+                <p class="mt-1 text-sm text-rev-muted">Manage short quotes that appear on the Join page.</p>
+            </div>
+            <a th:href="@{/admin/cms/members/new}" href="/admin/cms/members/new" class="red-btn flex items-center gap-2">
+                <iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>
+                New Member Voice
+            </a>
+        </div>
+
+        <div th:if="${successMessage}"
+             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
+        </div>
+        <div th:if="${errorMessage}"
+             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+        </div>
+
+        <div th:if="${#lists.isEmpty(members)}"
+             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+            <iconify-icon icon="lucide:users" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+            <p class="mt-4 text-rev-muted">No member voices yet. Click "New Member Voice" to add one.</p>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(members)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+            <div class="flex items-center justify-between border-b border-rev-border px-6 py-4">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Voices</h3>
+                <span class="mono-label" th:text="${#lists.size(members)} + ' voices'">0 voices</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                    <tr>
+                        <th class="px-6 py-3 font-medium font-mono">Author</th>
+                        <th class="px-6 py-3 font-medium font-mono">Quote</th>
+                        <th class="px-6 py-3 font-medium font-mono">Location</th>
+                        <th class="px-6 py-3 font-medium font-mono"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-rev-border">
+                    <tr th:each="m : ${members}" class="group hover:bg-rev-subtle/50">
+                        <td class="px-6 py-4 text-rev-ink font-mono" th:text="${m.authorName}">Author</td>
+                        <td class="px-6 py-4"><div class="text-rev-muted line-clamp-2" th:text="${m.quote}">Quote</div></td>
+                        <td class="px-6 py-4 text-rev-muted" th:text="${m.location ?: '—'}">Location</td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <a th:href="@{/admin/cms/members/{id}/edit(id=${m.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
+                            <form method="post" th:action="@{/admin/cms/members/{id}/delete(id=${m.id})}" class="inline"
+                                  onsubmit="return confirm('Delete this member voice? This cannot be undone.')">
+                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>
+

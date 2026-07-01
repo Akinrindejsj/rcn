@@ -68,27 +68,13 @@
     <section class="py-20 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-14"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Member Voices</span></div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white border border-rev-border p-7">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" th:if="${members}">
+                <div th:each="m : ${members}" class="bg-white border border-rev-border p-7">
                     <div class="h-16 w-16 rounded-full bg-rev-red flex items-center justify-center mb-4">
-                        <span class="font-display text-white text-xl uppercase">AT</span>
+                        <span class="font-display text-white text-xl uppercase" th:text="${m.initials}">AT</span>
                     </div>
-                    <p class="font-serif italic text-rev-gold text-base mb-4">"I joined because I was tired of waiting for politicians to save us. The RCN showed me that we are the ones we've been waiting for."</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Amaka T, Lagos</p>
-                </div>
-                <div class="bg-white border border-rev-border p-7">
-                    <div class="h-16 w-16 rounded-full bg-rev-ink flex items-center justify-center mb-4">
-                        <span class="font-display text-white text-xl uppercase">EO</span>
-                    </div>
-                    <p class="font-serif italic text-rev-gold text-base mb-4">"I never understood why ASUU strikes kept failing until I studied Marxism. Now I organise with purpose."</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Emeka O, Abuja</p>
-                </div>
-                <div class="bg-white border border-rev-border p-7">
-                    <div class="h-16 w-16 rounded-full bg-rev-gold flex items-center justify-center mb-4">
-                        <span class="font-display text-white text-xl uppercase">BA</span>
-                    </div>
-                    <p class="font-serif italic text-rev-gold text-base mb-4">"In the Niger Delta, we see the oil wealth every day but live in poverty. The RCN gives me a way to fight back."</p>
-                    <p class="font-mono text-rev-muted text-[10px]">— Blessing A, Port Harcourt</p>
+                    <p class="font-serif italic text-rev-gold text-base mb-4" th:text="${m.quote}">"Quote"</p>
+                    <p class="font-mono text-rev-muted text-[10px]">— <span th:text="${m.authorName}">Author</span><span th:if="${m.location}">, <span th:text="${m.location}">Location</span></span></p>
                 </div>
             </div>
         </div>
