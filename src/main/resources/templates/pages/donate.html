@@ -10,7 +10,15 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <h1 class="font-display text-7xl md:text-8xl text-white uppercase leading-tight">Fund the<br/>Revolution</h1>
             <p class="text-white/80 text-lg leading-relaxed mt-6 max-w-2xl mx-auto">Every naira builds the revolutionary press, funds organising work, and trains the next generation of Nigerian communists.</p>
-            <div class="img-placeholder h-48 w-64 mx-auto mt-12 rounded" style="background:rgba(0,0,0,0.3);"><svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span class="ph-label text-white/40">Printing press illustration</span></div>
+            <div class="mx-auto mt-12 w-full max-w-2xl relative overflow-hidden" style="aspect-ratio:16/9;">
+                <img th:src="@{/images/printing_image.png}"
+                     alt="A press worker operating a printing machine"
+                     class="w-full h-full object-cover"
+                     style="filter: grayscale(1) contrast(1.15);"/>
+                <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(152,0,26,0.4) 0%, rgba(10,10,10,0.6) 100%); mix-blend-mode:multiply;"></div>
+                <div class="absolute inset-0 border border-white/10"></div>
+            </div>
+            <p class="font-mono text-white/30 text-[10px] mt-3 tracking-widest uppercase">Photo: Unsplash</p>
         </div>
     </section>
 
@@ -19,25 +27,43 @@
             <div class="flex items-center gap-4 mb-14"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Where Your Money Goes</span></div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="text-center p-6 border border-rev-border">
-                    <div class="img-placeholder w-12 h-12 rounded-full mx-auto mb-4"><span class="ph-label">Press</span></div>
+                    <div class="w-12 h-12 rounded-full mx-auto mb-4 bg-rev-red-light flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#98001A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9V3h12v6"/><path d="M6 18h12v4H6z"/><rect x="4" y="9" width="16" height="8" rx="1.2"/><circle cx="16.5" cy="12.5" r="0.8" fill="#98001A" stroke="none"/>
+                        </svg>
+                    </div>
                     <p class="font-display text-4xl text-rev-red">40%</p>
                     <h4 class="font-body font-bold text-rev-ink mt-2">Revolutionary Press</h4>
                     <p class="text-rev-muted text-xs mt-2">Printing newspapers, pamphlets, website, video content.</p>
                 </div>
                 <div class="text-center p-6 border border-rev-border">
-                    <div class="img-placeholder w-12 h-12 rounded-full mx-auto mb-4"><span class="ph-label">Organising</span></div>
+                    <div class="w-12 h-12 rounded-full mx-auto mb-4 bg-rev-red-light flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#98001A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 11V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M15 11V7a1.5 1.5 0 0 1 3 0v6c0 3.5-2.5 6-6 6s-6-2-6.8-4.8L4 11.5a1.3 1.3 0 0 1 2.2-1.3L7.5 12"/>
+                        </svg>
+                    </div>
                     <p class="font-display text-4xl text-rev-red">30%</p>
                     <h4 class="font-body font-bold text-rev-ink mt-2">Organising Work</h4>
                     <p class="text-rev-muted text-xs mt-2">Transport, meeting spaces, street tabling, campus work.</p>
                 </div>
                 <div class="text-center p-6 border border-rev-border">
-                    <div class="img-placeholder w-12 h-12 rounded-full mx-auto mb-4"><span class="ph-label">Education</span></div>
+                    <div class="w-12 h-12 rounded-full mx-auto mb-4 bg-rev-red-light flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#98001A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 6.5c-1.6-1-3.6-1.5-5.5-1.5A2.5 2.5 0 0 0 4 7.5v9A2 2 0 0 1 6 15c1.9 0 3.9.5 5.5 1.5"/>
+                            <path d="M12 6.5c1.6-1 3.6-1.5 5.5-1.5A2.5 2.5 0 0 1 20 7.5v9a2 2 0 0 0-2-1.5c-1.9 0-3.9.5-5.5 1.5"/>
+                            <line x1="12" y1="6.5" x2="12" y2="16.5"/>
+                        </svg>
+                    </div>
                     <p class="font-display text-4xl text-rev-red">20%</p>
                     <h4 class="font-body font-bold text-rev-ink mt-2">Political Education</h4>
                     <p class="text-rev-muted text-xs mt-2">Books, study materials, study circles, World School.</p>
                 </div>
                 <div class="text-center p-6 border border-rev-border">
-                    <div class="img-placeholder w-12 h-12 rounded-full mx-auto mb-4"><span class="ph-label">Solidarity</span></div>
+                    <div class="w-12 h-12 rounded-full mx-auto mb-4 bg-rev-red-light flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="#98001A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="3.6" ry="8.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/><path d="M5 7.2c1.9 1.1 4.4 1.8 7 1.8s5.1-.7 7-1.8"/><path d="M5 16.8c1.9-1.1 4.4-1.8 7-1.8s5.1.7 7 1.8"/>
+                        </svg>
+                    </div>
                     <p class="font-display text-4xl text-rev-red">10%</p>
                     <h4 class="font-body font-bold text-rev-ink mt-2">International Solidarity</h4>
                     <p class="text-rev-muted text-xs mt-2">Supporting RCI and sister sections globally.</p>
@@ -50,15 +76,26 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-14"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Contribution Options</span></div>
             <div class="flex justify-center gap-4 mb-10">
-                <button class="bg-rev-red text-white font-mono text-xs uppercase tracking-widest px-6 py-2">Monthly</button>
-                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-6 py-2 hover:border-rev-red">One-Time</button>
+                <button class="bg-rev-red text-white font-mono text-xs uppercase tracking-widest px-6 py-2" id="toggle-monthly">Monthly</button>
+                <button class="border border-rev-border text-rev-ink font-mono text-xs uppercase tracking-widest px-6 py-2 hover:border-rev-red" id="toggle-oneoff">One-Time</button>
             </div>
+
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-                <button class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors"><span class="font-display text-2xl text-rev-ink">₦5,000</span><span class="block text-xs text-rev-muted mt-1">Sustainer</span></button>
-                <button class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors"><span class="font-display text-2xl text-rev-ink">₦10,000</span><span class="block text-xs text-rev-muted mt-1">Builder</span></button>
-                <button class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors"><span class="font-display text-2xl text-rev-ink">₦25,000</span><span class="block text-xs text-rev-muted mt-1">Organiser</span></button>
-                <button class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors"><span class="font-display text-2xl text-rev-ink">₦50,000</span><span class="block text-xs text-rev-muted mt-1">Revolutionary</span></button>
-                <button class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors"><span class="font-display text-2xl text-rev-ink">Custom</span><span class="block text-xs text-rev-muted mt-1">Other amount</span></button>
+                <!-- Dynamic tiers from database -->
+                <div th:each="tier : ${tiers}" class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors">
+                    <button type="button" class="w-full h-full tier-button" th:data-amount="${tier.amount}" th:data-name="${tier.tierName}" style="outline:none;background:transparent;border:0;padding:0;">
+                        <span class="font-display text-2xl text-rev-ink" th:text="${tier.amount}">₦5,000</span>
+                        <span class="block text-xs text-rev-muted mt-1" th:text="${tier.tierName}">Sustainer</span>
+                    </button>
+                </div>
+
+                <!-- Keep a custom option always available -->
+                <div class="border border-rev-border p-4 text-center hover:border-rev-red hover:bg-rev-red-light transition-colors">
+                    <button type="button" class="w-full h-full tier-button" data-amount="" data-name="Custom" style="outline:none;background:transparent;border:0;padding:0;">
+                        <span class="font-display text-2xl text-rev-ink">Custom</span>
+                        <span class="block text-xs text-rev-muted mt-1">Other amount</span>
+                    </button>
+                </div>
             </div>
 
             <div class="max-w-2xl mx-auto bg-white border border-rev-border p-8">
@@ -69,12 +106,47 @@
                         <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Last Name</label><input type="text" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
                     </div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email</label><input type="email" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Amount (₦)</label><input type="text" placeholder="5000" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
+                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Amount (₦)</label><input id="amount-input" name="amount" type="text" placeholder="5000" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Payment Method</label><select class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"><option>Bank Transfer</option><option>Card (coming soon)</option><option>USSD</option></select></div>
                     <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Message (optional)</label><textarea rows="2" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-none"></textarea></div>
                     <button type="submit" class="w-full bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest py-4 transition-colors">Contribute to the Revolution →</button>
                     <p class="font-mono text-rev-muted text-[10px] text-center">After submitting, you'll receive payment instructions. The RCN is funded entirely by workers — no corporate or government money.</p>
                 </form>
+
+                <!-- Cleanly display bank/payment details from CMS -->
+                <div class="mt-6 border-t border-rev-border pt-6">
+                    <h4 class="font-mono text-[11px] uppercase tracking-widest text-rev-muted mb-2">Payment details</h4>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <div class="font-mono text-sm text-rev-ink" th:text="${payment.bankName}">First Bank of Nigeria</div>
+                            <div class="font-display text-lg text-rev-ink font-bold" th:text="${payment.accountName}">Revolutionary Communists of Nigeria</div>
+                                        <script>
+                                            // Simple client-side helper: clicking a tier fills the amount input and highlights the selection.
+                                            (function(){
+                                                function qs(selector) { return document.querySelectorAll(selector); }
+                                                var buttons = qs('.tier-button');
+                                                var amountInput = document.getElementById('amount-input');
+                                                buttons.forEach(function(btn){
+                                                    btn.addEventListener('click', function(e){
+                                                        var amt = btn.getAttribute('data-amount') || '';
+                                                        // strip any non-digit characters so the input stores plain number unless empty (custom)
+                                                        var plain = amt.replace(/[^0-9]/g, '');
+                                                        amountInput.value = plain;
+                                                        // visual selection
+                                                        qs('.tier-button').forEach(function(b){ b.classList.remove('ring-2','ring-rev-red'); });
+                                                        btn.classList.add('ring-2','ring-rev-red');
+                                                    });
+                                                });
+                                            })();
+                                        </script>
+                        </div>
+                        <div class="bg-rev-subtle border border-rev-border rounded p-4 text-center">
+                            <div class="font-mono text-xs text-rev-muted uppercase tracking-widest">Account number</div>
+                            <div class="font-mono text-lg font-bold" th:text="${payment.accountNumber}">1234567890</div>
+                            <div class="font-mono text-xs text-rev-muted" th:text="${payment.sortCode}">011</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
