@@ -17,44 +17,24 @@
 
         <form th:action="${edit} ? @{/admin/cms/events/{id}/edit(id=${activity.id})} : @{/admin/cms/events/new}"
               method="post" enctype="multipart/form-data" th:object="${activity}" data-spinner>
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                <!-- Main column -->
-                <div class="space-y-6 lg:col-span-2">
-
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+            <div class="space-y-8">
+                <!-- Main content -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Activity Report Details</h3>
+                    <div>
                         <label class="mono-label block mb-2">Report title</label>
                         <input type="text" th:field="*{title}" placeholder="A short, descriptive headline"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface">
                     </div>
 
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <div>
                         <label class="mono-label block mb-2">Report details</label>
-                        <textarea rows="10" th:field="*{body}" placeholder="Describe what happened, where, and what it means for the movement."
+                        <textarea rows="8" th:field="*{body}" placeholder="Describe what happened, where, and what it means for the movement."
                                   class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
-                        <p class="text-xs text-rev-muted mt-2">Describe what happened, where, and what it means for the movement.</p>
+                        <p class="text-xs text-rev-muted mt-1">Describe what happened, where, and what it means for the movement.</p>
                     </div>
 
-                    <!-- Photo -->
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
-                        <label class="mono-label block">Photo</label>
-                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                            <img th:if="${activity.imageUrl != null and !activity.imageUrl.isBlank()}"
-                                 th:src="${activity.imageUrl}" alt="Report photo"
-                                 class="w-full h-48 object-cover"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="img-placeholder h-48 w-full"
-                                 th:classappend="${activity.imageUrl != null and !activity.imageUrl.isBlank() ? ' hidden' : ''}">
-                                <span class="ph-label">Upload a photo — 800×500 px, max 5 MB</span>
-                            </div>
-                        </div>
-                        <input type="file" name="image" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
-                    </div>
-                </div>
-
-                <!-- Sidebar -->
-                <div class="space-y-6">
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                        <h3 class="font-display text-lg uppercase text-rev-ink">Details</h3>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div>
                             <label class="mono-label block mb-2">Location (City)</label>
                             <input type="text" th:field="*{location}" placeholder="e.g. Lagos"
@@ -78,16 +58,35 @@
                                 <option value="Rally">Rally</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="mono-label block mb-2">Author (reporting comrade)</label>
-                            <input type="text" th:field="*{authorName}" placeholder="e.g. Amaka T."
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                        </div>
-                        <div class="flex gap-3 pt-2">
-                            <button type="submit" class="red-btn flex-1">Save</button>
-                            <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn flex-1 text-center no-underline">Cancel</a>
+                    </div>
+
+                    <div>
+                        <label class="mono-label block mb-2">Author (reporting comrade)</label>
+                        <input type="text" th:field="*{authorName}" placeholder="e.g. Amaka T."
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                </div>
+
+                <!-- Photo upload -->
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                    <label class="mono-label block">Photo</label>
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                        <img th:if="${activity.imageUrl != null and !activity.imageUrl.isBlank()}"
+                             th:src="${activity.imageUrl}" alt="Report photo"
+                             class="w-full h-48 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-48 w-full"
+                             th:classappend="${activity.imageUrl != null and !activity.imageUrl.isBlank() ? ' hidden' : ''}">
+                            <span class="ph-label">Upload a photo — 800×500 px, max 5 MB</span>
                         </div>
                     </div>
+                    <input type="file" name="image" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                </div>
+
+                <!-- Save buttons -->
+                <div class="flex justify-end gap-3">
+                    <a th:href="@{/admin/cms/events}" href="/admin/cms/events" class="outline-btn no-underline">Cancel</a>
+                    <button type="submit" class="red-btn">Save Report</button>
                 </div>
             </div>
         </form>

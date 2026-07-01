@@ -1,56 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${member.id} ? 'Edit Member Voice' : 'New Member Voice'">Member Voice</title>
-</head>
 <body>
 <main layout:fragment="content" th:with="pageTitle=${member.id} ? 'Edit Member Voice' : 'New Member Voice'">
-    <div class="mx-auto max-w-6xl space-y-6">
+    <div class="mx-auto max-w-6xl space-y-8">
 
-        <div class="page-header">
-            <h1 th:text="${member.id} ? 'Edit Member Voice' : 'New Member Voice'">New Member Voice</h1>
-            <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="back-link">Back to Member Voices</a>
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${member.id} ? 'Edit Member Voice' : 'New Member Voice'">New Member Voice</h1>
+                <p class="mt-1 text-sm text-rev-muted" th:if="${member.id}">Editing an existing member voice.</p>
+            </div>
+            <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="outline-btn no-underline">← Back to Voices</a>
         </div>
 
-        <!-- flash messages removed: toasts in layout handle notifications -->
-
         <form th:action="${member.id} ? @{/admin/cms/members/{id}/edit(id=${member.id})} : @{/admin/cms/members/new}"
-              method="post" th:object="${member}" class="layout-grid" data-spinner>
+              method="post" th:object="${member}" data-spinner>
 
-            <div class="form-card space-y-5">
-                <div>
-                    <label class="form-label" for="authorName">Author name</label>
-                    <input type="text" id="authorName" th:field="*{authorName}" placeholder="e.g. Amaka T"
-                           class="form-input" />
+            <!-- Member details -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Member Voice</h3>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="mono-label block mb-2">Author name</label>
+                        <input type="text" th:field="*{authorName}" placeholder="e.g. Amaka T"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Location</label>
+                        <input type="text" th:field="*{location}" placeholder="e.g. Lagos"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
                 </div>
-
                 <div>
-                    <label class="form-label" for="quote">Quote</label>
-                    <textarea id="quote" th:field="*{quote}" rows="4" placeholder="Short quote to appear on the Join page"
-                              class="form-textarea"></textarea>
+                    <label class="mono-label block mb-2">Quote</label>
+                    <textarea rows="4" th:field="*{quote}" placeholder="Short quote to appear on the Join page"
+                              class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
                 </div>
-
                 <div>
-                    <label class="form-label" for="location">Location</label>
-                    <input type="text" id="location" th:field="*{location}" placeholder="e.g. Lagos" class="form-input" />
-                </div>
-
-                <div>
-                    <label class="form-label" for="sortOrder">Sort order</label>
-                    <input type="number" id="sortOrder" th:field="*{sortOrder}" placeholder="Optional – lower numbers appear first"
-                           class="form-input" />
-                    <p class="form-hint">If left blank, the voice will be added at the end.</p>
+                    <label class="mono-label block mb-2">Sort order (optional)</label>
+                    <input type="number" th:field="*{sortOrder}" placeholder="Lower numbers appear first"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    <p class="text-xs text-rev-muted mt-1">If left blank, the voice will be added at the end.</p>
                 </div>
             </div>
 
-            <div class="action-card">
-                <h3>Save Changes</h3>
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="btn btn-secondary">Cancel</a>
-                </div>
+            <!-- Save buttons -->
+            <div class="mt-8 flex justify-end gap-3">
+                <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="outline-btn no-underline">Cancel</a>
+                <button type="submit" class="red-btn">Save Member Voice</button>
             </div>
 
         </form>

@@ -13,79 +13,155 @@
             <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn no-underline">← Back to Articles</a>
         </div>
 
-        <!-- flash banners removed: toast system in layout handles success/error messages -->
-
         <form th:action="${article.id} ? @{/admin/cms/articles/{id}/edit(id=${article.id})} : @{/admin/cms/articles/new}"
-              method="post" enctype="multipart/form-data" th:object="${article}">
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                <!-- Main content column -->
-                <div class="space-y-6 lg:col-span-2">
+              method="post" enctype="multipart/form-data" th:object="${article}" data-spinner>
 
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                        <label class="mono-label block mb-2">Article title</label>
+            <!-- Article Metadata -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <h3 class="font-display text-lg uppercase text-rev-ink">Article Metadata</h3>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="mono-label block mb-2">Title</label>
                         <input type="text" th:field="*{title}" placeholder="A clear, compelling headline"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-lg font-medium outline-none focus:border-rev-red focus:bg-rev-surface">
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
                     </div>
-
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                        <label class="mono-label block">Article body</label>
-                        <div class="flex flex-wrap gap-2 border border-rev-border border-b-0 bg-rev-subtle px-3 py-2">
-                            <button type="button" class="cms-editor-btn" data-command="bold">B</button>
-                            <button type="button" class="cms-editor-btn italic" data-command="italic">I</button>
-                            <button type="button" class="cms-editor-btn" data-format="h2">H2</button>
-                            <button type="button" class="cms-editor-btn" data-format="p">P</button>
-                            <button type="button" class="cms-editor-btn" data-command="insertUnorderedList">List</button>
-                        <label class="mono-label block mb-2">Short summary (shown on article cards)</label>
-                        <div id="cmsArticleEditor" contenteditable="true" class="min-h-[400px] w-full bg-white border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-4 outline-none transition-colors leading-relaxed"></div>
-                        <textarea th:field="*{body}" id="cmsBodField" class="hidden"></textarea>
-                        <p class="text-xs text-rev-muted">Use H2 for subheadings. Subheadings automatically render in red on the published article.</p>
-
-                <!-- Sidebar column -->
-                <div class="space-y-6">
-
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                        <h3 class="font-display text-lg uppercase text-rev-ink">Publish</h3>
-                        <div>
-                            <label class="mono-label block mb-2">Status</label>
-                            <select th:field="*{status}"
-                                    class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}">DRAFT</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="mono-label block mb-2">Publish date</label>
-                            <input type="datetime-local" th:field="*{publishedAt}"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                            <p class="text-xs text-rev-muted mt-1">Leave blank to unpublish; the date is set automatically when you publish.</p>
-                        </div>
-                        <div>
-                            <label class="mono-label block mb-2">Author</label>
-                            <input type="text" th:field="*{authorName}" placeholder="Author name"
-                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                        </div>
-                        <div class="flex gap-3 pt-2">
-                            <button type="submit" class="red-btn flex-1">Save</button>
-                            <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn flex-1 text-center no-underline">Cancel</a>
-                        </div>
-                    </div>
-
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                    <div>
                         <label class="mono-label block mb-2">Category</label>
-                        <input type="text" th:field="*{category}" placeholder="e.g. Economy, Labour, Oil & Gas"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <input type="text" th:field="*{category}" placeholder="e.g. Economy, Labour, Politics"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
                     </div>
-
-                    <!-- Featured image -->
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
-                        <label class="mono-label block">Featured image</label>
-                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <input type="text" th:field="*{category}" placeholder="e.g. Economy, Labour, Oil & Gas"
+                    <div>
+                        <label class="mono-label block mb-2">Author name</label>
+                        <input type="text" th:field="*{authorName}" placeholder="Author name"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Status</label>
+                        <select th:field="*{status}"
+                                class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}">DRAFT</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Publish date</label>
+                        <input type="datetime-local" th:field="*{publishedAt}"
                                class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <p class="text-xs text-rev-muted mt-1">Leave blank to manage manually.</p>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Article body -->
+            <div class="mt-8 rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                <label class="mono-label block">Article body</label>
+                <div class="flex flex-wrap gap-2 border border-rev-border border-b-0 bg-rev-subtle px-3 py-2">
+                    <button type="button" class="cms-editor-btn" data-command="bold">B</button>
+                    <button type="button" class="cms-editor-btn italic" data-command="italic">I</button>
+                    <button type="button" class="cms-editor-btn" data-format="h2">H2</button>
+                    <button type="button" class="cms-editor-btn" data-format="p">P</button>
+                    <button type="button" class="cms-editor-btn" data-command="insertUnorderedList">List</button>
+                </div>
+                <div id="cmsArticleEditor" contenteditable="true" class="min-h-[400px] w-full bg-white border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-4 outline-none transition-colors leading-relaxed"></div>
+                <textarea th:field="*{body}" id="cmsBodField" class="hidden"></textarea>
+                <p class="text-xs text-rev-muted">Use H2 for subheadings. Subheadings automatically render in red on the published article.</p>
+            </div>
+
+            <!-- Featured image -->
+            <div class="mt-8 rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+                <label class="mono-label block">Featured image</label>
+                <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                    <img th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}"
+                         th:src="${article.featuredImageUrl}" alt="Featured image"
+                         class="w-full h-48 object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-placeholder h-48 w-full"
+                         th:classappend="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank() ? ' hidden' : ''}">
+                        <span class="ph-label">Upload featured image</span>
+                    </div>
+                </div>
+                <input type="file" name="featuredImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+            </div>
+
+            <!-- Save buttons -->
+            <div class="mt-8 flex justify-end gap-3">
+                <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn no-underline">Cancel</a>
+                <button type="submit" class="red-btn">Save Article</button>
             </div>
         </form>
 
     </div>
+
+    <style>
+        .cms-editor-btn {
+            border: 1px solid #E0DAD3;
+            background: #fff;
+            color: #1E1E1E;
+            font: 700 11px 'JetBrains Mono', monospace;
+            padding: 0.45rem 0.7rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cms-editor-btn:hover {
+            background: #f5f5f5;
+            border-color: #C0182A;
+        }
+        #cmsArticleEditor h2, #cmsArticleEditor h3 {
+            color: #C0182A;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+            margin: 1.25rem 0 0.5rem;
+            text-transform: uppercase;
+        }
+        #cmsArticleEditor p { margin: 0 0 1rem; }
+        #cmsArticleEditor ul { list-style: disc; padding-left: 1.25rem; margin: 0 0 1rem; }
+        #cmsArticleEditor {
+            outline: none;
+        }
+        #cmsArticleEditor:focus {
+            border-color: #C0182A !important;
+        }
+    </style>
+
+    <script>
+        (function () {
+            const editor = document.getElementById('cmsArticleEditor');
+            const bodyField = document.getElementById('cmsBodField');
+
+            if (editor) {
+                // Initialize editor with existing body content
+                editor.innerHTML = bodyField.value || '';
+
+                // Update textarea on input
+                editor.addEventListener('input', function () {
+                    bodyField.value = editor.innerHTML;
+                });
+
+                // Wire up formatting buttons
+                document.querySelectorAll('.cms-editor-btn').forEach(btn => {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        editor.focus();
+                        if (btn.dataset.command) {
+                            document.execCommand(btn.dataset.command, false, null);
+                        }
+                        if (btn.dataset.format) {
+                            document.execCommand('formatBlock', false, btn.dataset.format);
+                        }
+                        bodyField.value = editor.innerHTML;
+                    });
+                });
+
+                // Prevent form submission from being blocked by contenteditable
+                const form = editor.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function () {
+                        bodyField.value = editor.innerHTML;
+                    });
+                }
+            }
+        })();
 
     <style>
         .cms-editor-btn {

@@ -16,26 +16,27 @@
 
         <form th:action="${tier.id} ? @{/admin/cms/donations/tiers/{id}/edit(id=${tier.id})} : @{/admin/cms/donations/tiers/new}"
               method="post" th:object="${tier}" data-spinner>
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                <div class="space-y-6 lg:col-span-2">
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="mono-label block mb-2">Amount (₦)</label>
-                                <input type="text" th:field="*{amount}" placeholder="5,000"
-                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                            </div>
-                            <div>
-                                <label class="mono-label block mb-2">Tier name</label>
-                                <input type="text" th:field="*{tierName}" placeholder="Sustainer"
-                                       class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                            </div>
-                        </div>
+            <div class="space-y-8">
+                <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+                    <h3 class="font-display text-lg uppercase text-rev-ink">Donation Tier</h3>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                            <label class="mono-label block mb-2">What it funds</label>
-                            <input type="text" th:field="*{description}" placeholder="e.g. One week of newspaper printing"
+                            <label class="mono-label block mb-2">Amount (₦)</label>
+                            <input type="text" th:field="*{amount}" placeholder="5,000"
                                    class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
                         </div>
+                        <div>
+                            <label class="mono-label block mb-2">Tier name</label>
+                            <input type="text" th:field="*{tierName}" placeholder="Sustainer"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">What it funds</label>
+                        <input type="text" th:field="*{description}" placeholder="e.g. One week of newspaper printing"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <label class="mono-label block mb-2">Recurring?</label>
                             <select th:field="*{recurring}"
@@ -53,14 +54,10 @@
                     </div>
                 </div>
 
-                <div class="space-y-6">
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-                        <h3 class="font-display text-lg uppercase text-rev-ink">Save</h3>
-                        <div class="flex gap-3">
-                            <button type="submit" class="red-btn flex-1">Save</button>
-                            <a th:href="@{/admin/cms/donations}" href="/admin/cms/donations" class="outline-btn flex-1 text-center no-underline">Cancel</a>
-                        </div>
-                    </div>
+                <!-- Save buttons -->
+                <div class="flex justify-end gap-3">
+                    <a th:href="@{/admin/cms/donations}" href="/admin/cms/donations" class="outline-btn no-underline">Cancel</a>
+                    <button type="submit" class="red-btn">Save Tier</button>
                 </div>
             </div>
         </form>

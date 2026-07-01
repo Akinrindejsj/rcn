@@ -1,278 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{cms/cms_layout}">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${faq.id} ? 'Edit FAQ' : 'New FAQ'">FAQ</title>
-    <style>
-        /* ── Professional refinements ── */
-        .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .page-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: var(--rev-ink, #1a1a1a);
-            margin: 0;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--rev-muted, #6b6b6b);
-            text-decoration: none;
-            padding: 0.4rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid var(--rev-border, #d0d0d0);
-            background: var(--rev-surface, #fffdf9);
-            transition: all 0.2s ease;
-        }
-        .back-link:hover {
-            background: var(--rev-subtle, #f8f6f2);
-            border-color: var(--rev-ink, #1a1a1a);
-            color: var(--rev-ink, #1a1a1a);
-            text-decoration: none;
-        }
-        .back-link svg {
-            width: 1.1rem;
-            height: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .form-card {
-            border-radius: 1rem;
-            border: 1px solid var(--rev-border, #d0d0d0);
-            background: var(--rev-surface, #fffdf9);
-            padding: 1.75rem 2rem;
-            transition: box-shadow 0.2s;
-        }
-        .form-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--rev-muted, #6b6b6b);
-            margin-bottom: 0.3rem;
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            border-radius: 0.5rem;
-            border: 1px solid var(--rev-border, #d0d0d0);
-            background: var(--rev-subtle, #f8f6f2);
-            padding: 0.65rem 1rem;
-            font-size: 0.95rem;
-            color: var(--rev-ink, #1a1a1a);
-            outline: none;
-            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-        }
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: var(--rev-red, #b31b1b);
-            background: var(--rev-surface, #fffdf9);
-            box-shadow: 0 0 0 3px rgba(179, 27, 27, 0.1);
-        }
-        .form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-hint {
-            font-size: 0.75rem;
-            color: var(--rev-muted, #6b6b6b);
-            margin-top: 0.25rem;
-        }
-
-        .action-card {
-            border-radius: 1rem;
-            border: 1px solid var(--rev-border, #d0d0d0);
-            background: var(--rev-surface, #fffdf9);
-            padding: 1.5rem 1.75rem;
-        }
-        .action-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--rev-ink, #1a1a1a);
-            margin-bottom: 1.25rem;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-        .btn-group .btn {
-            flex: 1;
-            text-align: center;
-            padding: 0.6rem 1.2rem;
-            border-radius: 9999px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            border: 1px solid transparent;
-            transition: all 0.15s;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-primary {
-            background: var(--rev-red, #b31b1b);
-            color: #fff;
-            border-color: var(--rev-red, #b31b1b);
-        }
-        .btn-primary:hover {
-            background: #8f1515;
-            border-color: #8f1515;
-        }
-        .btn-secondary {
-            background: transparent;
-            border-color: var(--rev-border, #d0d0d0);
-            color: var(--rev-muted, #6b6b6b);
-        }
-        .btn-secondary:hover {
-            background: var(--rev-subtle, #f8f6f2);
-            border-color: var(--rev-ink, #1a1a1a);
-            color: var(--rev-ink, #1a1a1a);
-        }
-
-        .flash-message {
-            border-radius: 0.75rem;
-            padding: 0.75rem 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-        .flash-success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-        .flash-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border-left: 4px solid #ef4444;
-        }
-        .flash-message .flash-icon {
-            font-size: 1.25rem;
-            line-height: 1;
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .page-header h1 {
-                font-size: 1.5rem;
-            }
-            .back-link {
-                align-self: flex-start;
-            }
-            .form-card {
-                padding: 1.25rem;
-            }
-            .action-card {
-                padding: 1.25rem;
-            }
-            .btn-group .btn {
-                flex: 1 1 100%;
-            }
-        }
-
-        /* ── Layout overrides ── */
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-        @media (max-width: 768px) {
-            .layout-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-        }
-    </style>
-</head>
 <body>
-
 <main layout:fragment="content" th:with="pageTitle=${faq.id} ? 'Edit FAQ' : 'New FAQ'">
-    <div class="mx-auto max-w-6xl space-y-6">
+    <div class="mx-auto max-w-6xl space-y-8">
 
-        <!-- ─── Page Header ─── -->
-        <div class="page-header">
-            <h1 th:text="${faq.id} ? 'Edit FAQ' : 'New FAQ'">New Question</h1>
-            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="back-link">
-                <!-- Simple SVG back arrow -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to About Page
-            </a>
+        <!-- Page Header -->
+        <div class="flex items-end justify-between">
+            <div>
+                <h1 class="font-display text-3xl uppercase text-rev-ink" th:text="${faq.id} ? 'Edit FAQ' : 'New FAQ'">New FAQ</h1>
+                <p class="mt-1 text-sm text-rev-muted" th:if="${faq.id}">Editing an existing question.</p>
+            </div>
+            <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn no-underline">← Back to About</a>
         </div>
 
-        <!-- flash messages removed: using toast notifications in layout -->
-
-        <!-- ─── Form ─── -->
+        <!-- Form -->
         <form th:action="${faq.id} ? @{/admin/cms/about/faqs/{id}/edit(id=${faq.id})} : @{/admin/cms/about/faqs/new}"
-              method="post" th:object="${faq}" class="layout-grid" data-spinner>
+              method="post" th:object="${faq}" data-spinner>
 
-            <!-- ── Main fields ── -->
-            <div class="form-card space-y-5">
+            <!-- FAQ Content -->
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
+                <h3 class="font-display text-lg uppercase text-rev-ink">FAQ Details</h3>
                 <div>
-                    <label class="form-label" for="question">Question</label>
-                    <input type="text" id="question" th:field="*{question}"
-                           placeholder="e.g. Is the RCN a political party?"
-                           class="form-input" />
-                    <p class="form-hint">Write the question as it will appear on the site.</p>
+                    <label class="mono-label block mb-2">Question</label>
+                    <input type="text" th:field="*{question}" placeholder="e.g. Is the RCN a political party?"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    <p class="text-xs text-rev-muted mt-1">Write the question as it will appear on the site.</p>
                 </div>
 
                 <div>
-                    <label class="form-label" for="answer">Answer</label>
-                    <textarea id="answer" th:field="*{answer}" rows="5"
-                              placeholder="Write a clear, plain‑English answer."
-                              class="form-textarea"></textarea>
-                    <p class="form-hint">Provide a concise, informative answer.</p>
+                    <label class="mono-label block mb-2">Answer</label>
+                    <textarea rows="6" th:field="*{answer}" placeholder="Write a clear, plain-English answer."
+                              class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
+                    <p class="text-xs text-rev-muted mt-1">Provide a concise, informative answer.</p>
                 </div>
 
                 <div>
-                    <label class="form-label" for="sortOrder">Sort order</label>
-                    <input type="number" id="sortOrder" th:field="*{sortOrder}"
-                           placeholder="Optional – lower numbers appear first"
-                           class="form-input" />
-                    <p class="form-hint">If left blank, the question will be added at the end.</p>
+                    <label class="mono-label block mb-2">Sort order (optional)</label>
+                    <input type="number" th:field="*{sortOrder}" placeholder="Lower numbers appear first"
+                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                    <p class="text-xs text-rev-muted mt-1">If left blank, the question will be added at the end.</p>
                 </div>
             </div>
 
-            <!-- ── Actions sidebar ── -->
-            <div class="action-card">
-                <h3>Save Changes</h3>
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="btn btn-secondary">Cancel</a>
-                </div>
-                <p class="form-hint" style="margin-top:1rem; text-align:center;">
-                    All changes will be immediately visible on the site.
-                </p>
+            <!-- Save buttons -->
+            <div class="mt-8 flex justify-end gap-3">
+                <a th:href="@{/admin/cms/about}" href="/admin/cms/about" class="outline-btn no-underline">Cancel</a>
+                <button type="submit" class="red-btn">Save Question</button>
             </div>
 
         </form>
