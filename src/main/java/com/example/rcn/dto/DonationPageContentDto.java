@@ -8,6 +8,7 @@ public class DonationPageContentDto {
     private String footerQuote;
     private String footnote;
     private String printingPressImageUrl;
+    private String donationConfirmationEmail;
 
     public Long getId() {
         return id;
@@ -55,5 +56,13 @@ public class DonationPageContentDto {
 
     public void setPrintingPressImageUrl(String printingPressImageUrl) {
         this.printingPressImageUrl = printingPressImageUrl;
+    }
+
+    public String getDonationConfirmationEmail() {
+        return donationConfirmationEmail;
+    }
+
+    public void setDonationConfirmationEmail(String donationConfirmationEmail) {
+        this.donationConfirmationEmail = donationConfirmationEmail;
     }
 }

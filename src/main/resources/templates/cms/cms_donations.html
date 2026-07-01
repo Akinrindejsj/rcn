@@ -34,7 +34,13 @@
                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
                 </div>
                 <div>
-                    <label class="mono-label block mb-2">Footnote</label>
+                     <label class="mono-label block mb-2">Donation confirmation email</label>
+                     <input type="email" th:field="*{donationConfirmationEmail}" placeholder="donations@rcn.ng"
+                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
+                     <p class="text-xs text-rev-muted mt-1">Email address for sending donation confirmation emails to donors.</p>
+                 </div>
+                 <div>
+                     <label class="mono-label block mb-2">Footnote</label>
                     <input type="text" th:field="*{footnote}" placeholder="Attribution for the quote"
                            class="w-full rounded-md border border-rev-border bg-rev-subtle px-4 py-2 text-sm outline-none focus:border-rev-red">
                 </div>

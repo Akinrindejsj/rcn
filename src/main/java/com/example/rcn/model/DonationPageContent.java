@@ -34,6 +34,9 @@ public class DonationPageContent {
     @Column(name = "printing_press_image_url", length = 1024)
     private String printingPressImageUrl;
 
+    @Column(name = "donation_confirmation_email")
+    private String donationConfirmationEmail;
+
     protected DonationPageContent() {
     }
 
@@ -51,6 +54,7 @@ public class DonationPageContent {
         d.footerQuote = "The liberation of the working class must be the act of the working class itself.";
         d.footnote = "— Marx, General Rules of the International Working Men's Association";
         d.printingPressImageUrl = "";
+        d.donationConfirmationEmail = "donations@rcn.ng";
         return d;
     }
 
@@ -102,5 +106,13 @@ public class DonationPageContent {
 
     public void setPrintingPressImageUrl(String printingPressImageUrl) {
         this.printingPressImageUrl = printingPressImageUrl;
+    }
+
+    public String getDonationConfirmationEmail() {
+        return donationConfirmationEmail;
+    }
+
+    public void setDonationConfirmationEmail(String donationConfirmationEmail) {
+        this.donationConfirmationEmail = donationConfirmationEmail;
     }
 }
