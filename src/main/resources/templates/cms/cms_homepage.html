@@ -40,18 +40,23 @@
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Hero background video</label>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <video th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
-                               th:src="${content.heroImage}"
-                               class="h-52 w-full object-cover"
-                               muted loop playsinline controls></video>
-                        <div th:if="${content.heroImage == null or content.heroImage.isBlank()}" class="vid-placeholder h-52 w-full">
-                            <div class="vid-play-btn"></div>
-                            <span class="vid-label">Hero video - MP4, WebM, or MOV, max 50 MB</span>
+                    <div class="upload-container">
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle min-h-52">
+                            <video th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
+                                   th:src="${content.heroImage}"
+                                   class="h-52 w-full object-cover"
+                                   muted loop playsinline controls></video>
+                            <div th:if="${content.heroImage == null or content.heroImage.isBlank()}" class="vid-placeholder h-52 w-full upload-drop-zone">
+                                <div class="upload-icon">🎬</div>
+                                <div class="upload-text">
+                                    <span class="font-medium">Drop video here</span>
+                                    <span class="text-xs text-rev-muted block mt-1">or click to browse</span>
+                                </div>
+                                <input type="file" name="heroImage" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="52428800" data-accept="video/" accept="video/mp4,video/webm,video/quicktime">
+                            </div>
                         </div>
                     </div>
-                    <p class="mt-2 text-xs text-rev-muted">Use short rally, meeting, or organising footage. Uploading a new video replaces the current one.</p>
-                     <input type="file" name="heroImage" class="rcn-upload mt-2 w-full text-sm text-rev-muted" data-max-size="52428800" data-accept="video/" accept="video/mp4,video/webm,video/quicktime">
+                    <p class="mt-2 text-xs text-rev-muted">Use short rally, meeting, or organising footage. MP4, WebM, or MOV, max 50 MB.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -84,8 +89,20 @@
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Optional ticker background image</label>
-                    <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}" th:src="${content.tickerBackgroundImageUrl}" alt="Current ticker background" class="mb-3 h-28 w-full rounded-md border border-rev-border object-cover">
-                     <input type="file" name="tickerBackgroundImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                    <div class="upload-container">
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
+                            <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}" th:src="${content.tickerBackgroundImageUrl}" alt="Current ticker background" class="mb-0 h-28 w-full object-cover">
+                            <div th:if="${content.tickerBackgroundImageUrl == null or content.tickerBackgroundImageUrl.isBlank()}" class="img-placeholder h-28 w-full upload-drop-zone">
+                                <div class="upload-icon text-lg">✨</div>
+                                <div class="upload-text mt-2">
+                                    <span class="font-medium text-sm">Drop background</span>
+                                    <span class="text-xs text-rev-muted block mt-1">optional</span>
+                                </div>
+                                <input type="file" name="tickerBackgroundImage" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-rev-muted mt-2">JPG, PNG, or WebP. Max 5 MB.</p>
                 </div>
             </section>
 
@@ -182,16 +199,23 @@
             <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                 <h2 class="font-display text-lg uppercase text-rev-ink">Build the Party</h2>
                 <p class="text-xs text-rev-muted">Upload one group photo for the homepage build-party section.</p>
-                <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                    <img th:if="${content.buildPartyImageUrl != null and !content.buildPartyImageUrl.isBlank()}"
-                         th:src="${content.buildPartyImageUrl}"
-                         alt="Current build-party group photo"
-                         class="w-full h-48 object-cover">
-                    <div th:if="${content.buildPartyImageUrl == null or content.buildPartyImageUrl.isBlank()}" class="img-placeholder h-48 w-full">
-                        <span class="ph-label">Group photo - JPG, PNG, or WebP, max 5 MB</span>
+                <div class="upload-container">
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle min-h-48">
+                        <img th:if="${content.buildPartyImageUrl != null and !content.buildPartyImageUrl.isBlank()}"
+                             th:src="${content.buildPartyImageUrl}"
+                             alt="Current build-party group photo"
+                             class="w-full h-48 object-cover">
+                        <div th:if="${content.buildPartyImageUrl == null or content.buildPartyImageUrl.isBlank()}" class="img-placeholder h-48 w-full upload-drop-zone">
+                            <div class="upload-icon">👥</div>
+                            <div class="upload-text">
+                                <span class="font-medium">Drop photo here</span>
+                                <span class="text-xs text-rev-muted block mt-1">or click to browse</span>
+                            </div>
+                            <input type="file" name="buildPartyImage" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                        </div>
                     </div>
                 </div>
-                <input type="file" name="buildPartyImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                <p class="text-xs text-rev-muted">JPG, PNG, or WebP. Max 5 MB.</p>
             </section>
 
             <div class="sticky bottom-0 z-10 -mx-4 border-t border-rev-border bg-rev-page/95 px-4 py-4 backdrop-blur md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0">

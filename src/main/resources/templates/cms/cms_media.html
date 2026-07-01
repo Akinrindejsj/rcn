@@ -17,19 +17,33 @@
         <!-- Upload form -->
         <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
             <h3 class="font-display text-lg uppercase text-rev-ink">Upload a File</h3>
-            <form th:action="@{/admin/cms/media/upload}" method="post" enctype="multipart/form-data" class="flex flex-wrap items-end gap-4">
-                <div class="flex-1 min-w-[200px]">
-                    <label class="mono-label block mb-2">Choose file</label>
-                    <input type="file" name="file" accept="image/jpeg,image/png,image/webp" required
-                           class="rcn-upload w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer"
-                           data-max-size="20971520" />
+            <form th:action="@{/admin/cms/media/upload}" method="post" enctype="multipart/form-data" class="space-y-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:items-end">
+                    <div class="md:col-span-2">
+                        <label class="mono-label block mb-2">Choose file</label>
+                        <div class="upload-container">
+                            <div class="rounded-md border border-rev-border bg-rev-subtle border-dashed py-8 px-4 upload-drop-zone">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-text">
+                                    <span class="font-medium text-sm">Click or drop image</span>
+                                    <span class="text-xs text-rev-muted block mt-1">JPG, PNG, WebP</span>
+                                </div>
+                                <input type="file" name="file" accept="image/jpeg,image/png,image/webp" required
+                                       class="rcn-upload absolute inset-0 opacity-0 cursor-pointer"
+                                       data-max-size="20971520" />
+                            </div>
+                        </div>
+                        <p class="text-xs text-rev-muted mt-2">Max 20 MB</p>
+                    </div>
+                    <div>
+                        <label class="mono-label block mb-2">Uploaded by</label>
+                        <input type="text" name="uploadedBy" placeholder="Your name" value="cms"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red focus:bg-rev-surface transition">
+                    </div>
+                    <div class="md:col-span-3 flex justify-end">
+                        <button type="submit" class="red-btn">Upload File</button>
+                    </div>
                 </div>
-                <div class="w-48">
-                    <label class="mono-label block mb-2">Uploaded by</label>
-                    <input type="text" name="uploadedBy" placeholder="Your name" value="cms"
-                           class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
-                </div>
-                <button type="submit" class="red-btn">Upload</button>
             </form>
         </div>
 

@@ -107,6 +107,46 @@
                 }
             }
         });
+
+        // Enhanced drag-and-drop support for upload-drop-zone elements
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.upload-drop-zone').forEach(function(zone) {
+                const fileInput = zone.querySelector('.rcn-upload');
+                if (!fileInput) return;
+
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    zone.classList.add('dragover');
+                });
+
+                zone.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    zone.classList.remove('dragover');
+                });
+
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    zone.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files && files.length > 0) {
+                        fileInput.files = files;
+                        // Trigger change event to validate and process the file
+                        const changeEvent = new Event('change', { bubbles: true });
+                        fileInput.dispatchEvent(changeEvent);
+                    }
+                });
+
+                // Make the zone clickable to trigger file input
+                zone.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        fileInput.click();
+                    }
+                });
+            });
+        });
     </script>
 </div>
 

@@ -68,17 +68,24 @@
                         </div>
                         <div>
                             <label class="mono-label block mb-2">Cover image</label>
-                            <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                                <img th:if="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank()}"
-                                     th:src="${podcast.coverImageUrl}" alt="Cover"
-                                     class="w-full h-40 object-cover"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="img-placeholder h-40 w-full"
-                                     th:classappend="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank() ? ' hidden' : ''}">
-                                    <span class="ph-label">Upload cover — 600×600 px</span>
+                            <div class="upload-container">
+                                <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle min-h-40">
+                                    <img th:if="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank()}"
+                                         th:src="${podcast.coverImageUrl}" alt="Cover"
+                                         class="w-full h-40 object-cover"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="img-placeholder h-40 w-full upload-drop-zone"
+                                         th:classappend="${podcast.coverImageUrl != null and !podcast.coverImageUrl.isBlank() ? ' hidden' : ''}">
+                                        <div class="upload-icon">🎵</div>
+                                        <div class="upload-text">
+                                            <span class="font-medium text-sm">Drop cover here</span>
+                                            <span class="text-xs text-rev-muted block mt-1">600×600 px</span>
+                                        </div>
+                                        <input type="file" name="coverImage" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                                    </div>
                                 </div>
                             </div>
-                            <input type="file" name="coverImage" class="rcn-upload w-full text-sm text-rev-muted mt-2" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                            <p class="text-xs text-rev-muted mt-2">JPG, PNG, or WebP. Max 5 MB.</p>
                         </div>
                     </div>
                     <div>

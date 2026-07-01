@@ -49,20 +49,26 @@
             </div>
 
             <!-- Image upload -->
-            <div class="mt-8 rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
+            <div class="mt-8 rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                 <label class="mono-label block">Image (optional)</label>
-                <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                    <img th:if="${point.imageUrl != null and !point.imageUrl.isBlank()}"
-                         th:src="${point.imageUrl}" alt="Point image"
-                         class="w-full h-48 object-cover"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="img-placeholder h-48 w-full"
-                         th:classappend="${point.imageUrl != null and !point.imageUrl.isBlank() ? ' hidden' : ''}">
-                        <span class="ph-label">Upload image</span>
+                <div class="upload-container">
+                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle min-h-48">
+                        <img th:if="${point.imageUrl != null and !point.imageUrl.isBlank()}"
+                             th:src="${point.imageUrl}" alt="Point image"
+                             class="w-full h-48 object-cover"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-placeholder h-48 w-full upload-drop-zone"
+                             th:classappend="${point.imageUrl != null and !point.imageUrl.isBlank() ? ' hidden' : ''}">
+                            <div class="upload-icon">🖼️</div>
+                            <div class="upload-text">
+                                <span class="font-medium">Drop image here</span>
+                                <span class="text-xs text-rev-muted block mt-1">or click to browse</span>
+                            </div>
+                            <input type="file" name="image" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp,image/svg+xml">
+                        </div>
                     </div>
                 </div>
-                <input type="file" name="image" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp,image/svg+xml">
-                <p class="text-xs text-rev-muted">Max 5 MB. Upload a relevant image to illustrate this programme point.</p>
+                <p class="text-xs text-rev-muted">JPG, PNG, WebP, or SVG. Max 5 MB. Illustrates this programme point.</p>
             </div>
 
             <!-- Save buttons -->

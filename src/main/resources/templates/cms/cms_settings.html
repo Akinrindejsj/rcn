@@ -102,16 +102,23 @@
                 <div>
                     <label class="mono-label block mb-2">Footer image</label>
                     <p class="mb-3 text-xs text-rev-muted">RCN newspaper front page shown in the public footer. JPG, PNG, or WebP.</p>
-                    <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                        <img th:if="${settings.footerImageUrl != null and !settings.footerImageUrl.isBlank()}"
-                             th:src="${settings.footerImageUrl}"
-                             alt="Current footer newspaper front page"
-                             class="h-48 w-full object-cover">
-                        <div th:if="${settings.footerImageUrl == null or settings.footerImageUrl.isBlank()}" class="img-placeholder h-48 w-full">
-                            <span class="ph-label">RCN newspaper front page</span>
+                    <div class="upload-container">
+                        <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle min-h-48">
+                            <img th:if="${settings.footerImageUrl != null and !settings.footerImageUrl.isBlank()}"
+                                 th:src="${settings.footerImageUrl}"
+                                 alt="Current footer newspaper front page"
+                                 class="h-48 w-full object-cover">
+                            <div th:if="${settings.footerImageUrl == null or settings.footerImageUrl.isBlank()}" class="img-placeholder h-48 w-full upload-drop-zone">
+                                <div class="upload-icon">📰</div>
+                                <div class="upload-text">
+                                    <span class="font-medium">Drop image here</span>
+                                    <span class="text-xs text-rev-muted block mt-1">or click to browse</span>
+                                </div>
+                                <input type="file" name="footerImage" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                            </div>
                         </div>
                     </div>
-                    <input type="file" name="footerImage" class="rcn-upload mt-3 w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
+                    <p class="text-xs text-rev-muted mt-2">Max 5 MB.</p>
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Copyright line</label>

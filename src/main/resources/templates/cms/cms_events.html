@@ -28,21 +28,26 @@
                 </div>
 
                 <!-- Backdrop image -->
-                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5">
+                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5 upload-container">
                     <img th:if="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0}"
                          th:src="${activitySettings.backdropImageUrl}" alt="Hero backdrop"
                          class="w-full h-48 object-cover"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="img-placeholder h-48 w-full"
+                    <div class="img-placeholder h-48 w-full upload-drop-zone"
                          th:classappend="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0 ? ' hidden' : ''}"
                          style="background:#2a2a2a;">
-                        <span class="ph-label" style="color:rgba(255,255,255,0.4);">Upload a hero backdrop — wide action photo, ~1920×1000px, max 5 MB</span>
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">
+                            <span class="font-medium text-white text-sm">Wide action photo</span>
+                            <span class="text-xs opacity-60 text-white block mt-1">1920×1000 px, max 5 MB</span>
+                        </div>
+                        <input type="file" id="backdrop-upload" name="backdrop" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                     </div>
                 </div>
                 <div class="flex items-center gap-3 mb-6">
                     <label for="backdrop-upload" class="red-btn cursor-pointer flex items-center gap-2">
                         <iconify-icon icon="lucide:upload" width="14" height="14" stroke-width="1.5"></iconify-icon>
-                        Choose Backdrop
+                        Upload Backdrop
                     </label>
                     <button type="button" id="backdrop-remove"
                             th:if="${activitySettings.backdropImageUrl != null and activitySettings.backdropImageUrl.length() > 0}"
@@ -52,7 +57,6 @@
                     </button>
                     <span id="backdrop-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
                 </div>
-                 <input type="file" id="backdrop-upload" name="backdrop" class="rcn-upload hidden" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 <input type="hidden" name="backdropRemoved" id="backdrop-removed" value="false">
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -152,20 +156,25 @@
                     <span class="mono-label ml-auto">Text + map image above the reports.</span>
                 </div>
 
-                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5">
+                <div class="rounded-lg overflow-hidden border border-rev-border bg-rev-subtle mb-5 upload-container">
                     <img th:if="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0}"
                          th:src="${activitySettings.mapImageUrl}" alt="Map graphic"
                          class="w-full h-48 object-cover"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="img-placeholder h-48 w-full"
+                    <div class="img-placeholder h-48 w-full upload-drop-zone"
                          th:classappend="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0 ? ' hidden' : ''}">
-                        <span class="ph-label">Upload a map graphic of Nigeria with cell pins</span>
+                        <div class="upload-icon">🗺️</div>
+                        <div class="upload-text">
+                            <span class="font-medium">Drop map graphic</span>
+                            <span class="text-xs text-rev-muted block mt-1">Nigeria with cell pins</span>
+                        </div>
+                        <input type="file" id="map-upload" name="map" class="rcn-upload absolute inset-0 opacity-0 cursor-pointer" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                     </div>
                 </div>
                 <div class="flex items-center gap-3 mb-6">
                     <label for="map-upload" class="red-btn cursor-pointer flex items-center gap-2">
                         <iconify-icon icon="lucide:upload" width="14" height="14" stroke-width="1.5"></iconify-icon>
-                        Choose Map Image
+                        Upload Map Image
                     </label>
                     <button type="button" id="map-remove"
                             th:if="${activitySettings.mapImageUrl != null and activitySettings.mapImageUrl.length() > 0}"
@@ -175,7 +184,6 @@
                     </button>
                     <span id="map-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
                 </div>
-                 <input type="file" id="map-upload" name="map" class="rcn-upload hidden" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 <input type="hidden" name="mapRemoved" id="map-removed" value="false">
 
                 <div class="grid grid-cols-1 gap-4">
