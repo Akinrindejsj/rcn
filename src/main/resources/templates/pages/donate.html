@@ -119,7 +119,15 @@
 
                     <div class="bg-rev-subtle border border-rev-border p-6">
                         <h4 class="font-display text-lg text-rev-ink uppercase mb-3">Get Receipt</h4>
-                        <p class="text-sm text-rev-muted mb-4">Send proof of payment to <a href="mailto:donate@rcn.org" class="text-rev-red hover:text-rev-red-dark font-medium">donate@rcn.org</a> for a receipt and thank you message.</p>
+                        <p class="text-sm text-rev-muted mb-4">
+                            Send proof of payment to
+                            <a th:href="${'mailto:' + (!#strings.isEmpty(donation.donationConfirmationEmail) ? donation.donationConfirmationEmail : 'donate@rcn.org')}"
+                               th:text="${!#strings.isEmpty(donation.donationConfirmationEmail) ? donation.donationConfirmationEmail : 'donate@rcn.org'}"
+                               class="text-rev-red hover:text-rev-red-dark font-medium">
+                                donate@rcn.org
+                            </a>
+                            for a receipt and thank you message.
+                        </p>
                     </div>
                 </div>
 

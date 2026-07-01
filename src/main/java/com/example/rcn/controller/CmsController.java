@@ -1107,6 +1107,9 @@ public class CmsController {
             if (dto.getFootnote() != null) {
                 entity.setFootnote(dto.getFootnote().trim());
             }
+            if (dto.getDonationConfirmationEmail() != null) {
+                entity.setDonationConfirmationEmail(dto.getDonationConfirmationEmail().trim());
+            }
             if (printingPressImage != null && !printingPressImage.isEmpty()) {
                 entity.setPrintingPressImageUrl(cloudinaryService.uploadImage(printingPressImage, "rcn/donations"));
             }
