@@ -8,13 +8,22 @@ import org.springframework.web.multipart.MultipartFile;
  * slug, or publishing metadata.
  */
 public class WriteArticleCmd {
-
     private String title;
     private String category;
     private String body;
     private String authorName;
     private String emailAddress;
     private MultipartFile attachment;
+
+    // Activity-specific fields
+    private String activityLocation;
+    private String activityType;
+
+    // submissionType: "article" or "activity"
+    private String submissionType;
+
+    public WriteArticleCmd() {
+    }
 
     public String getTitle() {
         return title;
@@ -63,4 +72,29 @@ public class WriteArticleCmd {
     public void setAttachment(MultipartFile attachment) {
         this.attachment = attachment;
     }
+
+    public String getActivityLocation() {
+        return activityLocation;
+    }
+
+    public void setActivityLocation(String activityLocation) {
+        this.activityLocation = activityLocation;
+    }
+
+    public String getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
+    }
+
+    public String getSubmissionType() {
+        return submissionType;
+    }
+
+    public void setSubmissionType(String submissionType) {
+        this.submissionType = submissionType;
+    }
+
 }

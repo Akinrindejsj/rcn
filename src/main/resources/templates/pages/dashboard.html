@@ -147,6 +147,9 @@
                         <p th:if="${article.excerpt != null and !article.excerpt.isBlank()}"
                            class="mt-4 text-sm leading-relaxed text-rev-muted"
                            th:text="${article.excerpt}">Article excerpt</p>
+                        <p th:if="${article.excerpt == null or article.excerpt.isBlank()}"
+                           class="mt-4 text-sm leading-relaxed text-rev-muted"
+                           th:text="${textUtil.cardText(article.body ?: '')}">Article excerpt</p>
                     </div>
                 </a>
             </div>

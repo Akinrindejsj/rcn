@@ -3,6 +3,33 @@
 <head>
     <title th:text="${article.title} + ' — RCN'">Article — RCN</title>
     <meta name="description" th:content="${article.excerpt} ?: ${article.title}" content="Article description"/>
+    <style>
+        .prose-content h2, .prose-content h3, .prose-content h4, .prose-content h5, .prose-content h6 {
+            color: #C0182A;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .prose-content h2 { font-size: 1.875rem; line-height: 2.25rem; }
+        .prose-content h3 { font-size: 1.5rem; line-height: 2rem; }
+        .prose-content h4 { font-size: 1.25rem; line-height: 1.75rem; }
+        .prose-content h5 { font-size: 1.125rem; line-height: 1.75rem; }
+        .prose-content h6 { font-size: 1rem; line-height: 1.5rem; }
+        .prose-content p { margin-bottom: 1rem; }
+        .prose-content ul, .prose-content ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        .prose-content li { margin-bottom: 0.5rem; }
+        .prose-content blockquote {
+            border-left: 4px solid #C0182A;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #7A726A;
+        }
+        .prose-content strong { font-weight: 700; }
+        .prose-content em { font-style: italic; }
+        .prose-content a { color: #C0182A; text-decoration: underline; }
+        .prose-content a:hover { color: #8B0E1C; }
+    </style>
 </head>
 <body>
 <main layout:fragment="content">

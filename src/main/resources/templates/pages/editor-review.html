@@ -46,7 +46,7 @@
             </div>
             <div>
                 <span class="mono-label">Body</span>
-                <div class="mt-1 rounded-md border border-rev-border bg-rev-subtle p-4 text-sm leading-relaxed text-rev-ink whitespace-pre-wrap" th:text="${article.body}">Body</div>
+                <div class="mt-1 rounded-md border border-rev-border bg-rev-subtle p-4 text-sm leading-relaxed text-rev-ink whitespace-pre-wrap" th:text="${textUtil.stripHtml(article.body)}">Body</div>
             </div>
             <div th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}">
                 <span class="mono-label">Attachment</span>

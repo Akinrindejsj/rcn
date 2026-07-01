@@ -138,6 +138,15 @@ public class Article {
         this.authorName = authorName;
     }
 
+    // Backwards-compatible accessor used by some templates that expect 'author'
+    public String getAuthor() {
+        return this.authorName;
+    }
+
+    public void setAuthor(String author) {
+        this.authorName = author;
+    }
+
     public String getFeaturedImageUrl() {
         return featuredImageUrl;
     }

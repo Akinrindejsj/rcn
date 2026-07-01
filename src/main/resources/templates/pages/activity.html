@@ -150,7 +150,7 @@
                             </span>
                             <h4 class="font-display text-2xl text-white leading-tight mb-3" th:text="${a.title}">Title</h4>
                             <p class="text-white/70 text-xs leading-relaxed mb-3"
-                               th:text="${a.body != null ? #strings.abbreviate(a.body, 110) : ''}">Excerpt</p>
+                                th:text="${a.body != null ? textUtil.truncate(a.body, 110) : ''}">Excerpt</p>
                             <p class="font-mono text-white/50 text-[10px]" th:if="${a.authorName}">— <span th:text="${a.authorName}">Author</span></p>
                         </div>
                     </div>

@@ -39,17 +39,16 @@
 
                     <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                         <label class="mono-label block">Article body</label>
-                        <textarea rows="16" th:field="*{body}" placeholder="Write the full article. Use blank lines to separate paragraphs."
-                                  class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
-                        <p class="text-xs text-rev-muted">Write the full article text. Use blank lines to separate paragraphs.</p>
-                    </div>
-
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
+                        <div class="flex flex-wrap gap-2 border border-rev-border border-b-0 bg-rev-subtle px-3 py-2">
+                            <button type="button" class="cms-editor-btn" data-command="bold">B</button>
+                            <button type="button" class="cms-editor-btn italic" data-command="italic">I</button>
+                            <button type="button" class="cms-editor-btn" data-format="h2">H2</button>
+                            <button type="button" class="cms-editor-btn" data-format="p">P</button>
+                            <button type="button" class="cms-editor-btn" data-command="insertUnorderedList">List</button>
                         <label class="mono-label block mb-2">Short summary (shown on article cards)</label>
-                        <textarea rows="2" th:field="*{excerpt}" placeholder="A one or two sentence summary."
-                                  class="w-full resize-none rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
-                    </div>
-                </div>
+                        <div id="cmsArticleEditor" contenteditable="true" class="min-h-[400px] w-full bg-white border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-4 outline-none transition-colors leading-relaxed"></div>
+                        <textarea th:field="*{body}" id="cmsBodField" class="hidden"></textarea>
+                        <p class="text-xs text-rev-muted">Use H2 for subheadings. Subheadings automatically render in red on the published article.</p>
 
                 <!-- Sidebar column -->
                 <div class="space-y-6">
@@ -90,35 +89,86 @@
                     <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-3">
                         <label class="mono-label block">Featured image</label>
                         <div class="rounded-md overflow-hidden border border-rev-border bg-rev-subtle">
-                            <img th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}"
-                                 th:src="${article.featuredImageUrl}" alt="Current image"
-                                 class="w-full h-40 object-cover"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="img-placeholder h-40 w-full"
-                                 th:classappend="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank() ? ' hidden' : ''}">
-                                <span class="ph-label">Upload a featured image — 1200×630 px, max 5 MB</span>
-                            </div>
-                        </div>
-                        <input type="file" name="featuredImage" accept="image/jpeg,image/png,image/webp"
-                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
-                    </div>
-
-                    <!-- URL slug -->
-                    <div class="rounded-xl border border-rev-border bg-rev-surface p-6">
-                        <label class="mono-label block mb-2">Web address (slug)</label>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs text-rev-muted">/article/slug/</span>
-                            <input type="text" th:field="*{slug}" placeholder="leave blank to generate from title"
-                                   class="flex-1 rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red font-mono">
-                        </div>
-                        <p class="text-xs text-rev-muted mt-1">Lowercase letters, numbers and hyphens only. Leave blank to generate.</p>
-                    </div>
-
+                        <input type="text" th:field="*{category}" placeholder="e.g. Economy, Labour, Oil & Gas"
+                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
                 </div>
             </div>
         </form>
 
     </div>
+
+    <style>
+        .cms-editor-btn {
+            border: 1px solid #E0DAD3;
+            background: #fff;
+            color: #1E1E1E;
+            font: 700 11px 'JetBrains Mono', monospace;
+            padding: 0.45rem 0.7rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cms-editor-btn:hover {
+            background: #f5f5f5;
+            border-color: #C0182A;
+        }
+        #cmsArticleEditor h2, #cmsArticleEditor h3 {
+            color: #C0182A;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+            margin: 1.25rem 0 0.5rem;
+            text-transform: uppercase;
+        }
+        #cmsArticleEditor p { margin: 0 0 1rem; }
+        #cmsArticleEditor ul { list-style: disc; padding-left: 1.25rem; margin: 0 0 1rem; }
+        #cmsArticleEditor {
+            outline: none;
+        }
+        #cmsArticleEditor:focus {
+            border-color: #C0182A !important;
+        }
+    </style>
+
+    <script>
+        (function () {
+            const editor = document.getElementById('cmsArticleEditor');
+            const bodyField = document.getElementById('cmsBodField');
+
+            if (editor) {
+                // Initialize editor with existing body content
+                editor.innerHTML = bodyField.value || '';
+
+                // Update textarea on input
+                editor.addEventListener('input', function () {
+                    bodyField.value = editor.innerHTML;
+                });
+
+                // Wire up formatting buttons
+                document.querySelectorAll('.cms-editor-btn').forEach(btn => {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        editor.focus();
+                        if (btn.dataset.command) {
+                            document.execCommand(btn.dataset.command, false, null);
+                        }
+                        if (btn.dataset.format) {
+                            document.execCommand('formatBlock', false, btn.dataset.format);
+                        }
+                        bodyField.value = editor.innerHTML;
+                    });
+                });
+
+                // Prevent form submission from being blocked by contenteditable
+                const form = editor.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function () {
+                        bodyField.value = editor.innerHTML;
+                    });
+                }
+            }
+        })();
+    </script>
 </main>
 </body>
 </html>

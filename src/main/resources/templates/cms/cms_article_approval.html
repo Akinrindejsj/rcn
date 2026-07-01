@@ -70,7 +70,7 @@
                     <tr th:each="article : ${pendingArticles}" class="article-row group hover:bg-rev-subtle/50">
                         <td class="px-6 py-4">
                             <div class="font-medium text-rev-ink" th:text="${article.title}">Title</div>
-                            <div class="text-xs text-rev-muted mt-1 line-clamp-1" th:text="${article.excerpt ?: #strings.abbreviate(article.body ?: '', 120)}">Excerpt</div>
+                            <div class="text-xs text-rev-muted mt-1 line-clamp-1" th:text="${article.excerpt != null and !article.excerpt.isBlank() ? article.excerpt : textUtil.stripHtml(article.body ?: '')}">Excerpt</div>
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">

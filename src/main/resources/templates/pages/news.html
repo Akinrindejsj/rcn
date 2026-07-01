@@ -25,7 +25,7 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div th:with="featured=${articles[0]}" class="grid grid-cols-1 lg:grid-cols-5 gap-0 border border-rev-border mt-0">
                 <div class="lg:col-span-3 flex flex-col border-b lg:border-b-0 lg:border-r border-rev-border js-article-card"
-                     th:attr="data-search-content=${#strings.toLowerCase(featured.title + ' ' + (featured.category ?: '') + ' ' + (featured.author ?: '') + ' ' + (featured.excerpt ?: ''))}">
+                     th:attr="data-search-content=${#strings.toLowerCase(featured.title + ' ' + (featured.category ?: '') + ' ' + (featured.authorName ?: '') + ' ' + (featured.excerpt ?: ''))}">
                     <div th:if="${featured.featuredImageUrl != null and !featured.featuredImageUrl.isBlank()}" class="h-64 w-full border-b border-rev-border">
                         <img th:src="${featured.featuredImageUrl}" alt="" class="h-64 w-full object-cover"/>
                     </div>
@@ -40,7 +40,7 @@
                                 </span>
                             </div>
                             <h2 class="font-display text-4xl md:text-5xl text-rev-ink uppercase leading-tight mb-5" th:text="${featured.title}">Featured Title</h2>
-                            <p class="text-rev-muted text-sm leading-relaxed mb-6" th:text="${featured.excerpt} ?: ${featured.body}">Excerpt or body text.</p>
+                            <p class="text-rev-muted text-sm leading-relaxed mb-6" th:text="${featured.excerpt != null and !featured.excerpt.isBlank() ? featured.excerpt : textUtil.cardText(featured.body ?: '')}">Excerpt or body text.</p>
                         </div>
                         <a th:href="@{/article/{id}(id=${featured.id})}" href="/article" class="red-link font-mono text-[12px] uppercase tracking-widest inline-flex items-center gap-2">Read Full Analysis →</a>
                     </div>
@@ -52,7 +52,7 @@
                     <th:block th:each="a, iter : ${articles}" th:if="${iter.count > 1 and iter.count <= 3}">
                         <a th:href="@{/article/{id}(id=${a.id})}" href="/article"
                            class="article-card block p-6 group js-article-card"
-                           th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.author ?: '') + ' ' + (a.excerpt ?: ''))}">
+                            th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.authorName ?: '') + ' ' + (a.excerpt ?: ''))}">
                             <div th:if="${a.featuredImageUrl != null and !a.featuredImageUrl.isBlank()}" class="mb-4 rounded overflow-hidden">
                                 <img th:src="${a.featuredImageUrl}" alt="" class="h-28 w-full object-cover"/>
                             </div>
@@ -102,8 +102,8 @@
             <div th:if="${!#lists.isEmpty(articles)}" id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
                 <a th:each="a, iter : ${articles}" th:if="${iter.index > 2}"
                    th:href="@{/article/{id}(id=${a.id})}" href="/article"
-                   class="article-card block group bg-white border border-rev-border js-article-card"
-                   th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.author ?: '') + ' ' + (a.excerpt ?: ''))}">
+                    class="article-card block group bg-white border border-rev-border js-article-card"
+                    th:attr="data-search-content=${#strings.toLowerCase(a.title + ' ' + (a.category ?: '') + ' ' + (a.authorName ?: '') + ' ' + (a.excerpt ?: ''))}">
                     <div th:if="${a.featuredImageUrl != null and !a.featuredImageUrl.isBlank()}" class="h-44 w-full overflow-hidden">
                         <img th:src="${a.featuredImageUrl}" alt="" class="h-44 w-full object-cover"/>
                     </div>

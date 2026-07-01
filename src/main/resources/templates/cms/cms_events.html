@@ -237,7 +237,7 @@
                         <tr th:each="a : ${activities}" class="article-row group hover:bg-rev-subtle/50">
                             <td class="px-5 py-4">
                                 <div class="font-medium text-rev-ink" th:text="${a.title}">Title</div>
-                                <div class="text-xs text-rev-muted mt-1 line-clamp-1" th:if="${a.body}" th:text="${a.body}">Body</div>
+                                <div class="text-xs text-rev-muted mt-1 line-clamp-1" th:if="${a.body}" th:text="${textUtil.truncate(a.body, 100)}">Body</div>
                             </td>
                             <td class="px-5 py-4 text-rev-ink" th:text="${a.location} ?: '—'">Location</td>
                             <td class="px-5 py-4">

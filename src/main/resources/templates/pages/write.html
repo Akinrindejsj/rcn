@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
     <title>Write for the RCN — Revolutionary Communists of Nigeria</title>
-    <meta name="description" content="Submit your analysis, frontline report, or letter to the revolutionary press."/>
+    <meta name="description" content="Submit an article or report an activity you witnessed. Approved submissions appear on the public site."/>
 </head>
 <body>
 <main layout:fragment="content">
@@ -10,150 +10,203 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="flex items-center gap-4 mb-4"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Contribute</span></div>
             <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase leading-tight">Write for<br/>the Revolution</h1>
-            <p class="text-rev-muted text-lg mt-6 max-w-2xl">The Nigerian Communist is built by comrades and workers across the country. Submit your analysis, frontline report, or letter.</p>
+            <p class="text-rev-muted text-lg mt-6 max-w-2xl">Send an article for editorial review or report an activity you witnessed. Approved submissions appear on the public site.</p>
         </div>
     </section>
-
-    <section class="py-20 bg-rev-page">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-rev-border bg-white">
-                <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <!-- Analysis SVG icon -->
-                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 6H34L40 12V40C40 41.6569 38.6569 43 37 43H8C6.34315 43 5 41.6569 5 40V9C5 7.34315 6.34315 6 8 6Z"/>
-                        <path d="M34 6V12H40"/>
-                        <path d="M15 22L21 28L33 16"/>
-                        <path d="M15 34H25"/>
-                    </svg>
-                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Analysis</h3>
-                    <p class="text-rev-muted text-sm">Marxist analysis of Nigerian politics, economy, and events. 800–2,000 words. Well-researched, theoretically grounded.</p>
-                </div>
-                <div class="p-8 border-b md:border-b-0 md:border-r border-rev-border">
-                    <!-- Frontline Reports SVG icon -->
-                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="8" y="14" width="32" height="26" rx="3"/>
-                        <path d="M20 8L28 8"/>
-                        <path d="M24 12L24 8"/>
-                        <circle cx="24" cy="27" r="6"/>
-                        <path d="M30 33L35 38"/>
-                    </svg>
-                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Frontline Reports</h3>
-                    <p class="text-rev-muted text-sm">On-the-ground accounts from your workplace, campus, or community. 300–800 words. What's happening where you are?</p>
-                </div>
-                <div class="p-8">
-                    <!-- Letters & Debate SVG icon -->
-                    <svg class="w-12 h-12 mb-4 text-rev-red" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="4" y="10" width="40" height="28" rx="3"/>
-                        <path d="M4 14L24 28L44 14"/>
-                        <path d="M12 24L4 32"/>
-                        <path d="M36 24L44 32"/>
-                        <circle cx="24" cy="22" r="2"/>
-                    </svg>
-                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-3">Letters & Debate</h3>
-                    <p class="text-rev-muted text-sm">Responses to published articles, theoretical debates, or reflections on organising experience. Any length.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-white">
+    <section class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="lg:col-span-2">
                 <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
-
-                <!-- Flash banners -->
-                <div th:if="${successMessage}"
-                     class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
+                <div th:if="${successMessage}" class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
                     <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
                     <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
                 </div>
-                <div th:if="${errorMessage}"
-                     class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
+                <div th:if="${errorMessage}" class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
                     <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
                     <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
                 </div>
-
-                <form th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" class="space-y-6">
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Title</label><input type="text" th:field="*{title}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Category</label>
+                <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
+                    <input type="hidden" th:field="*{submissionType}" id="submissionType">
+                    <div class="grid grid-cols-2 gap-2 rounded-md border border-rev-border bg-rev-subtle p-1">
+                        <button type="button" data-mode="article" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest">Article</button>
+                        <button type="button" data-mode="activity" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest">Activity Report</button>
+                    </div>
+                    <div>
+                        <label id="titleLabel" class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article heading / title</label>
+                        <input type="text" th:field="*{title}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
+                    </div>
+                    <div class="article-field">
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article type</label>
                         <select th:field="*{category}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors">
-                            <option value="">— Choose a category —</option>
-                            <option value="analysis">Analysis</option>
-                            <option value="frontline-report">Frontline Report</option>
-                            <option value="letter-debate">Letter & Debate</option>
-                            <option value="other">Other</option>
+                            <option value="">Choose a type</option>
+                            <option value="Economy">Economy</option>
+                            <option value="Labour">Labour</option>
+                            <option value="History">History</option>
+                            <option value="Politics">Politics</option>
+                            <option value="Theory">Theory</option>
+                            <option value="Youth">Youth</option>
+                            <option value="International">International</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Body</label><textarea rows="10" th:field="*{body}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-y"></textarea></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your Name (as you want it published)</label><input type="text" th:field="*{authorName}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                    <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address (for editorial contact, not published)</label><input type="email" th:field="*{emailAddress}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-
-                    <!-- Improved upload container -->
+                    <div class="activity-field">
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Location of activity</label>
+                        <input type="text" th:field="*{activityLocation}" placeholder="City, state, campus, workplace, or community" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
+                    </div>
+                    <div class="activity-field">
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Type of activity</label>
+                        <select th:field="*{activityType}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors">
+                            <option value="">Choose activity type</option>
+                            <option value="Street Tabling">Street Tabling</option>
+                            <option value="Protest">Protest</option>
+                            <option value="Study Circle">Study Circle</option>
+                            <option value="Public Meeting">Public Meeting</option>
+                            <option value="Campus Action">Campus Action</option>
+                            <option value="Rally">Rally</option>
+                            <option value="Community Organizing">Community Organizing</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="article-field">
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Content</label>
+                        <div class="flex flex-wrap gap-2 border border-rev-border border-b-0 bg-rev-subtle px-3 py-2">
+                            <button type="button" class="editor-btn" data-command="bold">B</button>
+                            <button type="button" class="editor-btn italic" data-command="italic">I</button>
+                            <button type="button" class="editor-btn" data-format="h2">H2</button>
+                            <button type="button" class="editor-btn" data-format="p">P</button>
+                            <button type="button" class="editor-btn" data-command="insertUnorderedList">List</button>
+                        </div>
+                        <div id="articleEditor" contenteditable="true" class="min-h-[340px] w-full bg-white border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-4 outline-none transition-colors leading-relaxed"></div>
+                        <textarea th:field="*{body}" id="bodyField" class="hidden"></textarea>
+                        <p class="mt-2 text-xs text-rev-muted">Use H2 for subheadings. Published article subheadings render in red automatically.</p>
+                    </div>
+                    <div class="activity-field">
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Details of the activity</label>
+                        <textarea rows="10" id="activityBodyField" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors resize-y"></textarea>
+                    </div>
                     <div>
-                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Attachment (image, max 5 MB)</label>
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Your name</label>
+                        <input type="text" th:field="*{authorName}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
+                    </div>
+                    <div>
+                        <label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email address</label>
+                        <input type="email" th:field="*{emailAddress}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
+                    </div>
+                    <div>
+                        <label id="imageLabel" class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article image</label>
                         <label for="file-upload" class="block cursor-pointer">
                             <div class="border-2 border-dashed border-rev-border hover:border-rev-red transition-colors rounded-lg p-8 text-center bg-rev-subtle">
                                 <iconify-icon icon="lucide:upload" width="36" height="36" class="text-rev-muted mx-auto mb-3"></iconify-icon>
-                                <p class="text-rev-muted text-sm mb-1">Drag & drop your image here, or <span class="text-rev-red underline font-medium">browse files</span></p>
-                                <p class="text-rev-muted text-xs">JPEG, PNG or WebP • Max 5 MB</p>
+                                <p class="text-rev-muted text-sm mb-1">Choose an image or drag one here.</p>
+                                <p class="text-rev-muted text-xs">JPEG, PNG or WebP. Max 5 MB.</p>
                                 <p id="file-name" class="text-rev-ink text-sm mt-2 hidden"></p>
                             </div>
                         </label>
                         <input type="file" id="file-upload" name="attachment" accept="image/jpeg,image/png,image/webp" class="hidden">
                     </div>
-                    <script>
-                        document.getElementById('file-upload').addEventListener('change', function(e) {
-                            const fileName = e.target.files[0]?.name;
-                            const display = document.getElementById('file-name');
-                            if (fileName) {
-                                display.textContent = 'Selected: ' + fileName;
-                                display.classList.remove('hidden');
-                            } else {
-                                display.classList.add('hidden');
-                            }
-                        });
-                    </script>
-
-                    <button type="submit" id="writeSubmitBtn" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review →</button>
+                    <button type="submit" id="writeSubmitBtn" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review</button>
                 </form>
-                <script>
-                    (function() {
-                        var form = document.querySelector('form[method="post"]');
-                        var btn = document.getElementById('writeSubmitBtn');
-                        if (form && btn) {
-                            form.addEventListener('submit', function() {
-                                if (btn.disabled) return;
-                                var orig = btn.textContent;
-                                btn.textContent = 'Submitting…';
-                                setTimeout(function() { btn.disabled = true; }, 0);
-                                setTimeout(function() {
-                                    if (btn.disabled) {
-                                        btn.disabled = false;
-                                        btn.textContent = orig;
-                                    }
-                                }, 8000);
-                            });
-                        }
-                    })();
-                </script>
             </div>
             <aside class="space-y-8">
-                <div class="bg-rev-page p-6 border border-rev-border">
-                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Why Write?</h4>
-                    <p class="text-rev-muted text-sm">The revolutionary press is a collective organiser. Your words can inspire action, expose exploitation, and sharpen our theory.</p>
+                <div class="bg-white p-6 border border-rev-border">
+                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Article Review</h4>
+                    <p class="text-rev-muted text-sm">Articles go to the editorial queue. Once approved, they appear on News & Analysis and become selectable for the homepage.</p>
                 </div>
-                <div class="bg-rev-page p-6 border border-rev-border">
-                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">What We Look For</h4>
-                    <ul class="text-rev-muted text-sm space-y-2">
-                        <li>→ Clear, plain English</li>
-                        <li>→ Marxist analysis, not slogans</li>
-                        <li>→ Concrete examples from Nigerian life</li>
-                        <li>→ 800–2,000 words for analysis</li>
-                    </ul>
+                <div class="bg-white p-6 border border-rev-border">
+                    <h4 class="font-display text-xl text-rev-ink uppercase mb-3">Activity Reports</h4> 
+                    <p class="text-rev-muted text-sm">Activity reports are reviewed in the CMS. Approved reports appear on the Activity page and can be selected for the homepage.</p>
                 </div>
             </aside>
         </div>
     </section>
+    <style>
+        .editor-btn { border: 1px solid #E0DAD3; background: #fff; color: #1E1E1E; font: 700 11px 'JetBrains Mono', monospace; padding: 0.45rem 0.7rem; text-transform: uppercase; cursor: pointer; }
+        #articleEditor h2, #articleEditor h3 { color: #C0182A; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; line-height: 1; margin: 1.25rem 0 0.5rem; text-transform: uppercase; }
+        #articleEditor p { margin: 0 0 1rem; }
+        #articleEditor ul { list-style: disc; padding-left: 1.25rem; margin: 0 0 1rem; }
+    </style>
+    <script>
+        (function () {
+            const form = document.getElementById('writeForm');
+            const typeInput = document.getElementById('submissionType');
+            const modeButtons = document.querySelectorAll('.mode-btn');
+            const articleFields = document.querySelectorAll('.article-field');
+            const activityFields = document.querySelectorAll('.activity-field');
+            const titleLabel = document.getElementById('titleLabel');
+            const imageLabel = document.getElementById('imageLabel');
+            const editor = document.getElementById('articleEditor');
+            const bodyField = document.getElementById('bodyField');
+            const activityBody = document.getElementById('activityBodyField');
+            const submitBtn = document.getElementById('writeSubmitBtn');
+            function setMode(mode) {
+                typeInput.value = mode;
+                modeButtons.forEach(btn => {
+                    const active = btn.dataset.mode === mode;
+                    btn.classList.toggle('bg-rev-red', active);
+                    btn.classList.toggle('text-white', active);
+                    btn.classList.toggle('text-rev-muted', !active);
+                });
+                articleFields.forEach(el => el.classList.toggle('hidden', mode !== 'article'));
+                activityFields.forEach(el => el.classList.toggle('hidden', mode !== 'activity'));
+                titleLabel.textContent = mode === 'activity' ? 'Heading' : 'Article heading / title';
+                imageLabel.textContent = mode === 'activity' ? 'Reference image of the activity' : 'Article image';
+                submitBtn.textContent = mode === 'activity' ? 'Submit Activity for Review' : 'Submit Article for Review';
+                if (mode === 'article' && bodyField.value && !editor.innerHTML.trim()) {
+                    editor.innerHTML = bodyField.value;
+                }
+                if (mode === 'activity' && bodyField.value && !activityBody.value.trim()) {
+                    activityBody.value = bodyField.value;
+                }
+            }
+            modeButtons.forEach(btn => btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setMode(btn.dataset.mode);
+            }));
+            document.querySelectorAll('.editor-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    editor.focus();
+                    if (btn.dataset.command) {
+                        document.execCommand(btn.dataset.command, false, null);
+                    }
+                    if (btn.dataset.format) {
+                        document.execCommand('formatBlock', false, btn.dataset.format);
+                    }
+                    bodyField.value = editor.innerHTML;
+                });
+            });
+            if (editor) {
+                editor.innerHTML = bodyField.value || '';
+                editor.addEventListener('input', () => bodyField.value = editor.innerHTML);
+            }
+            if (activityBody) {
+                activityBody.addEventListener('input', () => bodyField.value = activityBody.value);
+            }
+            document.getElementById('file-upload').addEventListener('change', function(e) {
+                const fileName = e.target.files[0]?.name;
+                const display = document.getElementById('file-name');
+                if (fileName) {
+                    display.textContent = 'Selected: ' + fileName;
+                    display.classList.remove('hidden');
+                } else {
+                    display.classList.add('hidden');
+                }
+            });
+            if (form) {
+                form.addEventListener('submit', function () {
+                    if (typeInput.value === 'article') {
+                        bodyField.value = editor.innerHTML;
+                    } else {
+                        bodyField.value = activityBody.value;
+                    }
+                    if (submitBtn.disabled) return;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Submitting...';
+                });
+            }
+            setMode(typeInput.value || 'article');
+        })();
+    </script>
 </main>
 </body>
 </html>
