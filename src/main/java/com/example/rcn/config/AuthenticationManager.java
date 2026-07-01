@@ -91,24 +91,14 @@ public class AuthenticationManager {
 
     /**
      * Determines the appropriate dashboard redirect URL based on user's groups.
-     * Priority order: admin > auditor > assetManager > departmentHead > employee
+     * All authenticated users are redirected to the CMS dashboard for content management.
+     * Priority order for future role-specific features: admin > auditor > assetManager > departmentHead > employee
      *
-     * @return The redirect URL path for the user's appropriate dashboard
+     * @return The CMS dashboard URL for authenticated users
      */
     public String getDefaultDashboardUrl() {
-        if (isAdmin()) {
-            return "/admin/dashboard";
-        } else if (isAuditor()) {
-            return "/auditor/dashboard";
-        } else if (isAssetManager()) {
-            return "/dashboard"; // Asset managers use admin dashboard
-        } else if (isDepartmentHead()) {
-            return "/department-head/dashboard";
-        } else if (isEmployee()) {
-            return "/employee/dashboard";
-        }
-        // Fallback to generic dashboard if no specific role matches
-        return "/dashboard";
+        // All authenticated users redirect to CMS dashboard
+        return "/admin/cms/dashboard";
     }
 
     public Object getAllAttributes() {
