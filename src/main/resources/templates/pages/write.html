@@ -16,8 +16,8 @@
     <section class="py-24 bg-rev-page">
         <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="lg:col-span-2">
-                <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
-                <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" data-spinner class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
+                 <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
+                 <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" data-spinner class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
                     <input type="hidden" th:field="*{submissionType}" id="submissionType">
                     <div class="grid grid-cols-2 gap-2 rounded-md border border-rev-border bg-rev-subtle p-1">
                          <button type="button" data-mode="article" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest transition-all duration-200">Article</button>
@@ -85,17 +85,19 @@
                         <input type="email" th:field="*{emailAddress}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
                     </div>
                     <div>
-                        <label id="imageLabel" class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article image</label>
-                        <label for="file-upload" class="block cursor-pointer">
-                            <div class="border-2 border-dashed border-rev-border hover:border-rev-red transition-colors rounded-lg p-8 text-center bg-rev-subtle">
-                                <iconify-icon icon="lucide:upload" width="36" height="36" class="text-rev-muted mx-auto mb-3"></iconify-icon>
-                                <p class="text-rev-muted text-sm mb-1">Choose an image or drag one here.</p>
-                                <p class="text-rev-muted text-xs">JPEG, PNG or WebP. Max 5 MB.</p>
-                                <p id="file-name" class="text-rev-ink text-sm mt-2 hidden"></p>
-                            </div>
-                        </label>
-                        <input type="file" id="file-upload" name="attachment" accept="image/jpeg,image/png,image/webp" class="hidden">
-                    </div>
+                         <label id="imageLabel" class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article image</label>
+                         <label for="file-upload" class="block cursor-pointer">
+                             <div class="upload-container">
+                                 <div class="border-2 border-dashed border-rev-border hover:border-rev-red transition-colors rounded-lg p-8 text-center bg-rev-subtle upload-drop-zone" id="imageDropZone">
+                                     <iconify-icon icon="lucide:upload" width="36" height="36" class="text-rev-muted mx-auto mb-3"></iconify-icon>
+                                     <p class="text-rev-muted text-sm mb-1">Choose an image or drag one here.</p>
+                                     <p class="text-rev-muted text-xs">JPEG, PNG or WebP. Max 5 MB.</p>
+                                     <p id="file-name" class="text-rev-ink text-sm mt-2 hidden"></p>
+                                 </div>
+                             </div>
+                         </label>
+                         <input type="file" id="file-upload" name="attachment" accept="image/jpeg,image/png,image/webp" class="hidden rcn-upload" data-max-size="5242880" data-accept="image/">
+                     </div>
                     <button type="submit" id="writeSubmitBtn" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors w-full">Submit for Review</button>
                 </form>
             </div>
@@ -174,16 +176,61 @@
             if (activityBody) {
                 activityBody.addEventListener('input', () => bodyField.value = activityBody.value);
             }
-            document.getElementById('file-upload').addEventListener('change', function(e) {
-                const fileName = e.target.files[0]?.name;
-                const display = document.getElementById('file-name');
-                if (fileName) {
-                    display.textContent = 'Selected: ' + fileName;
-                    display.classList.remove('hidden');
-                } else {
-                    display.classList.add('hidden');
-                }
-            });
+             document.getElementById('file-upload').addEventListener('change', function(e) {
+                 const fileName = e.target.files[0]?.name;
+                 const display = document.getElementById('file-name');
+                 if (fileName) {
+                     display.textContent = 'Selected: ' + fileName;
+                     display.classList.remove('hidden');
+                 } else {
+                     display.classList.add('hidden');
+                 }
+             });
+
+             // Add drag-and-drop support for file upload area
+             const imageDropZone = document.getElementById('imageDropZone');
+             if (imageDropZone) {
+                 imageDropZone.addEventListener('dragover', function(e) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     imageDropZone.classList.add('dragover');
+                 });
+                 imageDropZone.addEventListener('dragleave', function(e) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     imageDropZone.classList.remove('dragover');
+                 });
+                 imageDropZone.addEventListener('drop', function(e) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     imageDropZone.classList.remove('dragover');
+                     const files = e.dataTransfer.files;
+                     if (files && files.length > 0) {
+                         document.getElementById('file-upload').files = files;
+                         const changeEvent = new Event('change', { bubbles: true });
+                         document.getElementById('file-upload').dispatchEvent(changeEvent);
+                     }
+                 });
+             }
+
+             // Add toast container for file selection feedback
+             if (!document.getElementById('rcn-toast-container')) {
+                 const container = document.createElement('div');
+                 container.id = 'rcn-toast-container';
+                 container.className = 'fixed top-6 right-6 z-50 space-y-3';
+                 document.body.appendChild(container);
+             }
+
+             // Add CSS for dragover state
+             if (!document.getElementById('drag-upload-styles')) {
+                 const style = document.createElement('style');
+                 style.id = 'drag-upload-styles';
+                 style.textContent = `.upload-drop-zone.dragover {
+                     border-color: #C0182A !important;
+                     background: rgba(192, 24, 42, 0.05) !important;
+                 }`;
+                 document.head.appendChild(style);
+             }
             if (form) {
                 form.addEventListener('submit', function () {
                     if (typeInput.value === 'article') {

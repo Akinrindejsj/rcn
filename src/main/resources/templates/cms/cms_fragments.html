@@ -82,11 +82,15 @@
             const files = input.files;
             if (!files || files.length === 0) return;
             const file = files[0];
+
+            // Validate file size
             if (file.size > max) {
                 showToast('File too large — max ' + Math.round(max/1024/1024) + 'MB', 'error');
                 input.value = '';
                 return;
             }
+
+            // Validate file type
             if (accept.length > 0) {
                 const ok = accept.some(function (pattern) { return file.type.indexOf(pattern.trim()) !== -1 || file.name.endsWith(pattern.trim()); });
                 if (!ok) {
@@ -95,6 +99,8 @@
                     return;
                 }
             }
+
+            // Show preview and send success message
             if (previewId) {
                 const previewEl = document.getElementById(previewId);
                 if (!previewEl) return;
@@ -106,6 +112,9 @@
                     previewEl.innerHTML = `<div class="px-3 py-2 rounded-md border border-rev-border bg-rev-subtle text-sm">${file.name}</div>`;
                 }
             }
+
+            // Show success toast for file selection
+            showToast('File selected: ' + file.name, 'success');
         });
 
         // Enhanced drag-and-drop support for upload-drop-zone elements

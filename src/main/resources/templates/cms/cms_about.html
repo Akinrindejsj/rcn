@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Page Editor</title>
     <style>
-        /* ── Upload Zone (unchanged) ── */
+        /* ── Upload Zone (enhanced with fixes) ── */
         .upload-zone {
             position: relative;
             border: 2px dashed var(--rev-border, #d0d0d0);
@@ -13,7 +13,7 @@
             background: var(--rev-subtle, #f8f6f2);
             transition: border-color 0.25s ease, background 0.25s ease, transform 0.15s ease;
             cursor: pointer;
-            overflow: hidden;
+            overflow: visible;
             min-height: 200px;
             display: flex;
             flex-direction: column;
@@ -36,6 +36,7 @@
             border-color: var(--rev-border, #d0d0d0);
             background: var(--rev-surface, #fffdf9);
             min-height: auto;
+            overflow: hidden;
         }
         .upload-zone.has-image:hover {
             border-color: var(--rev-red, #b31b1b);
@@ -96,6 +97,7 @@
             gap: 0.5rem;
             opacity: 0;
             transition: opacity 0.2s ease;
+            z-index: 10;
         }
         .upload-preview:hover .overlay-actions {
             opacity: 1;
@@ -474,9 +476,9 @@
             </div>
         </div>
 
-        <!-- ─── Main form ─── -->
-        <form id="aboutForm" method="post" th:action="@{/admin/cms/about}"
-              enctype="multipart/form-data" th:object="${about}" class="space-y-6">
+         <!-- ─── Main form ─── -->
+         <form id="aboutForm" method="post" th:action="@{/admin/cms/about}"
+               enctype="multipart/form-data" th:object="${about}" class="space-y-6" data-spinner>
 
             <!-- ─── Intro ─── -->
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
@@ -1040,8 +1042,20 @@
                     saveBtn.disabled = true;
                     saveBtn.dataset.originalText = saveBtn.textContent;
                     saveBtn.textContent = 'Saving…';
+
+                    // Add loading state class for visual feedback
+                    saveBtn.classList.add('opacity-75');
                 });
             }
+
+            // Auto-restore button state on page load (in case of redirect)
+            window.addEventListener('load', function() {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = saveBtn.dataset.originalText || 'Save About Page';
+                    saveBtn.classList.remove('opacity-75');
+                }
+            });
 
         })();
     </script>

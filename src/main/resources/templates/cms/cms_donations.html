@@ -15,7 +15,7 @@
         <!-- flash banners removed: toasts will show notifications -->
 
         <!-- Donation page copy -->
-        <form th:action="@{/admin/cms/donations}" method="post" enctype="multipart/form-data" th:object="${donation}">
+        <form th:action="@{/admin/cms/donations}" method="post" enctype="multipart/form-data" th:object="${donation}" data-spinner>
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
                 <h3 class="font-display text-lg uppercase text-rev-ink">Donation Page Copy</h3>
                 <div>
@@ -106,7 +106,7 @@
         </div>
 
         <!-- Payment details -->
-        <form th:action="@{/admin/cms/donations/payment}" method="post" th:object="${payment}">
+        <form th:action="@{/admin/cms/donations/payment}" method="post" th:object="${payment}" data-spinner>
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                 <h3 class="font-display text-lg uppercase text-rev-ink">Payment Details</h3>
                 <p class="text-xs text-rev-muted">Bank details shown to comrades at the bottom of the donation form.</p>

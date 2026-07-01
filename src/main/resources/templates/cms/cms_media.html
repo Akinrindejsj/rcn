@@ -14,10 +14,10 @@
 
         <!-- flash banners removed: handled by toast system in layout -->
 
-        <!-- Upload form -->
-        <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
-            <h3 class="font-display text-lg uppercase text-rev-ink">Upload a File</h3>
-            <form th:action="@{/admin/cms/media/upload}" method="post" enctype="multipart/form-data" class="space-y-4">
+         <!-- Upload form -->
+         <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
+             <h3 class="font-display text-lg uppercase text-rev-ink">Upload a File</h3>
+             <form th:action="@{/admin/cms/media/upload}" method="post" enctype="multipart/form-data" class="space-y-4" data-spinner>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:items-end">
                     <div class="md:col-span-2">
                         <label class="mono-label block mb-2">Choose file</label>
