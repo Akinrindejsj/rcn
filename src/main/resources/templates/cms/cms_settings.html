@@ -12,19 +12,9 @@
             </div>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: toasts are now used for success/error messages -->
 
-        <form th:action="@{/admin/cms/settings}" method="post" enctype="multipart/form-data" th:object="${settings}">
+        <form th:action="@{/admin/cms/settings}" method="post" enctype="multipart/form-data" th:object="${settings}" data-spinner>
             <!-- General -->
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
                 <h3 class="font-display text-lg uppercase text-rev-ink">General</h3>
@@ -121,8 +111,7 @@
                             <span class="ph-label">RCN newspaper front page</span>
                         </div>
                     </div>
-                    <input type="file" name="footerImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-3 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    <input type="file" name="footerImage" class="rcn-upload mt-3 w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 </div>
                 <div>
                     <label class="mono-label block mb-2">Copyright line</label>

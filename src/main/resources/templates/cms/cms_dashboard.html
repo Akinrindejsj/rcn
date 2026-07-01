@@ -12,56 +12,58 @@
             </div>
         </div>
 
-        <!-- Metrics Grid — one card per CMS-managed resource -->
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <!-- Metrics Grid — prioritized metric cards (keeps existing theme tokens) -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Published articles -->
-            <a th:href="@{/admin/cms/articles}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+            <a th:href="@{/admin/cms/articles}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-6 no-underline hover:border-rev-red transition-colors" aria-label="Published articles">
                 <div class="flex items-center justify-between">
                     <span class="mono-label">Published Articles</span>
                     <iconify-icon icon="lucide:file-text" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="font-display text-3xl text-rev-ink" th:text="${articleCount}">0</span>
+                <div class="mt-3 flex items-baseline gap-3">
+                    <span class="font-display text-4xl text-rev-ink" th:text="${articleCount}">0</span>
+                    <span class="text-sm text-rev-muted">published</span>
                 </div>
             </a>
 
             <!-- Pending approval -->
-            <a th:href="@{/admin/cms/approval}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+            <a th:href="@{/admin/cms/approval}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-6 no-underline hover:border-rev-red transition-colors" aria-label="Pending approval">
                 <div class="flex items-center justify-between">
                     <span class="mono-label">Pending Approval</span>
                     <iconify-icon icon="lucide:clipboard-check" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="font-display text-3xl text-rev-ink" th:text="${pendingCount}">0</span>
-                    <span th:if="${pendingCount > 0}" class="text-xs font-medium text-rev-red">Needs review</span>
+                <div class="mt-3 flex items-baseline gap-3">
+                    <span class="font-display text-4xl text-rev-ink" th:text="${pendingCount}">0</span>
+                    <span class="text-sm" th:classappend="${pendingCount > 0} ? 'text-rev-red font-medium' : 'text-rev-muted'">Pending</span>
                 </div>
             </a>
 
             <!-- Podcast episodes -->
-            <a th:href="@{/admin/cms/podcasts}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+            <a th:href="@{/admin/cms/podcasts}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-6 no-underline hover:border-rev-red transition-colors" aria-label="Podcast episodes">
                 <div class="flex items-center justify-between">
                     <span class="mono-label">Podcast Episodes</span>
                     <iconify-icon icon="lucide:headphones" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="font-display text-3xl text-rev-ink" th:text="${podcastCount}">0</span>
+                <div class="mt-3 flex items-baseline gap-3">
+                    <span class="font-display text-4xl text-rev-ink" th:text="${podcastCount}">0</span>
+                    <span class="text-sm text-rev-muted">episodes</span>
                 </div>
             </a>
 
             <!-- Activity reports -->
-            <a th:href="@{/admin/cms/events}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-5 no-underline hover:border-rev-red transition-colors">
+            <a th:href="@{/admin/cms/events}" class="metric-card rounded-xl border border-rev-border bg-rev-surface p-6 no-underline hover:border-rev-red transition-colors" aria-label="Activity reports">
                 <div class="flex items-center justify-between">
                     <span class="mono-label">Activity Reports</span>
                     <iconify-icon icon="lucide:globe" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="font-display text-3xl text-rev-ink" th:text="${activityCount ?: 0}">0</span>
+                <div class="mt-3 flex items-baseline gap-3">
+                    <span class="font-display text-4xl text-rev-ink" th:text="${activityCount ?: 0}">0</span>
+                    <span class="text-sm text-rev-muted">reports</span>
                 </div>
             </a>
         </div>
-
-        <!-- Quick links -->
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <!-- Quick actions + activity summary area -->
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-6">
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 lg:col-span-2">
                 <h3 class="font-display text-lg uppercase text-rev-ink mb-4">Quick Actions</h3>
                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -82,31 +84,48 @@
                         <p class="mt-2 text-xs font-medium text-rev-ink">Edit Homepage</p>
                     </a>
                 </div>
+                <!-- Actionable summary: surface next steps (uses existing model counts) -->
+                <div class="mt-6">
+                    <h4 class="text-sm font-medium text-rev-ink mb-2">Actionable items</h4>
+                    <ul class="space-y-2 text-sm text-rev-muted">
+                        <li>
+                            <span th:if="${pendingCount > 0}">
+                                <strong th:text="${pendingCount}"></strong> pending approval — <a th:href="@{/admin/cms/approval}" class="text-rev-red">review now</a>
+                            </span>
+                            <span th:if="${pendingCount == 0}">No articles awaiting review.</span>
+                        </li>
+                        <li>
+                            <span>
+                                <strong th:text="${articleCount}"></strong> published articles — <a th:href="@{/admin/cms/articles}" class="text-rev-ink">manage</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <strong th:text="${podcastCount}"></strong> podcast episodes — <a th:href="@{/admin/cms/podcasts}" class="text-rev-ink">manage</a>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div class="rounded-xl border border-rev-border bg-rev-surface p-5">
-                <h3 class="font-display text-lg uppercase text-rev-ink mb-3">CMS Sections</h3>
-                <div class="space-y-2">
-                    <a th:href="@{/admin/cms/homepage}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
-                        <iconify-icon icon="lucide:layout" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                        Homepage
-                    </a>
-                    <a th:href="@{/admin/cms/about}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
-                        <iconify-icon icon="lucide:info" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                        About Page
-                    </a>
-                    <a th:href="@{/admin/cms/donations}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
-                        <iconify-icon icon="lucide:banknote" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                        Donations
-                    </a>
-                    <a th:href="@{/admin/cms/settings}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
-                        <iconify-icon icon="lucide:settings" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                        Settings
-                    </a>
-                    <a th:href="@{/admin/cms/media}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-rev-ink no-underline hover:bg-rev-subtle">
-                        <iconify-icon icon="lucide:folder-open" width="16" height="16" stroke-width="1.5" class="text-rev-muted"></iconify-icon>
-                        Media Library
-                    </a>
+                <h3 class="font-display text-lg uppercase text-rev-ink mb-3">Activity & Summary</h3>
+                <div class="text-sm text-rev-muted space-y-3">
+                    <div>
+                        <p class="mb-1 text-xs text-rev-muted">Pending approvals</p>
+                        <p class="font-display text-2xl text-rev-ink" th:text="${pendingCount}">0</p>
+                        <a th:if="${pendingCount > 0}" th:href="@{/admin/cms/approval}" class="mt-2 inline-block text-xs text-rev-red">Review pending articles</a>
+                    </div>
+                    <div class="border-t border-rev-border pt-3">
+                        <p class="mb-1 text-xs text-rev-muted">Published articles</p>
+                        <p class="font-display text-2xl text-rev-ink" th:text="${articleCount}">0</p>
+                        <a th:href="@{/admin/cms/articles}" class="mt-2 inline-block text-xs text-rev-ink">Open articles list</a>
+                    </div>
+                    <div class="border-t border-rev-border pt-3">
+                        <p class="mb-1 text-xs text-rev-muted">Activity reports</p>
+                        <p class="font-display text-2xl text-rev-ink" th:text="${activityCount ?: 0}">0</p>
+                        <a th:href="@{/admin/cms/events}" class="mt-2 inline-block text-xs text-rev-ink">Manage reports</a>
+                    </div>
                 </div>
             </div>
         </div>

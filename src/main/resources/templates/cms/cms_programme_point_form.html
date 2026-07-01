@@ -304,19 +304,11 @@
             </a>
         </div>
 
-        <!-- ─── Flash Messages ─── -->
-        <div th:if="${successMessage}" class="flash-message flash-success">
-            <span class="flash-icon">✓</span>
-            <span th:text="${successMessage}">Saved successfully.</span>
-        </div>
-        <div th:if="${errorMessage}" class="flash-message flash-error">
-            <span class="flash-icon">✕</span>
-            <span th:text="${errorMessage}">An error occurred.</span>
-        </div>
+        <!-- flash messages removed: toasts will display notifications -->
 
         <!-- ─── Form ─── -->
         <form th:action="${point.id} ? @{/admin/cms/about/programme-points/{id}/edit(id=${point.id})} : @{/admin/cms/about/programme-points/new}"
-              method="post" enctype="multipart/form-data" th:object="${point}" class="layout-grid">
+              method="post" enctype="multipart/form-data" th:object="${point}" class="layout-grid" data-spinner>
 
             <!-- ── Main fields ── -->
             <div class="space-y-6">
@@ -366,8 +358,8 @@
                     </div>
 
                     <div class="file-input-wrapper">
-                        <input type="file" name="image" id="imageInput"
-                               accept="image/jpeg,image/png,image/webp,image/svg+xml" />
+                        <input type="file" name="image" id="imageInput" class="rcn-upload"
+                               data-max-size="5242880" data-accept="image/" data-preview-id="pointImagePreview" accept="image/jpeg,image/png,image/webp,image/svg+xml" />
                         <span class="form-hint" style="margin:0;">Max 5 MB</span>
                     </div>
                     <p class="form-hint">Upload a relevant image to illustrate this programme point.</p>

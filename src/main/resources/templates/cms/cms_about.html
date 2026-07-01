@@ -467,36 +467,7 @@
 <main layout:fragment="content" th:with="pageTitle='About Page'">
     <div class="mx-auto max-w-6xl space-y-8">
 
-        <!-- ─── Flash banners ─── -->
-        <div th:if="${successMessage}"
-             id="successBanner"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${successMessage}">Saved.</p>
-            </div>
-            <button onclick="document.getElementById('successBanner').remove()"
-                    class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
-        <script th:if="${successMessage}">
-            setTimeout(function () {
-                var el = document.getElementById('successBanner');
-                if (el) el.remove();
-            }, 4000);
-        </script>
-
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${errorMessage}">Something went wrong.</p>
-            </div>
-            <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
+        <!-- flash banners removed: toast system in layout handles success/error messages -->
 
         <!-- ─── Page Header ─── -->
         <div class="flex items-end justify-between">
@@ -532,7 +503,7 @@
                     <label class="mono-label block mb-2">Top-of-page image</label>
                     <div class="upload-zone" id="uploadZone"
                          th:classappend="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? 'has-image' : ''">
-                        <input type="file" name="introImage" id="fileInput" accept="image/png, image/jpeg, image/gif, image/webp, image/svg+xml" />
+                        <input type="file" name="introImage" id="fileInput" class="rcn-upload" data-max-size="5242880" data-accept="image/" data-preview-id="uploadPreview" accept="image/png, image/jpeg, image/gif, image/webp, image/svg+xml" />
                         <div id="uploadPlaceholder" class="upload-placeholder"
                              th:style="${about.introImageUrl != null and !about.introImageUrl.isBlank()} ? 'display:none' : ''">
                             <div class="upload-icon">🖼️</div>
@@ -596,10 +567,9 @@
                         <div class="col-span-1 row-actions">
                             <a class="text-rev-muted hover:text-rev-red text-xs"
                                th:href="@{|/admin/cms/about/programme-points/${point.id}/edit|}">Edit</a>
-                            <form method="post" th:action="@{|/admin/cms/about/programme-points/${point.id}/delete|}"
-                                  class="inline" onsubmit="return confirm('Remove this programme point?');">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
-                            </form>
+                            <button type="button" class="text-rev-muted hover:text-red-700 text-xs"
+                                    th:attr="data-action=@{|/admin/cms/about/programme-points/${point.id}/delete|}, data-name=${point.pointTitle}"
+                                    onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Remove</button>
                         </div>
                     </div>
                     <p th:if="${#lists.isEmpty(programmePoints)}" class="text-sm text-rev-muted italic">No programme points yet. Click "+ Add point" to add one.</p>
@@ -625,10 +595,9 @@
                         <div class="col-span-1 row-actions">
                             <a class="text-rev-muted hover:text-rev-red text-xs"
                                th:href="@{|/admin/cms/about/faqs/${faq.id}/edit|}">Edit</a>
-                            <form method="post" th:action="@{|/admin/cms/about/faqs/${faq.id}/delete|}"
-                                  class="inline" onsubmit="return confirm('Remove this FAQ?');">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
-                            </form>
+                            <button type="button" class="text-rev-muted hover:text-red-700 text-xs"
+                                    th:attr="data-action=@{|/admin/cms/about/faqs/${faq.id}/delete|}, data-name=${faq.question}"
+                                    onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Remove</button>
                         </div>
                     </div>
                     <p th:if="${#lists.isEmpty(faqs)}" class="text-sm text-rev-muted italic">No FAQs yet. Click "+ Add question" to add one.</p>
@@ -982,9 +951,8 @@
                                 '<div class="col-span-6"><span class="point-desc"></span></div>' +
                                 '<div class="col-span-1 row-actions">' +
                                 '<a class="text-rev-muted hover:text-rev-red text-xs" href="/admin/cms/about/programme-points/' + d.id + '/edit">Edit</a>' +
-                                '<form method="post" action="/admin/cms/about/programme-points/' + d.id + '/delete" class="inline" onsubmit="return confirm(\'Remove this programme point?\');">' +
-                                '<button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>' +
-                                '</form></div>';
+                                '<button type="button" class="text-rev-muted hover:text-red-700 text-xs" data-action="/admin/cms/about/programme-points/' + d.id + '/delete" data-name="' + (d.pointTitle || title) + '" onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Remove</button>' +
+                                '</div>';
                             row.querySelector('.point-number').textContent = d.sortOrder ? String(d.sortOrder).padStart(2, '0') : '??';
                             row.querySelector('.point-title').textContent = d.pointTitle || title;
                             row.querySelector('.point-desc').textContent = d.pointDescription || desc;
@@ -1044,9 +1012,8 @@
                                 '<div class="col-span-6"><span class="faq-answer"></span></div>' +
                                 '<div class="col-span-1 row-actions">' +
                                 '<a class="text-rev-muted hover:text-rev-red text-xs" href="/admin/cms/about/faqs/' + d.id + '/edit">Edit</a>' +
-                                '<form method="post" action="/admin/cms/about/faqs/' + d.id + '/delete" class="inline" onsubmit="return confirm(\'Remove this FAQ?\');">' +
-                                '<button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>' +
-                                '</form></div>';
+                                '<button type="button" class="text-rev-muted hover:text-red-700 text-xs" data-action="/admin/cms/about/faqs/' + d.id + '/delete" data-name="' + (d.question || question) + '" onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Remove</button>' +
+                                '</div>';
                             row.querySelector('.faq-question').textContent = d.question || question;
                             row.querySelector('.faq-answer').textContent = d.answer || answer;
                             container.appendChild(row);

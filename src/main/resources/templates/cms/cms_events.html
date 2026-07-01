@@ -13,17 +13,7 @@
             <a th:href="@{/activity}" target="_blank" class="outline-btn no-underline">View Live Page →</a>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: using centralized toast notifications -->
 
         <form id="activityPageForm" th:action="@{/admin/cms/events/save}" method="post" enctype="multipart/form-data" th:object="${activitySettings}" data-spinner>
 
@@ -62,7 +52,7 @@
                     </button>
                     <span id="backdrop-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
                 </div>
-                <input type="file" id="backdrop-upload" name="backdrop" accept="image/jpeg,image/png,image/webp" class="hidden">
+                 <input type="file" id="backdrop-upload" name="backdrop" class="rcn-upload hidden" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 <input type="hidden" name="backdropRemoved" id="backdrop-removed" value="false">
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -185,7 +175,7 @@
                     </button>
                     <span id="map-name" class="text-xs text-rev-muted truncate max-w-xs"></span>
                 </div>
-                <input type="file" id="map-upload" name="map" accept="image/jpeg,image/png,image/webp" class="hidden">
+                 <input type="file" id="map-upload" name="map" class="rcn-upload hidden" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 <input type="hidden" name="mapRemoved" id="map-removed" value="false">
 
                 <div class="grid grid-cols-1 gap-4">
@@ -248,10 +238,9 @@
                             <td class="px-5 py-4 text-rev-muted" th:text="${a.authorName} ?: '—'">Author</td>
                             <td class="px-5 py-4 text-right whitespace-nowrap">
                                 <a th:href="@{/admin/cms/events/${a.id}/edit}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>
-                                <form method="post" th:action="@{/admin/cms/events/${a.id}/delete}" class="inline"
-                                      onsubmit="return confirm('Delete this report? This cannot be undone.')">
-                                    <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                                </form>
+                                 <button type="button" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest"
+                                         th:attr="data-action=@{/admin/cms/events/${a.id}/delete}, data-name=${a.title}"
+                                         onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Delete</button>
                             </td>
                         </tr>
                         </tbody>

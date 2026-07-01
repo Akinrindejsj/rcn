@@ -230,19 +230,11 @@
             </a>
         </div>
 
-        <!-- ─── Flash Messages ─── -->
-        <div th:if="${successMessage}" class="flash-message flash-success">
-            <span class="flash-icon">✓</span>
-            <span th:text="${successMessage}">Saved successfully.</span>
-        </div>
-        <div th:if="${errorMessage}" class="flash-message flash-error">
-            <span class="flash-icon">✕</span>
-            <span th:text="${errorMessage}">An error occurred.</span>
-        </div>
+        <!-- flash messages removed: using toast notifications in layout -->
 
         <!-- ─── Form ─── -->
         <form th:action="${faq.id} ? @{/admin/cms/about/faqs/{id}/edit(id=${faq.id})} : @{/admin/cms/about/faqs/new}"
-              method="post" th:object="${faq}" class="layout-grid">
+              method="post" th:object="${faq}" class="layout-grid" data-spinner>
 
             <!-- ── Main fields ── -->
             <div class="form-card space-y-5">

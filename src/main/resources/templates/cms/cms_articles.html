@@ -16,17 +16,7 @@
             </a>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: replaced by toast system in layout -->
 
         <!-- Count -->
         <div class="flex items-center justify-between">
@@ -85,10 +75,9 @@
                             <form th:if="${a.status?.name() != 'PUBLISHED'}" method="post" th:action="@{/admin/cms/articles/{id}/publish(id=${a.id})}" class="inline">
                                 <button type="submit" class="text-rev-muted hover:text-emerald-700 font-mono text-xs uppercase tracking-widest mr-3">Publish</button>
                             </form>
-                            <form method="post" th:action="@{/admin/cms/articles/{id}/delete(id=${a.id})}" class="inline"
-                                  onsubmit="return confirm('Delete this article? This cannot be undone.')">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Delete</button>
-                            </form>
+                            <button type="button" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest"
+                                    th:attr="data-action=@{/admin/cms/articles/{id}/delete(id=${a.id})}, data-name=${a.title}"
+                                    onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Delete</button>
                         </td>
                     </tr>
                     </tbody>

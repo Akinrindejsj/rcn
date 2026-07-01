@@ -12,17 +12,7 @@
             </div>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: toasts will show notifications -->
 
         <!-- Donation page copy -->
         <form th:action="@{/admin/cms/donations}" method="post" enctype="multipart/form-data" th:object="${donation}">
@@ -60,8 +50,7 @@
                             <span class="ph-label">Upload an image — 1200×400 px, max 5 MB</span>
                         </div>
                     </div>
-                    <input type="file" name="printingPressImage" accept="image/jpeg,image/png,image/webp"
-                           class="mt-3 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                    <input type="file" name="printingPressImage" class="rcn-upload mt-3 w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="red-btn">Save Donation Page</button>
@@ -101,10 +90,9 @@
                     </div>
                     <div class="col-span-2 flex gap-2 justify-end">
                         <a th:href="@{/admin/cms/donations/tiers/{id}/edit(id=${t.id})}" class="text-rev-muted hover:text-red-700 text-xs">Edit</a>
-                        <form method="post" th:action="@{/admin/cms/donations/tiers/{id}/delete(id=${t.id})}" class="inline"
-                              onsubmit="return confirm('Remove this tier?')">
-                            <button type="submit" class="text-rev-muted hover:text-red-700 text-xs">Remove</button>
-                        </form>
+                        <button type="button" class="text-rev-muted hover:text-red-700 text-xs"
+                                th:attr="data-action=@{/admin/cms/donations/tiers/{id}/delete(id=${t.id})}, data-name=${t.tierName}"
+                                onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Remove</button>
                     </div>
                 </div>
             </div>

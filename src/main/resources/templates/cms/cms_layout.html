@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         tailwind.config = {
             theme: {
                 extend: {
@@ -79,6 +79,30 @@
             border-left-color: #C0182A;
             background: #F0EBE4;
         }
+
+        /* Small, consistent button system for CMS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.825rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .btn-primary { background: #C0182A; color: #fff; border-color: #C0182A; }
+        .btn-primary:hover { background: #8B0E1C; border-color: #8B0E1C; }
+        .btn-ghost { background: transparent; color: #1E1E1E; border-color: #E0DAD3; }
+        .btn-ghost:hover { background: #F0EBE4; }
+        .btn-danger { background: #fff0f0; color: #C0182A; border-color: #F0D6D6; }
+
+        /* Card wrapper for page content to improve visual rhythm */
+        .content-card { border-radius: 1rem; border: 1px solid var(--rev-border); background: var(--rev-surface); padding: 1.25rem; }
 
         button.red-btn {
             background-color: #C0182A;
@@ -327,10 +351,15 @@
             </main>
         </div>
     </main>
+    <!-- include shared cms fragments: toast container, delete modal, upload helper -->
+    <div th:insert="~{cms/cms_fragments :: toastContainer}"></div>
+    <div th:insert="~{cms/cms_fragments :: deleteModal}"></div>
+    <div th:insert="~{cms/cms_fragments :: uploadHelper}"></div>
+
 </div>
 
-<script>
-    function toggleSidebar() {
+<script th:inline="javascript">
+     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
 
@@ -369,6 +398,16 @@
             }
         });
     });
+
+    // Render any flash messages via toast (controllers use flash attributes 'successMessage' and 'errorMessage')
+    (function() {
+        /*<![CDATA[*/
+        var _success = /*[[${successMessage}]]*/ null;
+        var _error = /*[[${errorMessage}]]*/ null;
+        /*]]>*/
+        if (_success) showToast(_success, 'success');
+        if (_error) showToast(_error, 'error');
+    })();
 
     // Tailwind script already loaded
 </script>

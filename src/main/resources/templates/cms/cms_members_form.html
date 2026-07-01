@@ -14,17 +14,10 @@
             <a th:href="@{/admin/cms/members}" href="/admin/cms/members" class="back-link">Back to Member Voices</a>
         </div>
 
-        <div th:if="${successMessage}" class="flash-message flash-success">
-            <span class="flash-icon">✓</span>
-            <span th:text="${successMessage}">Saved successfully.</span>
-        </div>
-        <div th:if="${errorMessage}" class="flash-message flash-error">
-            <span class="flash-icon">✕</span>
-            <span th:text="${errorMessage}">An error occurred.</span>
-        </div>
+        <!-- flash messages removed: toasts in layout handle notifications -->
 
         <form th:action="${member.id} ? @{/admin/cms/members/{id}/edit(id=${member.id})} : @{/admin/cms/members/new}"
-              method="post" th:object="${member}" class="layout-grid">
+              method="post" th:object="${member}" class="layout-grid" data-spinner>
 
             <div class="form-card space-y-5">
                 <div>

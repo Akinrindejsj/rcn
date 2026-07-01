@@ -13,20 +13,10 @@
             <a th:href="@{/admin/cms/podcasts}" href="/admin/cms/podcasts" class="outline-btn no-underline">← Back to Podcasts</a>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: toasts will be used for notifications -->
 
         <form th:action="${podcast.id} ? @{/admin/cms/podcasts/{id}/edit(id=${podcast.id})} : @{/admin/cms/podcasts/new}"
-              method="post" enctype="multipart/form-data" th:object="${podcast}">
+              method="post" enctype="multipart/form-data" th:object="${podcast}" data-spinner>
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <!-- Main column -->
                 <div class="space-y-6 lg:col-span-2">
@@ -110,8 +100,7 @@
                                 <span class="ph-label">Upload cover art — 600×600 px, max 5 MB</span>
                             </div>
                         </div>
-                        <input type="file" name="coverImage" accept="image/jpeg,image/png,image/webp"
-                               class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                        <input type="file" name="coverImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                     </div>
 
                     <!-- Platform links -->

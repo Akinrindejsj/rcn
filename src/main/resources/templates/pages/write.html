@@ -17,15 +17,7 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div class="lg:col-span-2">
                 <h2 class="font-display text-4xl text-rev-ink uppercase mb-8">Submit Your Work</h2>
-                <div th:if="${successMessage}" class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
-                    <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-                    <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-                </div>
-                <div th:if="${errorMessage}" class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm mb-6">
-                    <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-                    <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-                </div>
-                <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
+                <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" data-spinner class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
                     <input type="hidden" th:field="*{submissionType}" id="submissionType">
                     <div class="grid grid-cols-2 gap-2 rounded-md border border-rev-border bg-rev-subtle p-1">
                         <button type="button" data-mode="article" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest">Article</button>

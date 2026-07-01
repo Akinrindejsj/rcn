@@ -13,17 +13,7 @@
             <a th:href="@{/admin/cms/articles}" href="/admin/cms/articles" class="outline-btn no-underline">← Back to Articles</a>
         </div>
 
-        <!-- Success / error banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: toast system in layout handles success/error messages -->
 
         <form th:action="${article.id} ? @{/admin/cms/articles/{id}/edit(id=${article.id})} : @{/admin/cms/articles/new}"
               method="post" enctype="multipart/form-data" th:object="${article}">

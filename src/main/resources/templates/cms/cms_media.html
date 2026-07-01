@@ -12,17 +12,7 @@
             </div>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Saved.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+        <!-- flash banners removed: handled by toast system in layout -->
 
         <!-- Upload form -->
         <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
@@ -31,7 +21,8 @@
                 <div class="flex-1 min-w-[200px]">
                     <label class="mono-label block mb-2">Choose file</label>
                     <input type="file" name="file" accept="image/jpeg,image/png,image/webp" required
-                           class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                           class="rcn-upload w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer"
+                           data-max-size="20971520" />
                 </div>
                 <div class="w-48">
                     <label class="mono-label block mb-2">Uploaded by</label>
@@ -72,10 +63,9 @@
                         <span th:if="${f.uploadedAt != null}" th:text="' · ' + ${#temporals.format(f.uploadedAt, 'MMM d, yyyy')}">Date</span>
                     </p>
                     <div class="mt-2 flex gap-3">
-                        <form method="post" th:action="@{/admin/cms/media/{id}/delete(id=${f.id})}"
-                              onsubmit="return confirm('Delete this file? This cannot be undone.')">
-                            <button type="submit" class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest">Delete</button>
-                        </form>
+                        <button type="button" class="text-xs text-rev-muted hover:text-red-700 font-mono uppercase tracking-widest"
+                                th:attr="data-action=@{/admin/cms/media/{id}/delete(id=${f.id})}, data-name=${f.fileName}"
+                                onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Delete</button>
                     </div>
                 </div>
             </div>

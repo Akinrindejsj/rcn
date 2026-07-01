@@ -14,35 +14,14 @@
             <a th:href="@{/dashboard}" target="_blank" class="outline-btn no-underline">Preview Homepage</a>
         </div>
 
-        <div th:if="${successMessage}" id="successBanner"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Homepage updated successfully.</p>
-            <button type="button" onclick="document.getElementById('successBanner').remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
-        <script th:if="${successMessage}">
-            setTimeout(function () {
-                var el = document.getElementById('successBanner');
-                if (el) el.remove();
-            }, 4000);
-        </script>
-
-        <div th:if="${errorMessage}" class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-            <button type="button" onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
+        <!-- flash banners removed: toasts will display notifications from layout -->
 
         <form id="homepageForm"
               method="post"
               th:action="@{/admin/cms/homepage}"
               enctype="multipart/form-data"
               th:object="${content}"
-              class="space-y-8">
+              class="space-y-8" data-spinner>
 
             <section class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
                 <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
@@ -72,8 +51,7 @@
                         </div>
                     </div>
                     <p class="mt-2 text-xs text-rev-muted">Use short rally, meeting, or organising footage. Uploading a new video replaces the current one.</p>
-                    <input type="file" name="heroImage" accept="video/mp4,video/webm,video/quicktime"
-                           class="mt-2 w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                     <input type="file" name="heroImage" class="rcn-upload mt-2 w-full text-sm text-rev-muted" data-max-size="52428800" data-accept="video/" accept="video/mp4,video/webm,video/quicktime">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -107,8 +85,7 @@
                 <div>
                     <label class="mono-label block mb-2">Optional ticker background image</label>
                     <img th:if="${content.tickerBackgroundImageUrl != null and !content.tickerBackgroundImageUrl.isBlank()}" th:src="${content.tickerBackgroundImageUrl}" alt="Current ticker background" class="mb-3 h-28 w-full rounded-md border border-rev-border object-cover">
-                    <input type="file" name="tickerBackgroundImage" accept="image/jpeg,image/png,image/webp"
-                           class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                     <input type="file" name="tickerBackgroundImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
                 </div>
             </section>
 
@@ -214,8 +191,7 @@
                         <span class="ph-label">Group photo - JPG, PNG, or WebP, max 5 MB</span>
                     </div>
                 </div>
-                <input type="file" name="buildPartyImage" accept="image/jpeg,image/png,image/webp"
-                       class="w-full text-sm text-rev-muted file:mr-3 file:rounded-md file:border-0 file:bg-rev-red file:text-white file:font-mono file:text-xs file:uppercase file:tracking-widest file:px-4 file:py-2 hover:file:bg-rev-red-dark file:cursor-pointer cursor-pointer">
+                <input type="file" name="buildPartyImage" class="rcn-upload w-full text-sm text-rev-muted" data-max-size="5242880" data-accept="image/" accept="image/jpeg,image/png,image/webp">
             </section>
 
             <div class="sticky bottom-0 z-10 -mx-4 border-t border-rev-border bg-rev-page/95 px-4 py-4 backdrop-blur md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0">

@@ -14,36 +14,7 @@
                   th:text="${#lists.size(pendingArticles)} + ' awaiting review'">0 awaiting review</span>
         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             id="successBanner"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${successMessage}">Done.</p>
-            </div>
-            <button onclick="document.getElementById('successBanner').remove()"
-                    class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
-        <script th:if="${successMessage}">
-            setTimeout(function () {
-                var el = document.getElementById('successBanner');
-                if (el) el.remove();
-            }, 4000);
-        </script>
-
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <div class="flex-1">
-                <p class="font-medium text-sm" th:text="${errorMessage}">Something went wrong.</p>
-            </div>
-            <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white transition-colors flex-shrink-0">
-                <iconify-icon icon="lucide:x" width="18" height="18" stroke-width="2"></iconify-icon>
-            </button>
-        </div>
+        <!-- flash banners removed: toast system handles notifications -->
 
         <!-- Empty state -->
         <div th:if="${#lists.isEmpty(pendingArticles)}"
@@ -89,14 +60,12 @@
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <a th:href="@{|/admin/cms/articles/${article.id}/edit|}"
                                class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Review</a>
-                            <form method="post" th:action="@{|/admin/cms/approval/${article.id}/publish|}" class="inline"
-                                  onsubmit="return confirm('Approve and publish this article?');">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Approve</button>
-                            </form>
-                            <form method="post" th:action="@{|/admin/cms/approval/${article.id}/reject|}" class="inline"
-                                  onsubmit="return confirm('Reject this article?');">
-                                <button type="submit" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Reject</button>
-                            </form>
+                             <button type="button" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3"
+                                     th:attr="data-action=@{|/admin/cms/approval/${article.id}/publish|}, data-name=${article.title}"
+                                     onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Approve</button>
+                             <button type="button" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest"
+                                     th:attr="data-action=@{|/admin/cms/approval/${article.id}/reject|}, data-name=${article.title}"
+                                     onclick="openDeleteModal(this.dataset.action, this.dataset.name)">Reject</button>
                         </td>
                     </tr>
                     </tbody>
