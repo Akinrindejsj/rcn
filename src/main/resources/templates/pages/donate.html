@@ -72,65 +72,65 @@
         </div>
     </section>
 
-     <section class="py-24 bg-rev-page">
-         <div class="max-w-7xl mx-auto px-4 md:px-8">
-             <div class="flex items-center gap-4 mb-14"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">How to Donate</span></div>
+    <section class="py-24 bg-rev-page">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-14"><div class="h-px w-10 bg-rev-red"></div><span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">How to Donate</span></div>
 
-             <div class="max-w-3xl mx-auto">
-                 <!-- Donation Instructions -->
-                 <div class="bg-white border border-rev-border p-8 md:p-12 mb-8">
-                     <h3 class="font-display text-2xl text-rev-ink uppercase mb-6">Bank Transfer</h3>
-                     <p class="text-rev-muted mb-8">Make a direct bank transfer to support the revolutionary communist press and organising work.</p>
+            <div class="max-w-3xl mx-auto">
+                <!-- Donation Instructions -->
+                <div class="bg-white border border-rev-border p-8 md:p-12 mb-8">
+                    <h3 class="font-display text-2xl text-rev-ink uppercase mb-6">Bank Transfer</h3>
+                    <p class="text-rev-muted mb-8">Make a direct bank transfer to support the revolutionary communist press and organising work.</p>
 
-                     <!-- Account Details Grid -->
-                     <div class="space-y-6">
-                         <div class="border-l-4 border-rev-red pl-6">
-                             <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Bank Name</div>
-                             <div class="font-display text-xl text-rev-ink" th:text="${payment.bankName}">First Bank of Nigeria</div>
-                         </div>
+                    <!-- Account Details Grid -->
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-rev-red pl-6">
+                            <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Bank Name</div>
+                            <div class="font-display text-xl text-rev-ink" th:text="${payment.bankName}">First Bank of Nigeria</div>
+                        </div>
 
-                         <div class="border-l-4 border-rev-red pl-6">
-                             <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Account Name</div>
-                             <div class="font-display text-xl text-rev-ink" th:text="${payment.accountName}">Revolutionary Communists of Nigeria</div>
-                         </div>
+                        <div class="border-l-4 border-rev-red pl-6">
+                            <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Account Name</div>
+                            <div class="font-display text-xl text-rev-ink" th:text="${payment.accountName}">Revolutionary Communists of Nigeria</div>
+                        </div>
 
-                         <div class="border-l-4 border-rev-red pl-6">
-                             <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Account Number</div>
-                             <div class="font-mono text-3xl font-bold text-rev-ink tracking-wider" th:text="${payment.accountNumber}">1234567890</div>
-                         </div>
+                        <div class="border-l-4 border-rev-red pl-6">
+                            <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Account Number</div>
+                            <div class="font-mono text-3xl font-bold text-rev-ink tracking-wider" th:text="${payment.accountNumber}">1234567890</div>
+                        </div>
 
-                         <div class="border-l-4 border-rev-red pl-6">
-                             <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Sort Code</div>
-                             <div class="font-mono text-lg text-rev-ink font-medium" th:text="${payment.sortCode}">011</div>
-                         </div>
-                     </div>
-                 </div>
+                        <div class="border-l-4 border-rev-red pl-6">
+                            <div class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-1">Sort Code</div>
+                            <div class="font-mono text-lg text-rev-ink font-medium" th:text="${payment.sortCode}">011</div>
+                        </div>
+                    </div>
+                </div>
 
-                 <!-- Additional Information -->
-                 <div class="grid md:grid-cols-2 gap-6">
-                     <div class="bg-rev-subtle border border-rev-border p-6">
-                         <h4 class="font-display text-lg text-rev-ink uppercase mb-3">Other Payment Methods</h4>
-                         <ul class="space-y-2 text-sm text-rev-muted">
-                             <li>• <strong>USSD:</strong> Coming soon</li>
-                             <li>• <strong>Card Payments:</strong> Coming soon</li>
-                             <li>• <strong>Standing Order:</strong> Contact us for monthly transfers</li>
-                         </ul>
-                     </div>
+                <!-- Additional Information -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-rev-subtle border border-rev-border p-6">
+                        <h4 class="font-display text-lg text-rev-ink uppercase mb-3">Other Payment Methods</h4>
+                        <ul class="space-y-2 text-sm text-rev-muted">
+                            <li>• <strong>USSD:</strong> Coming soon</li>
+                            <li>• <strong>Card Payments:</strong> Coming soon</li>
+                            <li>• <strong>Standing Order:</strong> Contact us for monthly transfers</li>
+                        </ul>
+                    </div>
 
-                     <div class="bg-rev-subtle border border-rev-border p-6">
-                         <h4 class="font-display text-lg text-rev-ink uppercase mb-3">Get Receipt</h4>
-                         <p class="text-sm text-rev-muted mb-4">Send proof of payment to <a href="mailto:donate@rcn.org" class="text-rev-red hover:text-rev-red-dark font-medium">donate@rcn.org</a> for a receipt and thank you message.</p>
-                     </div>
-                 </div>
+                    <div class="bg-rev-subtle border border-rev-border p-6">
+                        <h4 class="font-display text-lg text-rev-ink uppercase mb-3">Get Receipt</h4>
+                        <p class="text-sm text-rev-muted mb-4">Send proof of payment to <a href="mailto:donate@rcn.org" class="text-rev-red hover:text-rev-red-dark font-medium">donate@rcn.org</a> for a receipt and thank you message.</p>
+                    </div>
+                </div>
 
-                 <!-- Commitment Message -->
-                 <div class="mt-8 bg-white border-l-4 border-rev-red p-6">
-                     <p class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-3">A commitment to accountability</p>
-                     <p class="text-rev-ink text-sm leading-relaxed">The RCN is funded entirely by workers — we take no corporate money, government funding, or grants from foundations. Every naira contributed goes directly to revolutionary work: publishing, organising, education, and international solidarity.</p>
-                 </div>
-             </div>
-         </div>
-     </section>
+                <!-- Commitment Message -->
+                <div class="mt-8 bg-white border-l-4 border-rev-red p-6">
+                    <p class="font-mono text-xs uppercase tracking-widest text-rev-muted mb-3">A commitment to accountability</p>
+                    <p class="text-rev-ink text-sm leading-relaxed">The RCN is funded entirely by workers — we take no corporate money, government funding, or grants from foundations. Every naira contributed goes directly to revolutionary work: publishing, organising, education, and international solidarity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div class="bg-rev-page border-t border-rev-border py-12 text-center">
         <p class="font-serif italic text-rev-gold text-xl max-w-xl mx-auto">"The liberation of the working class must be the act of the working class itself."</p>
