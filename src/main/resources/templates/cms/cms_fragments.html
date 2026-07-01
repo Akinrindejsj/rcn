@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Shared CMS fragments: toast, delete confirmation modal, upload helper -->
+<body>
+
+<!-- Toast container and template -->
+<div th:fragment="toastContainer">
+    <div id="rcn-toast-container" class="fixed top-6 right-6 z-50 space-y-3"></div>
+
+    <script>
+        function showToast(message, type) {
+            const container = document.getElementById('rcn-toast-container');
+            if (!container) return;
+            const id = 'toast-' + Date.now();
+            const bg = type === 'error' ? 'bg-red-600' : 'bg-emerald-600';
+            const icon = type === 'error' ? 'lucide:x-circle' : 'lucide:check-circle-2';
+
+            const html = `\
+                <div id="${id}" class="rounded-xl px-4 py-3 text-white shadow-lg ${bg} flex items-start gap-3">\
+                    <iconify-icon icon="${icon}" width="20" height="20" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>\
+                    <div class="text-sm font-medium">${message}</div>\
+                </div>`;
+
+            container.insertAdjacentHTML('beforeend', html);
+            const el = document.getElementById(id);
+            setTimeout(() => { if (el) el.classList.add('opacity-100'); }, 10);
+            setTimeout(() => {
+                if (el) el.remove();
+            }, 6000);
+        }
+    </script>
+</div>
+
+<!-- Delete confirmation modal -->
+<div th:fragment="deleteModal">
+    <div id="rcn-delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
+        <div class="relative z-10 w-full max-w-lg rounded-xl bg-rev-surface border border-rev-border p-6 shadow-lg">
+            <h3 class="font-display text-xl text-rev-ink">Confirm deletion</h3>
+            <p id="rcn-delete-modal-text" class="mt-2 text-sm text-rev-muted">This action is irreversible.</p>
+
+            <form id="rcn-delete-form" method="post" class="mt-4 text-right">
+                <!-- CSRF token (if available) -->
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="button" onclick="closeDeleteModal()" class="outline-btn mr-3">Cancel</button>
+                <button type="submit" class="red-btn">Delete permanently</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openDeleteModal(actionUrl, itemName) {
+            const modal = document.getElementById('rcn-delete-modal');
+            const text = document.getElementById('rcn-delete-modal-text');
+            const form = document.getElementById('rcn-delete-form');
+            if (!modal || !form) return;
+            form.action = actionUrl;
+            text.textContent = `Are you sure you want to delete "${itemName}"? This action cannot be undone.`;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // focus the cancel button for safety
+            setTimeout(() => { modal.querySelector('button')?.focus(); }, 100);
+        }
+        function closeDeleteModal() {
+            const modal = document.getElementById('rcn-delete-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</div>
+
+<!-- Simple upload helper: add class 'rcn-upload' to a file input and it will get preview, size and type validation -->
+<div th:fragment="uploadHelper">
+    <script>
+        document.addEventListener('change', function (e) {
+            const input = e.target;
+            if (!input.classList || !input.classList.contains('rcn-upload')) return;
+            const max = parseInt(input.dataset.maxSize || '20971520', 10); // 20MB default
+            const accept = input.dataset.accept ? input.dataset.accept.split(',') : [];
+            const previewId = input.dataset.previewId;
+            const files = input.files;
+            if (!files || files.length === 0) return;
+            const file = files[0];
+            if (file.size > max) {
+                showToast('File too large — max ' + Math.round(max/1024/1024) + 'MB', 'error');
+                input.value = '';
+                return;
+            }
+            if (accept.length > 0) {
+                const ok = accept.some(function (pattern) { return file.type.indexOf(pattern.trim()) !== -1 || file.name.endsWith(pattern.trim()); });
+                if (!ok) {
+                    showToast('Invalid file type', 'error');
+                    input.value = '';
+                    return;
+                }
+            }
+            if (previewId) {
+                const previewEl = document.getElementById(previewId);
+                if (!previewEl) return;
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) { previewEl.innerHTML = `<img src="${ev.target.result}" alt="preview" class="max-h-40 object-contain rounded-md"/>`; };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewEl.innerHTML = `<div class="px-3 py-2 rounded-md border border-rev-border bg-rev-subtle text-sm">${file.name}</div>`;
+                }
+            }
+        });
+    </script>
+</div>
+
+</body>
+</html>
+
