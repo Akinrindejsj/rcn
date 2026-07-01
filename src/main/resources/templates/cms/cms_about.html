@@ -299,10 +299,9 @@
             margin-top: 1.75rem;
         }
         .modal-actions button {
-            padding: 0.6rem 1.5rem;
-            border-radius: 9999px;
+            padding: 0.5rem 1rem;
             font-weight: 500;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             border: 1px solid transparent;
             cursor: pointer;
             transition: all 0.15s;
@@ -404,9 +403,8 @@
         .outline-btn {
             border: 1px solid var(--rev-border, #d0d0d0);
             background: transparent;
-            border-radius: 9999px;
-            padding: 0.4rem 1.2rem;
-            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
             font-weight: 500;
             color: var(--rev-ink, #1a1a1a);
             cursor: pointer;
@@ -420,10 +418,9 @@
             background: var(--rev-red, #b31b1b);
             color: #fff;
             border: none;
-            border-radius: 9999px;
-            padding: 0.6rem 1.8rem;
+            padding: 0.5rem 1rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -479,10 +476,10 @@
 
         <!-- ─── Main form ─── -->
         <form id="aboutForm" method="post" th:action="@{/admin/cms/about}"
-              enctype="multipart/form-data" th:object="${about}">
+              enctype="multipart/form-data" th:object="${about}" class="space-y-6">
 
             <!-- ─── Intro ─── -->
-            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5 mb-7">
+            <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-5">
 
                 <h3 class="font-display text-lg uppercase text-rev-ink">Introduction</h3>
 
@@ -548,7 +545,7 @@
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                 <div class="flex items-center justify-between">
                     <h3 class="font-display text-lg uppercase text-rev-ink">Programme Points</h3>
-                    <button type="button" class="outline-btn" id="addPointBtn">+ Add point</button>
+                    <button type="button" class="red-btn flex items-center gap-2" id="addPointBtn"><iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>Add point</button>
                 </div>
                 <div class="space-y-3" id="pointsContainer">
                     <!-- dynamic rows will be injected here by Thymeleaf -->
@@ -580,7 +577,7 @@
             <div class="rounded-xl border border-rev-border bg-rev-surface p-6 space-y-4">
                 <div class="flex items-center justify-between">
                     <h3 class="font-display text-lg uppercase text-rev-ink">Frequently Asked Questions</h3>
-                    <button type="button" class="outline-btn" id="addFaqBtn">+ Add question</button>
+                    <button type="button" class="red-btn flex items-center gap-2" id="addFaqBtn"><iconify-icon icon="lucide:plus" width="16" height="16" stroke-width="1.5"></iconify-icon>Add question</button>
                 </div>
                 <div class="space-y-3" id="faqContainer">
                     <div th:each="faq, iter : ${faqs}"
@@ -605,7 +602,7 @@
             </div>
 
             <!-- ─── Save ─── -->
-            <div class="flex justify-end gap-3">
+            <div class="flex justify-end gap-2">
                 <a th:href="@{/admin/cms/about}" class="outline-btn no-underline">Cancel</a>
                 <button type="submit" class="red-btn" id="saveBtn">Save About Page</button>
             </div>

@@ -1,72 +1,106 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <style>
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: #7A726A;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E0DAD3;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            background: #F0EBE4;
+            border-color: #111111;
+            color: #111111;
+        }
+        .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7A726A;
+        }
+    </style>
+</head>
 <body>
 <main layout:fragment="content" th:with="pageTitle='Editor Queue'">
-    <div class="mx-auto max-w-6xl space-y-8">
+     <div class="mx-auto max-w-6xl space-y-8">
 
-        <!-- Page Header -->
-        <div class="flex items-end justify-between">
-            <div>
-                <h1 class="font-display text-3xl uppercase text-rev-ink">Editor Queue</h1>
-                <p class="mt-1 text-sm text-rev-muted">Submissions waiting for review by the editorial team.</p>
-            </div>
-        </div>
+         <!-- Page Header -->
+         <div class="flex items-end justify-between">
+             <div>
+                 <h1 class="font-display text-3xl uppercase text-rev-ink">Editor Queue</h1>
+                 <p class="mt-1 text-sm text-rev-muted">Submissions waiting for review by the editorial team.</p>
+             </div>
+         </div>
 
-        <!-- Flash banners -->
-        <div th:if="${successMessage}"
-             class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${successMessage}">Done.</p>
-        </div>
-        <div th:if="${errorMessage}"
-             class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
-            <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
-            <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
-        </div>
+         <!-- Flash banners -->
+         <div th:if="${successMessage}"
+              class="bg-emerald-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+             <iconify-icon icon="lucide:check-circle-2" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+             <p class="font-medium text-sm flex-1" th:text="${successMessage}">Done.</p>
+         </div>
+         <div th:if="${errorMessage}"
+              class="bg-red-600 text-white rounded-xl px-5 py-4 flex items-start gap-3 shadow-sm">
+             <iconify-icon icon="lucide:x-circle" width="22" height="22" stroke-width="2" class="mt-0.5 flex-shrink-0"></iconify-icon>
+             <p class="font-medium text-sm flex-1" th:text="${errorMessage}">Something went wrong.</p>
+         </div>
 
-        <!-- Empty state -->
-        <div th:if="${#lists.isEmpty(tasks)}"
-             class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
-            <iconify-icon icon="lucide:clipboard-check" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
-            <p class="mt-4 text-rev-muted">Nothing to review. The queue is clear.</p>
-        </div>
+         <!-- Empty state -->
+         <div th:if="${#lists.isEmpty(tasks)}"
+              class="rounded-xl border border-rev-border bg-rev-surface p-12 text-center">
+             <iconify-icon icon="lucide:clipboard-check" width="48" height="48" stroke-width="1" class="text-rev-muted"></iconify-icon>
+             <p class="mt-4 text-rev-muted">Nothing to review. The queue is clear.</p>
+         </div>
 
-        <!-- Tasks list -->
-        <div th:if="${!#lists.isEmpty(tasks)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
-                    <tr>
-                        <th class="px-6 py-3 font-medium font-mono">Submission</th>
-                        <th class="px-6 py-3 font-medium font-mono">Status</th>
-                        <th class="px-6 py-3 font-medium font-mono">Received</th>
-                        <th class="px-6 py-3 font-medium font-mono"></th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-rev-border">
-                    <tr th:each="t : ${tasks}" class="article-row group hover:bg-rev-subtle/50">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink" th:text="${t.name} ?: 'Submission'">Submission</div>
-                            <div class="text-xs text-rev-muted" th:if="${t.description}" th:text="${t.description}">Description</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span th:if="${t.assignee != null}"
-                                  class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20"
-                                  th:text="'Claimed: ' + ${t.assignee}">Claimed</span>
-                            <span th:if="${t.assignee == null}"
-                                  class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Unclaimed</span>
-                        </td>
-                        <td class="px-6 py-4 text-rev-muted" th:text="${t.createTime != null ? #temporals.format(t.createTime, 'MMM d, yyyy') : '—'}">Date</td>
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <a th:href="@{/editor/tasks/{taskId}(taskId=${t.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest">Review</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+         <!-- Tasks list -->
+         <div th:if="${!#lists.isEmpty(tasks)}" class="rounded-xl border border-rev-border bg-rev-surface shadow-sm">
+             <div class="overflow-x-auto">
+                 <table class="w-full text-left text-sm">
+                     <thead class="bg-rev-subtle text-xs uppercase text-rev-muted border-b border-rev-border">
+                     <tr>
+                         <th class="px-6 py-3 font-medium font-mono">Submission</th>
+                         <th class="px-6 py-3 font-medium font-mono">Status</th>
+                         <th class="px-6 py-3 font-medium font-mono">Received</th>
+                         <th class="px-6 py-3 font-medium font-mono"></th>
+                     </tr>
+                     </thead>
+                     <tbody class="divide-y divide-rev-border">
+                     <tr th:each="t : ${tasks}" class="article-row group hover:bg-rev-subtle/50">
+                         <td class="px-6 py-4">
+                             <div class="font-medium text-rev-ink" th:text="${t.name} ?: 'Submission'">Submission</div>
+                             <div class="text-xs text-rev-muted" th:if="${t.description}" th:text="${t.description}">Description</div>
+                         </td>
+                         <td class="px-6 py-4">
+                             <span th:if="${t.assignee != null}"
+                                   class="inline-flex items-center rounded-full bg-rev-gold-bg px-2 py-1 text-xs font-medium text-rev-gold ring-1 ring-inset ring-rev-gold/20"
+                                   th:text="'Claimed: ' + ${t.assignee}">Claimed</span>
+                             <span th:if="${t.assignee == null}"
+                                   class="inline-flex items-center rounded-full bg-rev-red-light px-2 py-1 text-xs font-medium text-rev-red ring-1 ring-inset ring-rev-red/20">Unclaimed</span>
+                         </td>
+                         <td class="px-6 py-4 text-rev-muted" th:text="${t.createTime != null ? #temporals.format(t.createTime, 'MMM d, yyyy') : '—'}">Date</td>
+                         <td class="px-6 py-4 text-right whitespace-nowrap">
+                             <a th:href="@{/editor/tasks/{taskId}(taskId=${t.id})}" class="btn-text">Review</a>
+                         </td>
+                     </tr>
+                     </tbody>
+                 </table>
+             </div>
+         </div>
 
-    </div>
-</main>
-</body>
-</html>
+     </div>
+ </main>
+ </body>
+ </html>

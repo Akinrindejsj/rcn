@@ -20,9 +20,9 @@
                 <form id="writeForm" th:action="@{/write}" method="post" enctype="multipart/form-data" th:object="${cmd}" data-spinner class="space-y-6 bg-white border border-rev-border p-6 md:p-8">
                     <input type="hidden" th:field="*{submissionType}" id="submissionType">
                     <div class="grid grid-cols-2 gap-2 rounded-md border border-rev-border bg-rev-subtle p-1">
-                        <button type="button" data-mode="article" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest">Article</button>
-                        <button type="button" data-mode="activity" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest">Activity Report</button>
-                    </div>
+                         <button type="button" data-mode="article" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest transition-all duration-200">Article</button>
+                         <button type="button" data-mode="activity" class="mode-btn rounded px-4 py-3 font-mono text-xs uppercase tracking-widest transition-all duration-200">Activity Report</button>
+                     </div>
                     <div>
                         <label id="titleLabel" class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Article heading / title</label>
                         <input type="text" th:field="*{title}" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/>
