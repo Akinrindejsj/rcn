@@ -365,41 +365,16 @@
                             <iconify-icon icon="lucide:banknote" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
                             Donations
                         </a>
+                        <!-- Members Voice (new link) -->
+                        <a th:href="@{/admin/cms/members}" href="/admin/cms/members-voice"
+                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/members') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
+                            <iconify-icon icon="lucide:mic" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
+                            Members Voice
+                        </a>
                         <a th:href="@{/admin/cms/podcast}" href="/admin/cms/podcast"
                            th:class="${#strings.startsWith(currentUrl, '/admin/cms/podcast') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
                             <iconify-icon icon="lucide:headphones" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
                             Podcast
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Media Section -->
-                <div>
-                    <p class="mono-label px-4 mb-3">Media</p>
-                    <div class="space-y-1">
-                        <a th:href="@{/admin/cms/images}" href="/admin/cms/images"
-                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/images') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
-                            <iconify-icon icon="lucide:image" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                            Image Placeholders
-                            <span class="ml-auto flex h-5 items-center rounded-full bg-rev-subtle px-2 text-xs font-medium text-rev-muted">18</span>
-                        </a>
-                        <a th:href="@{/admin/cms/media}" href="/admin/cms/media"
-                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/media') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
-                            <iconify-icon icon="lucide:folder-open" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                            Media Library
-                        </a>
-                    </div>
-                </div>
-
-                <!-- People Section -->
-                <div>
-                    <p class="mono-label px-4 mb-3">People</p>
-                    <div class="space-y-1">
-                        <a th:href="@{/admin/cms/users}" href="/admin/cms/users"
-                           th:class="${#strings.startsWith(currentUrl, '/admin/cms/users') ? 'sidebar-link active group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-ink' : 'sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-rev-muted hover:bg-rev-subtle hover:text-rev-ink'}">
-                            <iconify-icon icon="lucide:users" width="20" height="20" stroke-width="1.5" class="text-rev-muted transition-colors group-hover:text-rev-red"></iconify-icon>
-                            Users &amp; Admins
-                            <span class="ml-auto flex h-5 items-center rounded-full bg-rev-red-light px-2 text-xs font-medium text-rev-red">5</span>
                         </a>
                     </div>
                 </div>
