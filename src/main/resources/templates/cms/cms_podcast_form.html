@@ -45,9 +45,15 @@
                                   class="w-full resize-y rounded-md border border-rev-border bg-rev-subtle px-4 py-3 text-sm leading-relaxed outline-none focus:border-rev-red focus:bg-rev-surface"></textarea>
                     </div>
                     <div>
-                        <label class="mono-label block mb-2">Audio URL</label>
-                        <input type="url" th:field="*{audioUrl}" placeholder="https://…"
-                               class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                        <label class="mono-label block mb-2">Audio file (MP3/MP4) or URL</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="url" th:field="*{audioUrl}" placeholder="https://…"
+                                   class="w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm outline-none focus:border-rev-red">
+                            <div>
+                                <input type="file" name="audioFile" class="rcn-upload w-full rounded-md border border-rev-border bg-rev-subtle px-3 py-2 text-sm" data-max-size="52428800" data-accept="audio/" accept="audio/*">
+                                <p class="text-xs text-rev-muted mt-1">Upload audio file (optional). Max 50MB.</p>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="mono-label block mb-2">Publish date</label>

@@ -46,10 +46,22 @@
                     <tr th:each="p : ${podcasts}" class="article-row group hover:bg-rev-subtle/50">
                         <td class="px-6 py-4 text-rev-ink font-mono" th:text="${p.episodeNumber != null ? 'EP ' + p.episodeNumber : '—'}">EP 1</td>
                         <td class="px-6 py-4">
-                            <div class="font-medium text-rev-ink" th:text="${p.title}">Episode Title</div>
-                            <div class="text-xs text-rev-muted line-clamp-1" th:if="${p.description}" th:text="${p.description}">Description</div>
+                            <div class="flex items-center gap-3">
+                                <img th:if="${p.coverImageUrl != null}" th:src="${p.coverImageUrl}" alt="cover" class="w-12 h-12 object-cover rounded-md" onerror="this.style.display='none'">
+                                <div>
+                                    <div class="font-medium text-rev-ink" th:text="${p.title}">Episode Title</div>
+                                    <div class="text-xs text-rev-muted line-clamp-1" th:if="${p.description}" th:text="${p.description}">Description</div>
+                                </div>
+                            </div>
                         </td>
-                        <td class="px-6 py-4 text-rev-muted" th:text="${p.duration ?: '—'}">Duration</td>
+                        <td class="px-6 py-4 text-rev-muted">
+                            <div class="flex items-center gap-3">
+                                <span th:text="${p.duration ?: '—'}">Duration</span>
+                                <a th:if="${p.audioUrl}" th:href="${p.audioUrl}" target="_blank" class="text-rev-muted hover:text-rev-ink ml-2" title="Open audio">
+                                    <iconify-icon icon="lucide:play" width="18" height="18"></iconify-icon>
+                                </a>
+                            </div>
+                        </td>
                         <td class="px-6 py-4 text-rev-muted" th:text="${p.publishedAt != null ? #temporals.format(p.publishedAt, 'MMM d, yyyy') : '—'}">Date</td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <a th:href="@{/admin/cms/podcasts/{id}/edit(id=${p.id})}" class="text-rev-muted hover:text-red-700 font-mono text-xs uppercase tracking-widest mr-3">Edit</a>

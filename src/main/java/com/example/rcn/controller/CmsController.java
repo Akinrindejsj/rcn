@@ -335,12 +335,19 @@ public class CmsController {
     @PostMapping("/podcasts/new")
     public String createPodcast(@ModelAttribute("podcast") PodcastDto dto,
                                 @RequestParam(value = "coverImage", required = false) MultipartFile coverImage,
+                                @RequestParam(value = "audioFile", required = false) MultipartFile audioFile,
                                 RedirectAttributes redirectAttributes) {
         try {
+            // Basic validation
+            validatePodcastDto(dto, audioFile);
             Podcast podcast = new Podcast();
             applyPodcastFields(podcast, dto);
             if (coverImage != null && !coverImage.isEmpty()) {
                 podcast.setCoverImageUrl(cloudinaryService.uploadImage(coverImage, "rcn/podcasts"));
+            }
+            if ((dto.getAudioUrl() == null || dto.getAudioUrl().isBlank()) && audioFile != null && !audioFile.isEmpty()) {
+                // Upload audio file and set audioUrl
+                podcast.setAudioUrl(cloudinaryService.uploadVideo(audioFile, "rcn/podcasts"));
             }
             podcastService.create(podcast);
             redirectAttributes.addFlashAttribute("successMessage", "Podcast episode created.");
@@ -371,13 +378,19 @@ public class CmsController {
     public String updatePodcast(@PathVariable("id") Long id,
                                 @ModelAttribute("podcast") PodcastDto dto,
                                 @RequestParam(value = "coverImage", required = false) MultipartFile coverImage,
+                                @RequestParam(value = "audioFile", required = false) MultipartFile audioFile,
                                 RedirectAttributes redirectAttributes) {
         try {
+            // Basic validation
+            validatePodcastDto(dto, audioFile);
             Podcast podcast = podcastService.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Podcast not found (id=" + id + ")"));
             applyPodcastFields(podcast, dto);
             if (coverImage != null && !coverImage.isEmpty()) {
                 podcast.setCoverImageUrl(cloudinaryService.uploadImage(coverImage, "rcn/podcasts"));
+            }
+            if ((dto.getAudioUrl() == null || dto.getAudioUrl().isBlank()) && audioFile != null && !audioFile.isEmpty()) {
+                podcast.setAudioUrl(cloudinaryService.uploadVideo(audioFile, "rcn/podcasts"));
             }
             podcastService.update(podcast);
             redirectAttributes.addFlashAttribute("successMessage", "Podcast episode updated.");
@@ -1479,6 +1492,18 @@ public class CmsController {
     private void validateTeamMember(TeamMemberDto dto) {
         if (dto.getPointTitle() == null || dto.getPointTitle().isBlank()) {
             throw new IllegalArgumentException("Please give this programme point a title.");
+        }
+    }
+
+    private void validatePodcastDto(PodcastDto dto, MultipartFile audioFile) {
+        if (dto.getTitle() == null || dto.getTitle().isBlank()) {
+            throw new IllegalArgumentException("Please provide an episode title.");
+        }
+        // Require either an audio URL or an uploaded audio file
+        boolean hasUrl = dto.getAudioUrl() != null && !dto.getAudioUrl().isBlank();
+        boolean hasFile = audioFile != null && !audioFile.isEmpty();
+        if (!hasUrl && !hasFile) {
+            throw new IllegalArgumentException("Please provide an audio URL or upload an audio file.");
         }
     }
 
