@@ -211,7 +211,7 @@
                         <ports>
                             <port>8080</port>
                         </ports>
-                        <mainClass>com.example.fams.FamsApplication</mainClass>
+                        <mainClass>com.example.rcn.RcnApplication</mainClass>
                     </container>
                 </configuration>
             </plugin>
