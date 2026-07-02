@@ -49,7 +49,7 @@ public class Oauth2SecurityConfig {
                             authorize
                                     .requestMatchers("/", "/dashboard", "/theory", "/podcast", "/article/**", "/article",
                                                    "/activity", "/about", "/donate", "/news", "/write", "/join", "/404",
-                                                   "/oauth2/**", "/login")
+                                                   "/search", "/oauth2/**", "/login")
                                     .permitAll();
 
                             // CMS and admin endpoints - require authentication

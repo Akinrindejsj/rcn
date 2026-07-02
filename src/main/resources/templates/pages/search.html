@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Search - Revolutionary Communists of Nigeria</title>
+    <meta name="description" content="Search articles, podcasts, activities, and pages from the Revolutionary Communists of Nigeria."/>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="bg-white py-20 border-b border-rev-border">
+        <div class="max-w-5xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-px w-10 bg-rev-red"></div>
+                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">Site Search</span>
+            </div>
+            <h1 class="font-display text-6xl md:text-7xl text-rev-ink uppercase">Search</h1>
+            <form th:action="@{/search}" method="get" class="mt-10 flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-rev-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input type="search"
+                           name="q"
+                           th:value="${query}"
+                           placeholder="Search articles, podcasts, activities, and pages"
+                           class="w-full pl-12 pr-4 py-4 bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm outline-none transition-colors">
+                </div>
+                <button type="submit" class="bg-rev-red hover:bg-rev-red-dark text-white font-mono text-xs uppercase tracking-widest px-6 py-4 transition-colors">
+                    Search
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section class="py-14 bg-rev-page">
+        <div class="max-w-5xl mx-auto px-4 md:px-8">
+            <div th:if="${query == null or #strings.length(#strings.trim(query)) < 2}" class="bg-white border border-rev-border p-8 text-rev-muted">
+                Enter at least two characters to search the site.
+            </div>
+
+            <div th:if="${query != null and #strings.length(#strings.trim(query)) >= 2}">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
+                    <p class="font-mono text-xs uppercase tracking-widest text-rev-muted">
+                        <span th:text="${search.totalResults}">0</span>
+                        <span th:text="${search.totalResults == 1 ? ' result for ' : ' results for '}"> results for </span>
+                        <span class="text-rev-ink" th:text="'&quot;' + ${query} + '&quot;'">"query"</span>
+                    </p>
+                    <a th:href="@{/news}" class="font-mono text-xs uppercase tracking-widest text-rev-red hover:text-rev-red-dark">Browse News</a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(search.results)}" class="bg-white border border-rev-border p-8 text-rev-muted">
+                    No matching content was found.
+                </div>
+
+                <div th:if="${!#lists.isEmpty(search.results)}" class="space-y-4">
+                    <a th:each="result : ${search.results}"
+                       th:href="${result.url}"
+                       class="group grid grid-cols-1 sm:grid-cols-[140px_1fr] bg-white border border-rev-border hover:border-rev-red transition-colors">
+                        <div class="h-36 sm:h-full bg-rev-subtle border-b sm:border-b-0 sm:border-r border-rev-border overflow-hidden">
+                            <img th:if="${result.imageUrl != null and !result.imageUrl.isBlank()}"
+                                 th:src="${result.imageUrl}"
+                                 alt=""
+                                 class="h-full w-full object-cover">
+                            <div th:if="${result.imageUrl == null or result.imageUrl.isBlank()}" class="img-placeholder h-full w-full">
+                                <span class="ph-label" th:text="${result.type}">Result</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1" th:text="${result.type}">Type</span>
+                                <span th:if="${result.dateLabel != null and !result.dateLabel.isBlank()}" class="font-mono text-rev-muted text-[10px] uppercase tracking-widest" th:text="${result.dateLabel}">Date</span>
+                            </div>
+                            <h2 class="font-body font-semibold text-rev-ink group-hover:text-rev-red transition-colors text-xl leading-snug" th:text="${result.title}">Result title</h2>
+                            <p class="text-rev-muted text-sm leading-relaxed mt-3" th:text="${result.excerpt}">Result excerpt</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div th:if="${search.totalPages > 1}" class="flex justify-center items-center gap-4 mt-12">
+                    <a th:if="${search.currentPage > 0}"
+                       th:href="@{/search(q=${query}, page=${search.currentPage - 1}, size=${search.pageSize})}"
+                       class="font-mono text-rev-ink text-xs hover:text-rev-red">Previous</a>
+                    <span th:if="${search.currentPage == 0}" class="font-mono text-rev-muted text-xs">Previous</span>
+
+                    <span class="font-mono text-rev-muted text-xs">
+                        Page <span th:text="${search.currentPage + 1}">1</span> of <span th:text="${search.totalPages}">1</span>
+                    </span>
+
+                    <a th:if="${search.currentPage < search.totalPages - 1}"
+                       th:href="@{/search(q=${query}, page=${search.currentPage + 1}, size=${search.pageSize})}"
+                       class="font-mono text-rev-ink text-xs hover:text-rev-red">Next</a>
+                    <span th:if="${search.currentPage >= search.totalPages - 1}" class="font-mono text-rev-muted text-xs">Next</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,7 +1,9 @@
 package com.example.rcn.service;
 
+import com.example.rcn.event.SearchIndexRefreshEvent;
 import com.example.rcn.model.TeamMember;
 import com.example.rcn.repository.TeamMemberRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class TeamMemberService {
 
     private final TeamMemberRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public TeamMemberService(TeamMemberRepository repository) {
+    public TeamMemberService(TeamMemberRepository repository, ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<TeamMember> findAll() {
@@ -27,14 +31,23 @@ public class TeamMemberService {
     }
 
     public TeamMember create(TeamMember member) {
-        return repository.save(member);
+        TeamMember saved = repository.save(member);
+        publishSearchRefresh();
+        return saved;
     }
 
     public TeamMember update(TeamMember member) {
-        return repository.save(member);
+        TeamMember saved = repository.save(member);
+        publishSearchRefresh();
+        return saved;
     }
 
     public void delete(Long id) {
         repository.deleteById(id);
+        publishSearchRefresh();
+    }
+
+    private void publishSearchRefresh() {
+        eventPublisher.publishEvent(new SearchIndexRefreshEvent());
     }
 }

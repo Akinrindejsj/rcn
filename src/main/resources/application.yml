@@ -48,3 +48,7 @@ keycloak:
   admin-client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:}
   client-id: ${KEYCLOAK_CLIENT_ID:rcn}
   client-secret: ${KEYCLOAK_CLIENT_SECRET:1C4FXqRcKpzYpveIr7OGVH5nTpljjYFE}
+
+rcn:
+  search:
+    index-root: ${RCN_SEARCH_INDEX_ROOT:./data/search-index}

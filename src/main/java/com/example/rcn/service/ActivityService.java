@@ -1,8 +1,10 @@
 package com.example.rcn.service;
 
+import com.example.rcn.event.SearchIndexRefreshEvent;
 import com.example.rcn.model.Activity;
 import com.example.rcn.model.EventStatus;
 import com.example.rcn.repository.ActivityRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class ActivityService {
 
     private final ActivityRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ActivityService(ActivityRepository repository) {
+    public ActivityService(ActivityRepository repository, ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<Activity> findAll() {
@@ -32,16 +36,21 @@ public class ActivityService {
 
     public Activity create(Activity activity) {
         syncStatus(activity);
-        return repository.save(activity);
+        Activity saved = repository.save(activity);
+        publishSearchRefresh();
+        return saved;
     }
 
     public Activity update(Activity activity) {
         syncStatus(activity);
-        return repository.save(activity);
+        Activity saved = repository.save(activity);
+        publishSearchRefresh();
+        return saved;
     }
 
     public void delete(Long id) {
         repository.deleteById(id);
+        publishSearchRefresh();
     }
 
     public long count() {
@@ -75,5 +84,9 @@ public class ActivityService {
             activity.setEventStatus(EventStatus.PAST);
         }
         return activity;
+    }
+
+    private void publishSearchRefresh() {
+        eventPublisher.publishEvent(new SearchIndexRefreshEvent());
     }
 }

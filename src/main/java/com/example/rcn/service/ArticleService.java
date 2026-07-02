@@ -1,8 +1,10 @@
 package com.example.rcn.service;
 
+import com.example.rcn.event.SearchIndexRefreshEvent;
 import com.example.rcn.model.Article;
 import com.example.rcn.model.ArticleStatus;
 import com.example.rcn.repository.ArticleRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ArticleService(ArticleRepository repository) {
+    public ArticleService(ArticleRepository repository, ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<Article> findAll() {
@@ -67,18 +71,23 @@ public class ArticleService {
         if (article.getTitle() != null && (article.getSlug() == null || article.getSlug().isBlank())) {
             article.setSlug(slugify(article.getTitle()));
         }
-        return repository.save(article);
+        Article saved = repository.save(article);
+        publishSearchRefresh();
+        return saved;
     }
 
     public Article update(Article article) {
         if (article.getTitle() != null && (article.getSlug() == null || article.getSlug().isBlank())) {
             article.setSlug(slugify(article.getTitle()));
         }
-        return repository.save(article);
+        Article saved = repository.save(article);
+        publishSearchRefresh();
+        return saved;
     }
 
     public void delete(Long id) {
         repository.deleteById(id);
+        publishSearchRefresh();
     }
 
     public Article publish(Long id) {
@@ -87,25 +96,33 @@ public class ArticleService {
         if (a.getPublishedAt() == null) {
             a.setPublishedAt(LocalDateTime.now());
         }
-        return repository.save(a);
+        Article saved = repository.save(a);
+        publishSearchRefresh();
+        return saved;
     }
 
     public Article approve(Long id) {
         Article a = repository.findById(id).orElseThrow();
         a.setStatus(ArticleStatus.APPROVED);
-        return repository.save(a);
+        Article saved = repository.save(a);
+        publishSearchRefresh();
+        return saved;
     }
 
     public Article reject(Long id) {
         Article a = repository.findById(id).orElseThrow();
         a.setStatus(ArticleStatus.REJECTED);
-        return repository.save(a);
+        Article saved = repository.save(a);
+        publishSearchRefresh();
+        return saved;
     }
 
     public Article submitForApproval(Long id) {
         Article a = repository.findById(id).orElseThrow();
         a.setStatus(ArticleStatus.PENDING_APPROVAL);
-        return repository.save(a);
+        Article saved = repository.save(a);
+        publishSearchRefresh();
+        return saved;
     }
 
     public List<Article> findByIdsIn(List<Long> ids) {
@@ -121,5 +138,9 @@ public class ArticleService {
                 .replaceAll("\\s+", "-")
                 .replaceAll("-+", "-")
                 .trim();
+    }
+
+    private void publishSearchRefresh() {
+        eventPublisher.publishEvent(new SearchIndexRefreshEvent());
     }
 }
