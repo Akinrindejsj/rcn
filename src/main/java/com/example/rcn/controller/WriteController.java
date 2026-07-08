@@ -12,6 +12,8 @@ import com.example.rcn.service.ArticleService;
 import com.example.rcn.service.CloudinaryService;
 import com.example.rcn.service.MediaService;
 import org.flowable.engine.RuntimeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/write")
 public class WriteController {
+
+    private static final Logger log = LoggerFactory.getLogger(WriteController.class);
 
     private final ArticleService articleService;
     private final ActivityService activityService;
@@ -61,6 +65,8 @@ public class WriteController {
     @PostMapping
     public String submit(@ModelAttribute("cmd") WriteArticleCmd cmd,
                          RedirectAttributes redirectAttributes) {
+        log.info("Received {} submission from '{}' (title='{}')",
+                cmd.getSubmissionType(), cmd.getEmailAddress(), cmd.getTitle());
         try {
             validate(cmd);
 
@@ -75,10 +81,13 @@ public class WriteController {
 
             return "redirect:/write";
         } catch (IllegalArgumentException e) {
+            log.warn("Submission from '{}' rejected: {}", cmd.getEmailAddress(), e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("cmd", cmd);
             return "redirect:/write";
         } catch (Exception e) {
+            log.error("Unexpected error while processing submission from '{}'",
+                    cmd.getEmailAddress(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Something went wrong on our end. Please try again. "
                             + "If the problem continues, contact your site administrator.");
@@ -107,6 +116,8 @@ public class WriteController {
         }
 
         article = articleService.create(article);
+        log.info("Article draft created (id={}, title='{}', author='{}')",
+                article.getId(), article.getTitle(), article.getAuthorName());
 
         // Route the article to the editorial approval queue
         article.setStatus(ArticleStatus.PENDING_APPROVAL);
@@ -121,10 +132,15 @@ public class WriteController {
             variables.put("approved", false);
             ProcessInstance process = runtimeService.startProcessInstanceByKey(
                     "article-approval", variables);
+            log.info("Article {} routed to editorial approval queue; processId={}",
+                    article.getId(), process.getId());
             redirectAttributes.addFlashAttribute("successMessage",
                     "Thanks! Your article has been sent to our editors for review. "
                             + "Process id: " + process.getId());
         } catch (Exception flowableEx) {
+            log.error("Failed to start article-approval workflow for article {}; "
+                    + "submission is still recorded for editorial review",
+                    article.getId(), flowableEx);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Thanks! Your article has been sent to our editors for review.");
         }
@@ -150,6 +166,8 @@ public class WriteController {
         }
 
         activity = activityService.create(activity);
+        log.info("Activity draft created (id={}, title='{}', author='{}', type={})",
+                activity.getId(), activity.getTitle(), activity.getAuthorName(), activity.getType());
 
         // Route the activity to the CMS approval queue
         activity.setApprovalStatus(ActivityStatus.PENDING_APPROVAL);
@@ -157,6 +175,8 @@ public class WriteController {
 
         // Activities are reviewed in the CMS by admin staff
         // The submission is now in the database and visible in the CMS panel
+        log.info("Activity {} submitted for CMS review (status=PENDING_APPROVAL)",
+                activity.getId());
         redirectAttributes.addFlashAttribute("successMessage",
                 "Thanks! Your activity report has been submitted for review. "
                         + "The RCN team will review it and feature it soon.");
