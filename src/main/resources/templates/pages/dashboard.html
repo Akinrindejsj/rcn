@@ -80,44 +80,15 @@
         </div>
     </div>
 
-    <!-- WHY COMMUNISM -->
-    <section id="about" class="py-24 bg-rev-page">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="h-px w-10 bg-rev-red"></div>
-                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">The Case for Communism</span>
-            </div>
-            <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase mb-14">Why Marxism?</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-rev-border bg-white">
-                <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
-                    <div class="font-display text-5xl text-rev-red mb-5">01</div>
-                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">The System Is the Problem</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Nigeria has vast oil wealth, fertile land, and millions of workers. Yet the majority live in poverty because capitalism moves wealth upward to the owning class.</p>
-                </div>
-                <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
-                    <div class="font-display text-5xl text-rev-red mb-5">02</div>
-                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Workers Hold the Power</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Workers produce society's wealth and keep the economy running. Organised together, they have the power to transform society from the ground up.</p>
-                </div>
-                <div class="p-8 md:p-10 hover:bg-rev-subtle transition-colors">
-                    <div class="font-display text-5xl text-rev-red mb-5">03</div>
-                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Marxism Is the Tool</h3>
-                    <p class="text-rev-muted text-sm leading-relaxed">Marxism explains class society, colonialism, austerity, crisis, and the state. It is a guide to understanding the world in order to change it.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <hr class="section-rule" />
-
     <!-- NEWS & ANALYSIS -->
     <section th:if="${!#lists.isEmpty(homepageArticles)}" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex items-center justify-between flex-wrap gap-4 mb-14">
-                <div class="flex items-center gap-4">
-                    <div class="h-px w-10 bg-rev-red"></div>
-                    <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">News &amp; Analysis</span>
-                </div>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-px w-10 bg-rev-red"></div>
+                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">News &amp; Analysis</span>
+            </div>
+            <div class="flex items-end justify-between mb-14 flex-wrap gap-4">
+                <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase">Features</h2>
                 <a th:href="@{/news}" href="/news" class="red-link font-mono text-[11px] uppercase tracking-widest">All Articles</a>
             </div>
 
@@ -155,6 +126,38 @@
             </div>
         </div>
     </section>
+
+    <hr class="section-rule" />
+
+    <!-- WHY COMMUNISM -->
+    <section id="about" class="py-24 bg-rev-page">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-px w-10 bg-rev-red"></div>
+                <span class="font-mono text-rev-red text-[11px] uppercase tracking-[0.3em]">The Case for Communism</span>
+            </div>
+            <h2 class="font-display text-5xl md:text-6xl text-rev-ink uppercase mb-14">Why Marxism?</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-rev-border bg-white">
+                <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
+                    <div class="font-display text-5xl text-rev-red mb-5">01</div>
+                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">The System Is the Problem</h3>
+                    <p class="text-rev-muted text-sm leading-relaxed">Nigeria has vast oil wealth, fertile land, and millions of workers. Yet the majority live in poverty because capitalism moves wealth upward to the owning class.</p>
+                </div>
+                <div class="p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-rev-border hover:bg-rev-subtle transition-colors">
+                    <div class="font-display text-5xl text-rev-red mb-5">02</div>
+                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Workers Hold the Power</h3>
+                    <p class="text-rev-muted text-sm leading-relaxed">Workers produce society's wealth and keep the economy running. Organised together, they have the power to transform society from the ground up.</p>
+                </div>
+                <div class="p-8 md:p-10 hover:bg-rev-subtle transition-colors">
+                    <div class="font-display text-5xl text-rev-red mb-5">03</div>
+                    <h3 class="font-display text-3xl text-rev-ink uppercase tracking-wide mb-4">Marxism Is the Tool</h3>
+                    <p class="text-rev-muted text-sm leading-relaxed">Marxism explains class society, colonialism, austerity, crisis, and the state. It is a guide to understanding the world in order to change it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-rule" />
 
     <!-- PODCAST -->
     <section th:if="${!#lists.isEmpty(homepagePodcasts)}" id="video" class="py-24 bg-rev-ink dot-bg">
