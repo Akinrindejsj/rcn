@@ -31,36 +31,70 @@
     </script>
 </div>
 
-<!-- Delete confirmation modal -->
+<!-- Generic confirmation modal (reused for delete, approve, reject, etc) -->
 <div th:fragment="deleteModal">
     <div id="rcn-delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
         <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
         <div class="relative z-10 w-full max-w-lg rounded-xl bg-rev-surface border border-rev-border p-6 shadow-lg">
-            <h3 class="font-display text-xl text-rev-ink">Confirm deletion</h3>
-            <p id="rcn-delete-modal-text" class="mt-2 text-sm text-rev-muted">This action is irreversible.</p>
+            <h3 id="rcn-delete-modal-title" class="font-display text-xl text-rev-ink">Confirm action</h3>
+            <p id="rcn-delete-modal-text" class="mt-2 text-sm text-rev-muted">Are you sure?</p>
 
             <form id="rcn-delete-form" method="post" class="mt-4 text-right">
                 <!-- CSRF token (if available) -->
                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <button type="button" onclick="closeDeleteModal()" class="outline-btn mr-3">Cancel</button>
-                <button type="submit" class="red-btn">Delete permanently</button>
+                <button id="rcn-delete-modal-submit" type="submit" class="red-btn">Confirm</button>
             </form>
         </div>
     </div>
 
     <script>
-        function openDeleteModal(actionUrl, itemName) {
+        /**
+         * Generic confirmation modal for delete, approve, reject, and other actions
+         * @param {string} actionUrl - The URL to POST to
+         * @param {string} itemName - The name/title of the item
+         * @param {string} actionType - Type of action: 'delete', 'approve', 'reject' (default: 'delete')
+         */
+        function openDeleteModal(actionUrl, itemName, actionType = 'delete') {
             const modal = document.getElementById('rcn-delete-modal');
+            const title = document.getElementById('rcn-delete-modal-title');
             const text = document.getElementById('rcn-delete-modal-text');
             const form = document.getElementById('rcn-delete-form');
-            if (!modal || !form) return;
+            const submitBtn = document.getElementById('rcn-delete-modal-submit');
+
+            if (!modal || !form || !submitBtn) return;
+
             form.action = actionUrl;
-            text.textContent = `Are you sure you want to delete "${itemName}"? This action cannot be undone.`;
+
+            // Customize based on action type
+            switch(actionType) {
+                case 'approve':
+                    title.textContent = 'Approve article';
+                    text.textContent = `Approve "${itemName}" for publication? This will make it publicly visible.`;
+                    submitBtn.textContent = 'Approve';
+                    submitBtn.className = 'red-btn';
+                    break;
+                case 'reject':
+                    title.textContent = 'Reject article';
+                    text.textContent = `Reject "${itemName}"? The author will be notified.`;
+                    submitBtn.textContent = 'Reject';
+                    submitBtn.className = 'red-btn';
+                    break;
+                case 'delete':
+                default:
+                    title.textContent = 'Confirm deletion';
+                    text.textContent = `Are you sure you want to delete "${itemName}"? This action cannot be undone.`;
+                    submitBtn.textContent = 'Delete permanently';
+                    submitBtn.className = 'red-btn';
+                    break;
+            }
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             // focus the cancel button for safety
             setTimeout(() => { modal.querySelector('button')?.focus(); }, 100);
         }
+
         function closeDeleteModal() {
             const modal = document.getElementById('rcn-delete-modal');
             if (!modal) return;
