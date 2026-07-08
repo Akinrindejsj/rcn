@@ -4,72 +4,236 @@
     <title th:text="${article.title} + ' — RCN'">Article — RCN</title>
     <meta name="description" th:content="${article.excerpt} ?: ${article.title}" content="Article description"/>
     <style>
-        .prose-content h2, .prose-content h3, .prose-content h4, .prose-content h5, .prose-content h6 {
-            color: #C0182A;
-            margin-top: 2rem;
+        /* Base typography for article content - big, readable, neutral */
+        .prose-content {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            color: #1A1A1A;
+            line-height: 1.85;
+            font-size: 1.25rem;
+        }
+
+        /* Headings - neutral dark color, proper visual hierarchy */
+        .prose-content h2,
+        .prose-content h3,
+        .prose-content h4,
+        .prose-content h5,
+        .prose-content h6 {
+            color: #1A1A1A;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .prose-content h2 {
+            font-size: 2.5rem;
+        }
+
+        .prose-content h3 {
+            font-size: 2rem;
+        }
+
+        .prose-content h4 {
+            font-size: 1.75rem;
+        }
+
+        .prose-content h5 {
+            font-size: 1.5rem;
+        }
+
+        .prose-content h6 {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #555555;
+        }
+
+        /* Paragraphs */
+        .prose-content p {
+            margin-bottom: 2rem;
+        }
+
+        /* Lists */
+        .prose-content ul,
+        .prose-content ol {
+            margin-left: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .prose-content li {
             margin-bottom: 1rem;
+        }
+
+        .prose-content ol {
+            list-style-type: decimal;
+        }
+
+        .prose-content ul {
+            list-style-type: disc;
+        }
+
+        /* Nested lists */
+        .prose-content ul ul,
+        .prose-content ol ol,
+        .prose-content ul ol,
+        .prose-content ol ul {
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Blockquotes - gray accent on left border, subtle background */
+        .prose-content blockquote {
+            border-left: 4px solid #888888;
+            padding-left: 1.5rem;
+            margin: 2.5rem 0;
+            color: #444444;
+            font-style: italic;
+            background-color: #F5F5F5;
+            padding: 1.5rem 0 1.5rem 1.5rem;
+        }
+
+        .prose-content blockquote p {
+            margin-bottom: 0;
+            font-size: 1.2rem;
+        }
+
+        /* Text formatting - keep neutral */
+        .prose-content strong {
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+
+        .prose-content em {
+            font-style: italic;
+        }
+
+        /* Links - no underline */
+        .prose-content a {
+            color: #1A1A1A;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .prose-content a:hover {
+            color: #555555;
+        }
+
+        /* Code blocks - inline code */
+        .prose-content code {
+            background-color: #F5F5F5;
+            color: #333333;
+            padding: 0.35rem 0.7rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+        }
+
+        /* Code blocks - pre/code blocks */
+        .prose-content pre {
+            background-color: #2D2D2D;
+            color: #E8E8E8;
+            padding: 2rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 2.5rem 0;
+        }
+
+        .prose-content pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Horizontal rules */
+        .prose-content hr {
+            border: none;
+            border-top: 2px solid #E0E0E0;
+            margin: 3.5rem 0;
+        }
+
+        /* Tables */
+        .prose-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2.5rem 0;
+        }
+
+        .prose-content th,
+        .prose-content td {
+            border: 1px solid #D5D5D5;
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        .prose-content th {
+            background-color: #F5F5F5;
             font-weight: 700;
         }
-        .prose-content h2 { font-size: 1.875rem; line-height: 2.25rem; }
-        .prose-content h3 { font-size: 1.5rem; line-height: 2rem; }
-        .prose-content h4 { font-size: 1.25rem; line-height: 1.75rem; }
-        .prose-content h5 { font-size: 1.125rem; line-height: 1.75rem; }
-        .prose-content h6 { font-size: 1rem; line-height: 1.5rem; }
-        .prose-content p { margin-bottom: 1rem; }
-        .prose-content ul, .prose-content ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-        .prose-content li { margin-bottom: 0.5rem; }
-        .prose-content blockquote {
-            border-left: 4px solid #C0182A;
-            padding-left: 1.5rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: #7A726A;
+
+        .prose-content tr:nth-child(even) {
+            background-color: #FAFAFA;
         }
-        .prose-content strong { font-weight: 700; }
-        .prose-content em { font-style: italic; }
-        .prose-content a { color: #C0182A; text-decoration: underline; }
-        .prose-content a:hover { color: #8B0E1C; }
+
+        /* Images */
+        .prose-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2.5rem 0;
+            border-radius: 4px;
+        }
+
+        /* Videos/embeds */
+        .prose-content iframe {
+            max-width: 100%;
+            height: auto;
+            margin: 2.5rem 0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 <main layout:fragment="content">
-<article>
-    <header class="max-w-4xl mx-auto px-4 md:px-8 pt-16">
-        <div class="flex items-center gap-3 mb-6">
-            <span th:if="${article.category}" class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1" th:text="${article.category}">Category</span>
-            <span class="font-mono text-rev-muted text-[11px]" th:if="${article.publishedAt}" th:text="${#temporals.format(article.publishedAt, 'MMMM d, yyyy')}">Date</span>
+    <article>
+        <header class="max-w-5xl mx-auto px-4 md:px-8 pt-16">
+            <div class="flex items-center gap-3 mb-6">
+                <span th:if="${article.category}" class="bg-rev-red text-white font-mono text-[10px] uppercase tracking-widest px-3 py-1" th:text="${article.category}">Category</span>
+                <span class="font-mono text-rev-muted text-[11px]" th:if="${article.publishedAt}" th:text="${#temporals.format(article.publishedAt, 'MMMM d, yyyy')}">Date</span>
+            </div>
+            <h1 class="font-display text-5xl md:text-7xl text-rev-ink uppercase leading-tight" th:text="${article.title}">Article Title</h1>
+            <p class="mt-6 font-body text-rev-muted text-sm">
+                <span th:if="${article.authorName}" th:text="'By ' + ${article.authorName}">Author</span>
+                <span th:if="${article.authorName == null}">By RCN Editorial Collective</span>
+            </p>
+            <div th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}" class="mt-10 rounded overflow-hidden">
+                <img th:src="${article.featuredImageUrl}" alt="" class="h-80 w-full object-cover"/>
+            </div>
+            <div th:if="${article.featuredImageUrl == null or article.featuredImageUrl.isBlank()}" class="img-placeholder h-80 w-full mt-10 rounded"><span class="ph-label">Article hero image — Replace with relevant photograph</span></div>
+        </header>
+
+        <div class="max-w-5xl mx-auto px-4 md:px-8 py-12 text-base leading-relaxed space-y-6">
+            <div th:utext="${article.body} ?: ''" class="prose-content">Article body will appear here.</div>
         </div>
-        <h1 class="font-display text-5xl md:text-7xl text-rev-ink uppercase leading-tight" th:text="${article.title}">Article Title</h1>
-        <p class="mt-6 font-body text-rev-muted text-sm">
-            <span th:if="${article.authorName}" th:text="'By ' + ${article.authorName}">Author</span>
-            <span th:if="${article.authorName == null}">By RCN Editorial Collective</span>
-        </p>
-        <div th:if="${article.featuredImageUrl != null and !article.featuredImageUrl.isBlank()}" class="mt-10 rounded overflow-hidden">
-            <img th:src="${article.featuredImageUrl}" alt="" class="h-80 w-full object-cover"/>
+
+        <!-- Share -->
+        <div class="max-w-5xl mx-auto px-4 md:px-8 py-8 border-t border-rev-border flex flex-wrap gap-4 items-center">
+            <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Share this article</span>
+            <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Twitter</a>
+            <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Facebook</a>
+            <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">WhatsApp</a>
+            <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Telegram</a>
+            <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Copy Link</a>
         </div>
-        <div th:if="${article.featuredImageUrl == null or article.featuredImageUrl.isBlank()}" class="img-placeholder h-80 w-full mt-10 rounded"><span class="ph-label">Article hero image — Replace with relevant photograph</span></div>
-    </header>
+    </article>
 
-    <div class="max-w-3xl mx-auto px-4 md:px-8 py-12 text-base leading-relaxed space-y-6">
-        <div th:utext="${article.body} ?: ''" class="prose-content">Article body will appear here.</div>
+    <hr class="section-rule"/>
+
+    <div class="bg-rev-red py-12 text-center">
+        <p class="text-white font-mono text-sm uppercase tracking-widest">Inspired by this analysis? <a th:href="@{/join}" href="/join" class="underline hover:no-underline">Join the RCN →</a></p>
     </div>
-
-    <!-- Share -->
-    <div class="max-w-3xl mx-auto px-4 md:px-8 py-8 border-t border-rev-border flex flex-wrap gap-4 items-center">
-        <span class="font-mono text-rev-muted text-[10px] uppercase tracking-widest">Share this article</span>
-        <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Twitter</a>
-        <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Facebook</a>
-        <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">WhatsApp</a>
-        <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Telegram</a>
-        <a href="#" class="font-mono text-[11px] text-rev-ink hover:text-rev-red uppercase tracking-widest">Copy Link</a>
-    </div>
-</article>
-
-<hr class="section-rule"/>
-
-<div class="bg-rev-red py-12 text-center">
-    <p class="text-white font-mono text-sm uppercase tracking-widest">Inspired by this analysis? <a th:href="@{/join}" href="/join" class="underline hover:no-underline">Join the RCN →</a></p>
-</div>
 </main>
 </body>
 </html>
