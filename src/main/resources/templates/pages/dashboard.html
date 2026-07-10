@@ -7,58 +7,60 @@
 <body>
 <main layout:fragment="content">
     <!-- HERO -->
-    <section class="relative min-h-[92vh] flex flex-col overflow-hidden bg-rev-ink">
+    <section class="relative min-h-[92vh] flex flex-col overflow-hidden bg-rev-red">
         <div class="absolute inset-0 z-0">
             <video th:if="${content.heroImage != null and !content.heroImage.isBlank()}"
                    th:src="${content.heroImage}"
                    class="h-full w-full object-cover"
                    autoplay muted loop playsinline preload="metadata"
                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"></video>
-            <img th:src="@{/images/revolutionary-party.jpg}"
+            <img th:src="@{/images/hero-image.jpeg}"
                  alt=""
                  class="h-full w-full object-cover"
                  th:classappend="${content.heroImage != null and !content.heroImage.isBlank() ? ' hidden' : ''}">
-            <div class="absolute inset-0 bg-black/55"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20"></div>
+            <div class="absolute inset-0 bg-rev-red/45"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-rev-red/70 via-rev-red/40 to-rev-red/10"></div>
         </div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center flex-1 py-24 lg:py-32">
-            <div class="max-w-3xl rounded-sm border border-white/15 bg-black/35 p-6 md:p-10 backdrop-blur-[2px] shadow-2xl">
+            <div class="max-w-3xl">
                 <div class="fade-up-1 flex items-center gap-3 mb-8">
-                    <div class="sweep-in h-px w-10 bg-rev-red"></div>
-                    <span class="font-mono text-white/80 text-[11px] uppercase tracking-[0.3em]">Nigerian Section · Revolutionary Communist International</span>
+                    <div class="sweep-in h-px w-10 bg-white/80"></div>
+                    <span class="font-mono text-white/90 text-[11px] uppercase tracking-[0.3em]">Nigerian Section · Revolutionary Communist International</span>
                 </div>
-                <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-white mb-4"
-                    style="font-size: clamp(3.25rem, 9vw, 7rem);"
+                <h1 class="fade-up-2 font-display uppercase leading-[0.9] text-white mb-6"
+                    style="font-size: clamp(3.25rem, 9vw, 7rem); text-shadow: 0 4px 12px rgba(0,0,0,0.5);"
                     th:text="${content.heroHeadline}">Workers of Nigeria, Unite.</h1>
-                <p class="fade-up-3 font-serif italic text-rev-gold text-xl md:text-2xl mt-6 leading-snug max-w-lg">
+                <p class="fade-up-3 font-serif italic text-yellow-100 text-xl md:text-2xl leading-snug max-w-lg"
+                   style="text-shadow: 0 2px 8px rgba(0,0,0,0.4);">
                     "The history of all hitherto existing society is the history of class struggles."
                 </p>
-                <p class="fade-up-3 font-mono text-white/55 text-[11px] mt-2 tracking-widest">- Marx &amp; Engels, The Communist Manifesto</p>
-                <p class="fade-up-4 text-white/85 text-base md:text-lg max-w-2xl mt-8 leading-relaxed"
+                <p class="fade-up-3 font-mono text-white/70 text-[11px] mt-3 tracking-widest">- Marx &amp; Engels, The Communist Manifesto</p>
+                <p class="fade-up-4 text-white text-base md:text-lg max-w-2xl mt-8 leading-relaxed"
+                   style="text-shadow: 0 2px 8px rgba(0,0,0,0.4);"
                    th:text="${content.heroSubtext}">
                     Nigeria's oil wealth feeds billionaires while millions go hungry.
                 </p>
                 <div class="fade-in-late flex flex-wrap gap-4 mt-10">
                     <a th:href="${content.heroPrimaryButtonUrl}" href="/join"
-                       class="bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors"
+                       class="bg-white hover:bg-gray-100 text-rev-red font-mono font-bold text-sm uppercase tracking-widest px-8 py-4 transition-colors shadow-lg"
                        th:text="${content.heroPrimaryButtonText}">Join the Revolution</a>
                     <a th:href="${content.heroSecondaryButtonUrl}" href="/news"
-                       class="border border-white/40 hover:border-rev-red text-white font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:text-rev-red bg-black/20"
+                       class="border-2 border-white hover:border-yellow-100 text-white font-mono text-sm uppercase tracking-widest px-8 py-4 transition-colors hover:bg-white/15"
                        th:text="${content.heroSecondaryButtonText}">Read Analysis</a>
                 </div>
-                <div class="fade-in-late mt-14 flex flex-wrap gap-10 border-t border-white/15 pt-8">
+                <div class="fade-in-late mt-16 flex flex-wrap gap-12">
                     <div>
-                        <p class="font-display text-4xl text-rev-red" th:text="${content.stat1Number}">133M+</p>
-                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat1Label}">Nigerians below poverty line</p>
+                        <p class="font-display text-5xl text-white" style="text-shadow: 0 2px 6px rgba(0,0,0,0.4);" th:text="${content.stat1Number}">133M+</p>
+                        <p class="font-mono text-[10px] text-white/75 uppercase tracking-widest mt-2" th:text="${content.stat1Label}">Nigerians below poverty line</p>
                     </div>
                     <div>
-                        <p class="font-display text-4xl text-white" th:text="${content.stat2Number}">53%</p>
-                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat2Label}">Youth unemployment rate</p>
+                        <p class="font-display text-5xl text-yellow-100" style="text-shadow: 0 2px 6px rgba(0,0,0,0.4);" th:text="${content.stat2Number}">53%</p>
+                        <p class="font-mono text-[10px] text-white/75 uppercase tracking-widest mt-2" th:text="${content.stat2Label}">Youth unemployment rate</p>
                     </div>
                     <div>
-                        <p class="font-display text-4xl text-rev-gold" th:text="${content.stat3Number}">$1T+</p>
-                        <p class="font-mono text-[10px] text-white/55 uppercase tracking-widest mt-1" th:text="${content.stat3Label}">Looted since independence</p>
+                        <p class="font-display text-5xl text-yellow-50" style="text-shadow: 0 2px 6px rgba(0,0,0,0.4);" th:text="${content.stat3Number}">$1T+</p>
+                        <p class="font-mono text-[10px] text-white/75 uppercase tracking-widest mt-2" th:text="${content.stat3Label}">Looted since independence</p>
                     </div>
                 </div>
             </div>
@@ -292,8 +294,8 @@
                         <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Email Address</label><input type="email" placeholder="you@example.com" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
                         <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">Phone / WhatsApp</label><input type="tel" placeholder="+234 800 000 0000" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
                         <div><label class="font-mono text-[10px] text-rev-muted uppercase tracking-widest block mb-2">City / State</label><input type="text" placeholder="Lagos, Lagos State" class="w-full bg-rev-subtle border border-rev-border hover:border-rev-red focus:border-rev-red text-rev-ink text-sm px-4 py-3 outline-none transition-colors"/></div>
-                        <button class="w-full bg-rev-red hover:bg-rev-red-dark text-white font-mono font-bold text-sm uppercase tracking-widest py-4 transition-colors mt-2">Join the Revolutionary Communists of Nigeria</button>
-                        <p class="font-mono text-rev-muted text-[10px] text-center leading-relaxed">A comrade will contact you via WhatsApp or email within 48 hours.</p>
+                        <button class="w-full bg-white hover:bg-gray-100 text-rev-red font-mono font-bold text-sm uppercase tracking-widest py-4 transition-colors mt-2">Join the Revolutionary Communists of Nigeria</button>
+                        <p class="font-mono text-white/70 text-[10px] text-center leading-relaxed">A comrade will contact you via WhatsApp or email within 48 hours.</p>
                     </div>
                 </div>
             </div>
