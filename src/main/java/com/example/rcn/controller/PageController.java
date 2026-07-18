@@ -5,10 +5,10 @@ import com.example.rcn.model.Article;
 import com.example.rcn.model.ArticleStatus;
 import com.example.rcn.model.HomepageContent;
 import com.example.rcn.model.Podcast;
+import com.example.rcn.dto.JoinCmd;
 import com.example.rcn.service.ActivityService;
 import com.example.rcn.service.ArticleService;
 import com.example.rcn.service.HomepageContentService;
-import com.example.rcn.service.MembersVoiceService;
 import com.example.rcn.service.PodcastService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +24,15 @@ public class PageController {
     private final ArticleService articleService;
     private final PodcastService podcastService;
     private final ActivityService activityService;
-    private final MembersVoiceService membersVoiceService;
 
     public PageController(HomepageContentService homepageContentService,
                           ArticleService articleService,
                           PodcastService podcastService,
-                          ActivityService activityService,
-                          MembersVoiceService membersVoiceService) {
+                          ActivityService activityService) {
         this.homepageContentService = homepageContentService;
         this.articleService = articleService;
         this.podcastService = podcastService;
         this.activityService = activityService;
-        this.membersVoiceService = membersVoiceService;
     }
 
     @GetMapping({"/", "/dashboard"})
@@ -52,6 +49,7 @@ public class PageController {
                 homepageArticles.size() <= 1 ? List.of() : homepageArticles.subList(1, homepageArticles.size()));
         model.addAttribute("homepagePodcasts", homepagePodcasts);
         model.addAttribute("homepageActivities", homepageActivities);
+        model.addAttribute("cmd", new JoinCmd());
         return "pages/dashboard";
     }
 
@@ -89,12 +87,6 @@ public class PageController {
     @GetMapping("/theory")
     public String theory() {
         return "pages/theory";
-    }
-
-    @GetMapping("/join")
-    public String join(Model model) {
-        model.addAttribute("members", membersVoiceService.findAll());
-        return "pages/join";
     }
 
     @GetMapping("/404")

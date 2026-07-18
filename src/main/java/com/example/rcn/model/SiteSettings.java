@@ -66,6 +66,9 @@ public class SiteSettings {
     @Column(name = "closing_slogan")
     private String closingSlogan;
 
+    @Column(name = "join_notification_email")
+    private String joinNotificationEmail;
+
     protected SiteSettings() {
     }
 
@@ -92,6 +95,7 @@ public class SiteSettings {
                 + "Fighting for a socialist Nigeria, for workers' power, for human liberation.";
         s.copyrightLine = "© 2026 Revolutionary Communists of Nigeria · Nigerian Section of the RCI";
         s.closingSlogan = "Workers of All Countries, Unite!";
+        s.joinNotificationEmail = "akinrindeakinkunmi2006@gmail.com";
         return s;
     }
 
@@ -223,5 +227,13 @@ public class SiteSettings {
 
     public void setClosingSlogan(String closingSlogan) {
         this.closingSlogan = closingSlogan;
+    }
+
+    public String getJoinNotificationEmail() {
+        return joinNotificationEmail;
+    }
+
+    public void setJoinNotificationEmail(String joinNotificationEmail) {
+        this.joinNotificationEmail = joinNotificationEmail;
     }
 }

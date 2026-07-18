@@ -1308,6 +1308,9 @@ public class CmsController {
             if (dto.getClosingSlogan() != null) {
                 entity.setClosingSlogan(dto.getClosingSlogan().trim());
             }
+            if (dto.getJoinNotificationEmail() != null) {
+                entity.setJoinNotificationEmail(dto.getJoinNotificationEmail().trim());
+            }
             siteSettingsService.save(entity);
             redirectAttributes.addFlashAttribute("successMessage", "Site settings saved.");
             return "redirect:/admin/cms/settings";

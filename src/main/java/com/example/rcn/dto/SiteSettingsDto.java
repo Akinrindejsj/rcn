@@ -18,6 +18,7 @@ public class SiteSettingsDto {
     private String footerImageUrl;
     private String copyrightLine;
     private String closingSlogan;
+    private String joinNotificationEmail;
 
     public Long getId() {
         return id;
@@ -145,5 +146,13 @@ public class SiteSettingsDto {
 
     public void setClosingSlogan(String closingSlogan) {
         this.closingSlogan = closingSlogan;
+    }
+
+    public String getJoinNotificationEmail() {
+        return joinNotificationEmail;
+    }
+
+    public void setJoinNotificationEmail(String joinNotificationEmail) {
+        this.joinNotificationEmail = joinNotificationEmail;
     }
 }

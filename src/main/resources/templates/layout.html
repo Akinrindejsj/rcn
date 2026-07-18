@@ -256,6 +256,12 @@
         }
 
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+        /* Submit spinner injected by the shared data-spinner handler */
+        .rcn-spinner { display: inline-flex; align-items: center; justify-content: center; margin-right: 0.5rem; }
+        .rcn-spinner-svg { width: 1rem; height: 1rem; animation: rcn-spin 0.7s linear infinite; }
+        @keyframes rcn-spin { to { transform: rotate(360deg); } }
+        button[type="submit"][disabled] { cursor: not-allowed; opacity: 0.85; }
     </style>
 </head>
 <body class="bg-rev-page text-rev-ink">
@@ -392,14 +398,20 @@
     if (hamburger && mobileMenu) { hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open')); }
     if (mobileMenu) { mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open'))); }
 
-    // Shared spinner: forms with data-spinner get submit-button disabled + text change
+    // Shared spinner: forms with data-spinner get submit-button disabled + spinner + text change
     document.querySelectorAll('form[data-spinner]').forEach(function(form) {
         form.addEventListener('submit', function() {
             var btn = form.querySelector('button[type="submit"]');
             if (btn && !btn.disabled) {
                 btn.disabled = true;
-                btn.dataset.originalText = btn.textContent;
-                btn.textContent = btn.textContent.replace('Submit', 'Submitting').replace('Save', 'Saving');
+                if (!btn.querySelector('.rcn-spinner')) {
+                    var span = document.createElement('span');
+                    span.className = 'rcn-spinner';
+                    span.innerHTML = '<svg class="rcn-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"/></svg>';
+                    btn.insertBefore(span, btn.firstChild);
+                }
+                var label = btn.querySelector('.rcn-btn-label');
+                if (label) label.textContent = 'Submitting…';
             }
         });
     });
