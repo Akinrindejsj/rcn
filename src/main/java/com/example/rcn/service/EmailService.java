@@ -2,6 +2,8 @@ package com.example.rcn.service;
 
 import com.example.rcn.dto.JoinCmd;
 import com.example.rcn.model.SiteSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmailService {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
     private static final String DEFAULT_JOIN_RECIPIENT = "akinrindeakinkunmi2006@gmail.com";
 
@@ -42,13 +46,30 @@ public class EmailService {
         message.setSubject(buildSubject(cmd));
         message.setText(buildBody(cmd));
 
-        mailSender.send(message);
+        log.info("Sending join notification to '{}' from applicant <{}> (membershipType='{}')",
+                recipient, cmd.getEmail(), cmd.getMembershipType());
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
+            log.error("Mail send failed for join notification — recipient='{}', applicant=<{}>",
+                    recipient, cmd.getEmail(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("Unexpected error while sending join notification — recipient='{}', applicant=<{}>",
+                    recipient, cmd.getEmail(), e);
+            throw e;
+        }
     }
 
     private String resolveRecipient() {
         SiteSettings settings = siteSettingsService.getSingleton();
         String recipient = settings.getJoinNotificationEmail();
-        return (recipient == null || recipient.isBlank()) ? DEFAULT_JOIN_RECIPIENT : recipient.trim();
+        if (recipient == null || recipient.isBlank()) {
+            log.warn("Join notification recipient not configured; falling back to default '{}'",
+                    DEFAULT_JOIN_RECIPIENT);
+            return DEFAULT_JOIN_RECIPIENT;
+        }
+        return recipient.trim();
     }
 
     private String buildSubject(JoinCmd cmd) {

@@ -4,6 +4,8 @@ import com.example.rcn.dto.JoinCmd;
 import com.example.rcn.service.EmailService;
 import com.example.rcn.service.MembersVoiceService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class JoinController {
+
+    private static final Logger log = LoggerFactory.getLogger(JoinController.class);
 
     private final EmailService emailService;
     private final MembersVoiceService membersVoiceService;
@@ -41,16 +45,25 @@ public class JoinController {
                          BindingResult result,
                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
+            log.warn("Join submission rejected (validation failed) for '{} {}' <{}>: {}",
+                    cmd.getFirstName(), cmd.getLastName(), cmd.getEmail(), result.getAllErrors());
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Please complete all required fields before submitting.");
             return "redirect:/join";
         }
 
+        log.info("Join submission received from '{} {}' <{}> — membershipType='{}', foundUs='{}'",
+                cmd.getFirstName(), cmd.getLastName(), cmd.getEmail(), cmd.getMembershipType(), cmd.getFoundUs());
+
         try {
             emailService.sendJoinNotification(cmd);
+            log.info("Join notification email sent successfully for '{} {}' <{}>",
+                    cmd.getFirstName(), cmd.getLastName(), cmd.getEmail());
             redirectAttributes.addFlashAttribute("successMessage",
                     "Welcome, comrade! A comrade will contact you within 48 hours.");
         } catch (Exception e) {
+            log.error("Failed to send join notification email for '{} {}' <{}>; visitor shown error toast",
+                    cmd.getFirstName(), cmd.getLastName(), cmd.getEmail(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "We couldn't send your application just now. Please try again in a moment.");
         }
